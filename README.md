@@ -1,6 +1,8 @@
 # zoomus-jssdk
 zoom webclient jssdk Local NPM repository
 
+[![NPM](https://nodei.co/npm/zoomus-jssdk.png)](https://nodei.co/npm/zoomus-jssdk/)
+
 ```
 npm i zoomus-jssdk
 ```
