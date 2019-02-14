@@ -7,7 +7,7 @@ npm i zoomus-jssdk
 
 [NPM zoomus-jssdk](https://www.npmjs.com/package/zoomus-jssdk)
 
-[sample-app-web](https://github.com/zoom/sample-app-web)
+[sample-app-web](https://github.com/zoom/sample-app-web) is a demo how to use zoomus-jssdk.
 
 ### Support
 For any issues regarding our Web Client SDK, please visit our JS SDK Community Support Forum at
