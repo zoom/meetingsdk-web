@@ -1,6 +1,6 @@
 {
   "name": "zoomus-jssdk",
-  "version": "1.3.8",
+  "version": "1.4.2",
   "description": "zoom webclient jssdk",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,8 @@
   },
   "keywords": [
     "zoom",
-    "jssdk"
+    "jssdk",
+    "web sdk"
   ],
   "author": "Zoom",
   "license": "MIT",
