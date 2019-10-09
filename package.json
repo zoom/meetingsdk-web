@@ -1,39 +1,44 @@
 {
- "name": "zoomus-jssdk",
- "version": "1.5.1",
- "description": "zoom webclient jssdk",
- "main": "index.js",
- "scripts": {
-  "test": "echo \"Error: no test specified\" && exit 1"
- },
- "repository": {
-  "type": "git",
-  "url": "git+ssh://git@github.com/zoom/sample-app-web.git"
- },
- "keywords": ["zoom", "jssdk"],
- "author": "Zoom",
- "license": "MIT",
- "bugs": {
-  "url": "https://github.com/zoom/sample-app-web/issues"
- },
- "homepage": "https://github.com/zoom/sample-app-web#readme",
- "dependencies": {
-  "react": "16.8.6",
-  "react-dom": "16.8.6",
-  "redux": "3.7.2",
-  "react-redux": "7.1.0",
-  "jquery": "^3.4.1",
-  "lodash": "^4.17.14",
-  "redux-thunk": "2.2.0"
- },
- "peerDependencies": {
-  "react": "16.8.6",
-  "react-dom": "16.8.6",
-  "redux": "3.7.2",
-  "react-redux": "7.1.0",
-  "jquery": "^3.4.1",
-  "lodash": "^4.17.14",
-  "redux-thunk": "2.2.0"
- },
- "files": ["dist/*"]
+  "name": "zoomus-jssdk",
+  "version": "1.6.0",
+  "description": "zoom webclient jssdk",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/zoom/sample-app-web.git"
+  },
+  "keywords": [
+    "zoom",
+    "jssdk"
+  ],
+  "author": "Zoom",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zoom/sample-app-web/issues"
+  },
+  "homepage": "https://github.com/zoom/sample-app-web#readme",
+  "dependencies": {
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "redux": "3.7.2",
+    "react-redux": "7.1.0",
+    "jquery": "^3.4.1",
+    "lodash": "^4.17.14",
+    "redux-thunk": "2.2.0"
+  },
+  "peerDependencies": {
+    "react": "16.8.6",
+    "react-dom": "16.8.6",
+    "redux": "3.7.2",
+    "react-redux": "7.1.0",
+    "jquery": "^3.4.1",
+    "lodash": "^4.17.14",
+    "redux-thunk": "2.2.0"
+  },
+  "files": [
+    "dist/*"
+  ]
 }
