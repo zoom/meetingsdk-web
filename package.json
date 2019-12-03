@@ -1,6 +1,6 @@
 {
   "name": "zoomus-jssdk",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "zoom webclient jssdk",
   "main": "index.js",
   "scripts": {
