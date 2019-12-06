@@ -5,7 +5,7 @@ zoom webclient WebSDK Local NPM repository
 npm i @zoomus/websdk
 ```
 
-[sample-app-web](https://github.com/zoom/sample-app-web) is a demo how to use zoomus-jssdk.
+[sample-app-web](https://github.com/zoom/sample-app-web) is a demo how to use WebSDK.
 
 ### Support
 For any issues regarding our Web Client SDK, please visit our JS SDK Community Support Forum at
