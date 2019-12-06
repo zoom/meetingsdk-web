@@ -1,10 +1,8 @@
-# zoomus-jssdk
-zoom webclient jssdk Local NPM repository
-
-[![NPM](https://nodei.co/npm/zoomus-jssdk.png)](https://nodei.co/npm/zoomus-jssdk/)
+# @zoomus/websdk
+zoom webclient WebSDK Local NPM repository
 
 ```
-npm i zoomus-jssdk
+npm i @zoomus/websdk
 ```
 
 [sample-app-web](https://github.com/zoom/sample-app-web) is a demo how to use zoomus-jssdk.
