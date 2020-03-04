@@ -1,7 +1,7 @@
 {
-  "name": "zoomus-jssdk",
+  "name": "@zoomus/websdk",
   "version": "1.7.0",
-  "description": "zoom webclient jssdk",
+  "description": "Zoom Web SDK",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,14 +12,19 @@
   },
   "keywords": [
     "zoom",
-    "jssdk"
+    "web",
+    "sdk"
   ],
-  "author": "Zoom",
+  "author": "Jack Yang",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/zoom/sample-app-web/issues"
+  "homepage": "https://github.com/zoom/websdk#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zoom/websdk.git"
   },
-  "homepage": "https://github.com/zoom/sample-app-web#readme",
+  "bugs": {
+    "url": "https://github.com/zoom/websdk/issues"
+  },
   "dependencies": {
     "react": "16.8.6",
     "react-dom": "16.8.6",
