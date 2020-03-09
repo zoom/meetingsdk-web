@@ -1,3 +1,3 @@
 'use strict';
 
-module.exports = require('./dist/zoomus-jssdk.umd.min');
+module.exports = require('./dist/zoomus-websdk.umd.min');
