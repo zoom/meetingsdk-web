@@ -1,3 +1,7 @@
+## Zoom Web SDK affected due to Web Client maintenance
+
+**We are working to get the [Zoom Web Client](https://support.zoom.us/hc/en-us/articles/214629443-Zoom-Web-Client) and [Zoom Web SDK](https://marketplace.zoom.us/docs/sdk/native-sdks/web) back online. Please keep up with our status page for detailed updates: [status.zoom.us](https://status.zoom.us/).**
+
 # Zoom Web SDK
 
 The Zoom Web SDK NPM package is for implementing the Zoom Web SDK with a frontend framework like React or Angular that uses webpack / babel.
