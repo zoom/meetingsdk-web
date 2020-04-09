@@ -1,5 +1,5 @@
 # Zoom Web SDK
-## You are required to update to version 1.7.4. Please note that WebSDK version 1.7.2 or below will no longer be operational.
+## You are required to update to version >= 1.7.4. Please note that WebSDK version 1.7.2 or below will no longer be operational.
 
 The Zoom Web SDK NPM package is for implementing the Zoom Web SDK with a frontend framework like React or Angular that uses webpack / babel.
 
