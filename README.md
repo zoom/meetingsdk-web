@@ -1,5 +1,6 @@
 # Zoom Web SDK
-## You are required to update to version >= 1.7.4. Please note that WebSDK version 1.7.2 or below will no longer be operational.
+## Please Note: It is strongly recommended to upgrade to version 1.7.7 before May 30th. Otherwise version 1.7.6 and below will no longer be operational. Using Web SDK 1.7.6 or below you will be able to join meetings but you will not be able to access audio, video, screen sharing, chat, or closed caption. 
+
 
 The Zoom Web SDK NPM package is for implementing the Zoom Web SDK with a frontend framework like React or Angular that uses webpack / babel.
 
