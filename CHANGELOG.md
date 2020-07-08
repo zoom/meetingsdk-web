@@ -1,4 +1,10 @@
 # CHANGELOG
+
+## version 1.7.10
+## Bug Fixes
+1. Fixed random video black screen in meeting.
+2. Fixed recaptcha don't work on some domain.
+
 ## version 1.7.9
 
 ## Add
