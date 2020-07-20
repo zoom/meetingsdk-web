@@ -1,3 +1,4 @@
+*test
 # Zoom Web SDK
 ## Important Notices: 
 ### 1) It is strongly recommended to upgrade to version 1.7.7 before May 30th. Otherwise version 1.7.6 and below will no longer be operational. Using Web SDK 1.7.6 or below you will be able to join meetings but you will not be able to access audio, video, screen sharing, chat, or closed caption. 
