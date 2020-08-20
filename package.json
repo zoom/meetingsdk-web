@@ -12,7 +12,7 @@
     },
     "keywords": ["zoom", "web", "sdk"],
     "author": "Jack Yang",
-    "license": "MIT",
+    "license": "SEE LICENSE IN LICENSE.md",
     "homepage": "https://github.com/zoom/websdk#readme",
     "bugs": {
         "url": "https://github.com/zoom/websdk/issues"
