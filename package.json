@@ -1,8 +1,9 @@
 {
     "name": "@zoomus/websdk",
-    "version": "1.7.10",
+    "version": "1.8.0",
     "description": "Zoom Web SDK",
     "main": "index.js",
+    "types": "index.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
