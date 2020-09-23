@@ -100,6 +100,10 @@ export namespace ZoomMtg {
         success: Function,
         error?: Function,
     }): void;
+    function getCurrentMeetingInfo(args: {
+        success: Function,
+        error?: Function,
+    }): void;
     function callOut(args: {
         success?: Function,
         error?: Function,
