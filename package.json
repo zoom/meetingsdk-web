@@ -36,5 +36,5 @@
         "lodash": "^4.17.14",
         "redux-thunk": "2.2.0"
     },
-    "files": ["dist/*", "index.d.ts", "CHANGELOG.md", "LICENSE.md", "README.md"]
+    "files": ["dist/*", "index.d.ts", "CHANGELOG.md", "LICENSE.pdf", "README.md"]
 }
