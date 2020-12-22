@@ -1,6 +1,6 @@
 {
     "name": "@zoomus/websdk",
-    "version": "1.8.3",
+    "version": "1.8.5",
     "description": "Zoom Web SDK",
     "main": "index.js",
     "types": "index.d.ts",
@@ -23,7 +23,6 @@
         "react-dom": "16.8.6",
         "redux": "3.7.2",
         "react-redux": "7.1.0",
-        "jquery": "^3.4.1",
         "lodash": "^4.17.14",
         "redux-thunk": "2.2.0"
     },
@@ -32,7 +31,6 @@
         "react-dom": "16.8.6",
         "redux": "3.7.2",
         "react-redux": "7.1.0",
-        "jquery": "^3.4.1",
         "lodash": "^4.17.14",
         "redux-thunk": "2.2.0"
     },

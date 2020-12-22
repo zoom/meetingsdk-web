@@ -13,6 +13,8 @@ declare let initArgs: {
     isSupportChat?: boolean, //optional,
     isSupportQA?: boolean, //optional,
     isSupportCC?: boolean, //optional,
+    isSupportPolling?: boolean, //optional,
+    isSupportBreakout?: boolean, //optional,
     screenShare?: boolean, //optional,
     rwcBackup?: string, //optional,
     videoDrag?: boolean, //optional,
@@ -42,6 +44,8 @@ declare enum MeetingInfoType {
     'invite',
     'participant',
     'dc',
+    'enctype',
+    'report'
 }
 
 declare enum WebSDKInMeetingEvent {
@@ -51,7 +55,56 @@ declare enum WebSDKInMeetingEvent {
     onMeetingStatus, // 1(connecting), 2(connected), 3(disconnected), 4(reconnecting)
 }
 
+export declare namespace ZoomMtgLang {
+   /**
+    * load Zoom office support lang 
+    * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT'
+    * @param lang
+    *
+    */
+    function load(lang: string): void; 
+    /**
+    * load you language resource
+    * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT'
+    * @param url you language resource object or json link
+    * @param lang you assign lang name
+    *
+    */
+    function reload(url: string | object , lang: string): void;
+    /**
+    * change you UI language
+    * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT' or you loaded lang
+    * @param lang
+    *
+    */
+    function reload(lang: string): void;
+
+    /**
+    * get one lang all resource object
+    * @param lang
+    *
+    */
+    function getAll(lang: string): object;
+
+    /**
+    * get current lang specific key's value
+    * @param key
+    *
+    */
+    function get(key: string): void;
+     /**
+    * get current lang
+    *
+    */
+    function getCurrentLang(): string;
+    /**
+    * get you loaded language array
+    *
+    */
+    function getSupportLanguage(): Array<string>;
+}
 export namespace ZoomMtg {
+    const i18n: typeof ZoomMtgLang;
     function generateSignature(args: {
         apiKey: string,
         apiSecret: string,
@@ -65,7 +118,7 @@ export namespace ZoomMtg {
     function prepareJssdk(): void;
     function init(args: typeof initArgs): void;
     function join(args: {
-        meetingNumber: string,
+        meetingNumber: string | number,
         userName: string,
         userEmail?: string,
         passWord?: string,
@@ -93,6 +146,10 @@ export namespace ZoomMtg {
         show: boolean
     }): void;
     function getAttendeeslist(args: { // only meeting
+        success?: Function,
+        error?: Function,
+    }): void;
+    function getBreakoutRoomList(args: { // only meeting
         success?: Function,
         error?: Function,
     }): void;
@@ -180,4 +237,5 @@ export namespace ZoomMtg {
         success?: Function,
         error?: Function,
     }): void;
+
 }

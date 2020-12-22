@@ -1,10 +1,38 @@
 # Zoom Web SDK
-## Important Notices: 
-### 1) It is strongly recommended to upgrade to version 1.7.7 before May 30th. Otherwise version 1.7.6 and below will no longer be operational. Using Web SDK 1.7.6 or below you will be able to join meetings but you will not be able to access audio, video, screen sharing, chat, or closed caption. 
-### 2) As of version 1.7.9, we will be including reCaptcha feature for joining meetings, please ensure that your application is running on ports 80 or 443
+## Please note that as of January 10th, all older versions of the Web SDK (versions 1.8.3 and below) will no longer have computer audio functionality within meetings. Please upgrade to version 1.8.5 or above to avoid service disruption.
 
 
 The Zoom Web SDK NPM package is for implementing the Zoom Web SDK with a frontend framework like React or Angular that uses webpack / babel.
+
+- `node_modules/@zoomus/websdk/dist/lib/`
+
+### Upgrading from 1.8.3 to 1.8.5
+
+Since we replaced jQuery with Axios, you will need to change the following line.
+
+default [en-US.json](https://source.zoom.us/1.8.5/lib/lang/en-US.json)
+```
+$.i18n -> ZoomMtg.i18n
+
+case 1: load en-US, jp-JP, zh-CN, but use jp-JP by default
+
+ZoomMtg.i18n.load('en-US');
+ZoomMtg.i18n.load('jp-JP');
+ZoomMtg.i18n.load('zh-CN');
+ZoomMtg.i18n.reload('jp-JP');
+
+case 2: only load jp-JP
+ZoomMtg.i18n.load('jp-JP');
+ZoomMtg.i18n.reload('jp-JP');
+
+case 3: load youself json file
+
+ZoomMtg.i18n.load('you jason url', 'you-lang-name');
+ZoomMtg.i18n.reload('you-lang-name');
+
+other: if you joined meeting and want change language, you need add another api
+ZoomMtg.reRender({lang: 'zoom support language or you-lang-name' });
+```
 
 ## Installation
 
