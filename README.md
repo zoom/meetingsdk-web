@@ -6,11 +6,11 @@ The Zoom Web SDK NPM package is for implementing the Zoom Web SDK with a fronten
 
 - `node_modules/@zoomus/websdk/dist/lib/`
 
-### Upgrading from 1.8.3 to 1.8.5
+### Upgrading from 1.8.3 to 1.8.6
 
 Since we replaced jQuery with Axios, you will need to change the following line.
 
-default [en-US.json](https://source.zoom.us/1.8.5/lib/lang/en-US.json)
+default [en-US.json](https://source.zoom.us/1.8.6/lib/lang/en-US.json)
 ```
 $.i18n -> ZoomMtg.i18n
 
