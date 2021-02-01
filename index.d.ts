@@ -35,18 +35,7 @@ declare let initArgs: {
     error?: Function,
 };
 
-declare enum MeetingInfoType {
-    'topic',
-    'host',
-    'mn',
-    'pwd',
-    'telPwd',
-    'invite',
-    'participant',
-    'dc',
-    'enctype',
-    'report'
-}
+type MeetingInfoType = 'topic'|'host'|'mn'|'pwd'|'telPwd'|'invite'|'participant'|'dc'|'enctype'|'report';
 
 declare enum WebSDKInMeetingEvent {
     onUserJoin, // only support meeting
