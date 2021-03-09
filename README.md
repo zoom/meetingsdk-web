@@ -1,16 +1,17 @@
 # Zoom Web SDK
 ## Please note that as of January 10th, all older versions of the Web SDK (versions 1.8.3 and below) will no longer have computer audio functionality within meetings. Please upgrade to version 1.8.5 or above to avoid service disruption.
 
+## Starting from version 1.9.1, an open source software (OSS) attribution file (oss_attribution.txt) will be provided in each release. Some licenses for OSS contained in our products give you the right to access the source code under said license. You may obtain a copy of source code for the relevant OSS via the following link: https://zoom.us/opensource/source. Please obtain independent legal advice or counsel to determine your responsibility to make source code available under any specific OSS project.”
 
 The Zoom Web SDK NPM package is for implementing the Zoom Web SDK with a frontend framework like React or Angular that uses webpack / babel.
 
 - `node_modules/@zoomus/websdk/dist/lib/`
 
-### Upgrading from 1.8.3 to 1.8.6
+### Upgrading from 1.8.3 to 1.8.5
 
 Since we replaced jQuery with Axios, you will need to change the following line.
 
-default [en-US.json](https://source.zoom.us/1.8.6/lib/lang/en-US.json)
+default [en-US.json](https://source.zoom.us/1.8.5/lib/lang/en-US.json)
 ```
 $.i18n -> ZoomMtg.i18n
 

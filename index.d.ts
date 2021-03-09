@@ -29,6 +29,7 @@ declare let initArgs: {
         height: string,
     }, // optional,
     meetingInfo?: Array<MeetingInfoType>, // optional
+    origintrials?: Array<string>,
     disableVoIP?: boolean, // optional
     disableReport?: boolean, // optional
     success?: Function,
@@ -95,7 +96,7 @@ export declare namespace ZoomMtgLang {
      * change to youself support languages
      * @param langArray  you want support languages array, will replace default ['de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT'] 
      */
-    function setSupportLanguage(langArray): Array<string>;
+    function setSupportLanguage(langArray: Array<string>);
 }
 export namespace ZoomMtg {
     const i18n: typeof ZoomMtgLang;
@@ -109,7 +110,17 @@ export namespace ZoomMtg {
     }): string;
     function setZoomJSLib(path?: string, dir?: string): void;
     function preLoadWasm(): void;
-    function prepareJssdk(): void;
+    /*
+    * origintrials provide many new feature before chrome release,  https://developer.chrome.com/origintrials/#/trials/active
+    * WebSDK can use:
+    * 1. WebAssembly SIMD improve video/shairng performace
+    * 2. WebCodecs will sovle response time when start video
+    */
+    function prepareWebSDK(origintrials?: Array<string>): void;
+    /*
+    please use prepareWebSDK instead. prepareJssdk will drop sone.
+    */
+    function prepareJssdk(origintrials?: Array<string>): void;
     function init(args: typeof initArgs): void;
     function join(args: {
         meetingNumber: string | number,
