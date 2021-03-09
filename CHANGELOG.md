@@ -1,19 +1,19 @@
 # CHANGELOG
 ## version 1.9.1
 ## Additions
-Added support for hosts to delete chat messages for in meeting or Webinar  chats. 
-Added support for Chrome Origin Trials within the WebSDK.
+1. Added support for hosts to delete chat messages for in meeting or Webinar  chats. 
+2. Added support for Chrome Origin Trials within the WebSDK.
  
  
 ## Enhancements
- Removed more option button that contain non verbal feedback. 
-Added support dialog informing customers to update WebSDK version
+1. Removed more option button that contain non verbal feedback. 
+2. Added support dialog informing customers to update WebSDK version
  
  
 ## Bug Fixes
-Fixed init parameters that were not working. 
-Fixed issue where users can escalate their own privilege. 
-Fixed audio issue after users are admitted from the waiting room.
+1. Fixed init parameters that were not working. 
+2. Fixed issue where users can escalate their own privilege. 
+3. Fixed audio issue after users are admitted from the waiting room.
 
 
 
