@@ -96,7 +96,7 @@ export declare namespace ZoomMtgLang {
      * change to youself support languages
      * @param langArray  you want support languages array, will replace default ['de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT'] 
      */
-    function setSupportLanguage(langArray: Array<string>);
+    function setSupportLanguage(langArray: Array<string>): any;
 }
 export namespace ZoomMtg {
     const i18n: typeof ZoomMtgLang;
