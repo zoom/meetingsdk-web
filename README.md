@@ -66,7 +66,6 @@ NOTE: The following files (already in node_modules) must be globally accessible 
 
 - `node_modules/@zoomus/websdk/dist/css/bootstrap.css`
 - `node_modules/@zoomus/websdk/dist/css/react-select.css`
-- `node_modules/jquery/dist/jquery.min.js`
 
 Set the config variables (reference below):
 
