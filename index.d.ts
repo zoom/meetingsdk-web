@@ -32,6 +32,9 @@ declare let initArgs: {
     origintrials?: Array<string>,
     disableVoIP?: boolean, // optional
     disableReport?: boolean, // optional
+    disablePreview?: boolean, // optional
+    disableCORP?: boolean, // optional
+    helper?: string, // optional
     success?: Function,
     error?: Function,
 };
@@ -96,7 +99,9 @@ export declare namespace ZoomMtgLang {
      * change to youself support languages
      * @param langArray  you want support languages array, will replace default ['de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT'] 
      */
+
     function setSupportLanguage(langArray: Array<string>):any;
+
 }
 export namespace ZoomMtg {
     const i18n: typeof ZoomMtgLang;
@@ -127,6 +132,8 @@ export namespace ZoomMtg {
         userName: string,
         userEmail?: string,
         passWord?: string,
+        customerKey?: string,
+        tk?: string,
         apiKey: string,
         signature: string,
         success: Function,
@@ -162,6 +169,7 @@ export namespace ZoomMtg {
         success: Function,
         error?: Function,
     }): void;
+    function setLogLevel(level?: 'info'|'error'|'silent'): void;
     function getCurrentMeetingInfo(args: {
         success: Function,
         error?: Function,
