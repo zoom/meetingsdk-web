@@ -2,7 +2,7 @@
 Use of this SDK is subject to our [Terms of Use](https://zoom.us/docs/en-us/zoom_api_license_and_tou.html)
 
 ## Chrome 92 Breaking Changes
-When Chrome 92 releases on July 20th, the Chrome `SharedArrayBuffer` will only work with cross-origin isolated pages. This will affect any previously configured Web SDK clients. Therefore, you must reconfigure your web server settings and upgrade to the Web Client SDK version 1.9.5 if you want to continue using this feature. 
+When Chrome 92 releases on July 20th, the Chrome `SharedArrayBuffer` will only work with cross-origin isolated web pages, or web pages with Origin Trials applied to them. This will affect any previously configured Web SDK clients. Therefore, you must reconfigure your web server settings and upgrade to the Web Client SDK version 1.9.5+ if you want to continue using this feature. 
 
 ### To reconfigure your web server
 1. Apply `SharedArrayBuffers` [origintrials](https://developer.chrome.com/origintrials/#/trials/active) for your domain. This temporary extension works until the Chrome 94 release.
@@ -10,6 +10,9 @@ When Chrome 92 releases on July 20th, the Chrome `SharedArrayBuffer` will only w
 3. Update to v1.9.5 or higher.
 
 ### See the Web SDK updates for Chrome 92 [Announcement](https://marketplace.zoom.us/docs/guides/stay-up-to-date/announcements) for details.
+
+## Zoom ending support of Microsoft Internet Explorer
+Microsoft is ending support for Internet Explorer (IE) 11 on August 17, 2021. Based on this date, Zoom is ending support for IE on September 30, 2021. Users can still use Zoom on IE after this date but we will no longer be supporting IE, fixing issues related to IE, or offering any customer support related to IE.
 
 ## Open Source Software (OSS) Attribution
 Starting from version 1.9.1, an OSS attribution file (oss_attribution.txt) will be provided in each release. Some licenses for OSS contained in our products give you the right to access the source code under said license. You may obtain a copy of source code for the relevant OSS via the following link: https://zoom.us/opensource/source. Please obtain independent legal advice or counsel to determine your responsibility to make source code available under any specific OSS project.”
