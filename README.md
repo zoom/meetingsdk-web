@@ -1,6 +1,9 @@
 # Zoom Web SDK
 Use of this SDK is subject to our [Terms of Use](https://zoom.us/docs/en-us/zoom_api_license_and_tou.html)
 
+## Chrome 93 WebCodecs Breaking Changes
+The release of Chrome 93 will result in [breaking changes to the WebCodecs Origin Trial](https://groups.google.com/a/chromium.org/g/blink-dev/c/7D3kMROZrqw) due to API call updates. To use the WebCodecs Origin Trial in Chrome 93+, you must use a minimum of version 1.9.8+
+
 ## Chrome 92 Breaking Changes
 When Chrome 92 releases on July 20th, the Chrome `SharedArrayBuffer` will only work with cross-origin isolated web pages, or web pages with Origin Trials applied to them. This will affect any previously configured Web SDK clients. Therefore, you must reconfigure your web server settings and upgrade to the Web Client SDK version 1.9.5+ if you want to continue using this feature. 
 
