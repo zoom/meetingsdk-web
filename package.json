@@ -1,6 +1,6 @@
 {
   "name": "@zoomus/websdk",
-  "version": "1.9.8",
+  "version": "1.9.9",
   "description": "Zoom Web SDK",
   "main": "index.js",
   "types": "index.d.ts",
@@ -31,7 +31,7 @@
     "react-dom": "16.8.6",
     "redux": "3.7.2",
     "react-redux": "7.1.0",
-    "lodash": "^4.17.14",
+    "lodash": "^4.17.21",
     "redux-thunk": "2.2.0"
   },
   "files": ["dist/*", "index.d.ts", "CHANGELOG.md", "LICENSE.pdf", "README.md"]

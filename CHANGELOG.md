@@ -1,4 +1,9 @@
 # CHANGELOG
+## version 1.9.9
+## Fixed
+1. WebCodecs send-video errors due to breaking changes to the WebCodecs API in Mac Chrome 93 & 94
+
+
 ## version 1.9.8
 ## Fixed
 1. Bug where after "XMPP disconnected!" error shows in console, webinar attendees find the attendee list empty and both Q&A and Raise Hand buttons disabled  
