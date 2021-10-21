@@ -93,7 +93,7 @@ Note: This feature is dependent on a web release scheduled for June 16, 2021, an
 6. Support for automatically joining a webinar as a panelist.
 7. Support for joining manually-approved webinars.
 8. Support for reordering gallery and speaker view within webinars.
-9. Add helper.html to support Web SDK isolation for changes related to Chrome 91. See [announcement] for details.
+9. Add helper.html to support Web SDK isolation for changes related to Chrome 92. See [announcement] for details.
 10. Support Audio quality of service (QOS).
 11. setLogLevel API to print logs. To use this API, set debug to true and use setLogLevel('info').
 12. Support for pre-assigned breakout rooms.
