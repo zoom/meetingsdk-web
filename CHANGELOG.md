@@ -1,7 +1,56 @@
 # CHANGELOG
+## version 2.0.0
+## WebSDK Client View
+## Added
+1. [Mask Background feature](https://support.zoom.us/hc/articles/214629443#h_01FGW73VTDNVJ3VDKP7YQGVQNZ)
+2. Setting to “Mirror my Video”
+3. [Meeting Reactions](https://support.zoom.us/hc/articles/115001286183-Nonverbal-feedback-during-meetings)
+4. Side-by-side layout support when screen sharing in Chrome
+5. Ability to customize recording disclaimer content
+6. Support for showing the user a notice when archiving and live streaming
+7. Dialog for attendees to first provide consent when being promoted to a panelist in webinars
+8. Privacy notices for various features
+
+## Enhanced
+1. Waiting page when a meeting has not yet started
+
+## Fixed
+1. Receiving video in 720p from the native client (requirements include needing “Speaker” view, a video height >= 720p, and a high-performance PC)
+2. The “TypeError: I.isMatchingType is not a function” bug from ~v1.9.5
+
+## WebSDK Component View
+## Added
+1. Joining, leaving, and ending meetings and webinars
+2. Reconnecting when connection state changes
+3. Privacy notices to various features such as chat and recording
+4. Viewing meeting information and copying invite link
+5. [Active Apps Notifier](https://support.zoom.us/hc/articles/360060577291)
+6. Starting, pausing, and stopping screen sharing
+7. Receiving screen sharing
+8. Participants panel, with participant controls such as “mute” and “rename”
+9. Waiting Room
+10. Joining and leaving audio
+11. Muting and unmuting the microphone
+12. Gallery, Ribbon, Speaker, and Minimized views
+13. Highlighting most recently active participant in video views
+14. Toggling video capture
+15. Public and private chat in meetings and webinars
+16. Security settings like enabling waiting room and locking meetings
+17. Starting, pausing, and stopping cloud recording
+18. Receiving local and cloud recording status
+19. Settings panel, with options for Audio, Video, and Share Screen
+20. Raising and lowering hand
+21. Panelist and attendee views in webinars
+22. Promoting attendees and demoting panelists
+23. Promote consent (attendee is shown a consent dialog, which they must accept to be promoted to a panelist)
+24. Multiple languages (i18n)
+25. Adding custom buttons to the toolbar dropdown
+26. APIs to safely and programmatically interact with a meeting or webinar
+
+
 ## version 1.9.9
 ## Fixed
-1. WebCodecs send-video errors due to breaking changes to the WebCodecs API in Mac Chrome 93 & 94
+1. WebCodecs send-video errors on Mac in Chrome 93/94 due to breaking changes to the WebCodecs API
 
 
 ## version 1.9.8
@@ -34,7 +83,6 @@ Note: This feature is dependent on a web release scheduled for June 16, 2021, an
 1. Removed the assistant Breakout Room button
 2. Support for attendees joining via new registration flow, where attendees are required to verify their email via correct tk
 
-
 ## version 1.9.5
 ## Added
 1. Support language interpretation for participants.
@@ -45,7 +93,7 @@ Note: This feature is dependent on a web release scheduled for June 16, 2021, an
 6. Support for automatically joining a webinar as a panelist.
 7. Support for joining manually-approved webinars.
 8. Support for reordering gallery and speaker view within webinars.
-9. Add helper.html to support Web SDK isolation for changes related to Chrome 92. See [announcement] for details.
+9. Add helper.html to support Web SDK isolation for changes related to Chrome 91. See [announcement] for details.
 10. Support Audio quality of service (QOS).
 11. setLogLevel API to print logs. To use this API, set debug to true and use setLogLevel('info').
 12. Support for pre-assigned breakout rooms.
