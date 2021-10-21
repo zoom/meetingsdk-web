@@ -1,27 +1,11 @@
 # Zoom Web SDK
 Use of this SDK is subject to our [Terms of Use](https://zoom.us/docs/en-us/zoom_api_license_and_tou.html)
 
-## Chrome 93 Breaking Changes
-The release of Chrome 93 on August 31st will result in [breaking changes to WebCodecs due to API updates](https://groups.google.com/a/chromium.org/g/blink-dev/c/7D3kMROZrqw), which breaks the WebSDK's ability to send video. To use Chrome 93+, you must upgrade to Web Client SDK 1.9.8+
-
-## Chrome 92 Breaking Changes
-When Chrome 92 releases on July 20th, the Chrome `SharedArrayBuffer` will only work with cross-origin isolated web pages, or web pages with Origin Trials applied to them. This will affect any previously configured Web SDK clients. Therefore, you must reconfigure your web server settings and upgrade to the Web Client SDK version 1.9.5+ if you want to continue using this feature. 
-
-### To reconfigure your web server
-1. Apply `SharedArrayBuffers` [origintrials](https://developer.chrome.com/origintrials/#/trials/active) for your domain. This temporary extension works until the Chrome 94 release.
-2. Enable cross-origin isolation for the Web SDK.
-3. Update to v1.9.5 or higher.
-
-### See the Web SDK updates for Chrome 92 [Announcement](https://marketplace.zoom.us/docs/guides/stay-up-to-date/announcements) for details.
-
-## Zoom ending support of Microsoft Internet Explorer
-Microsoft is ending support for Internet Explorer (IE) 11 on August 17, 2021. Based on this date, Zoom is ending support for IE on September 30, 2021. Users can still use Zoom on IE after this date but we will no longer be supporting IE, fixing issues related to IE, or offering any customer support related to IE.
-
 ## Open Source Software (OSS) Attribution
-Starting from version 1.9.1, an OSS attribution file (oss_attribution.txt) will be provided in each release. Some licenses for OSS contained in our products give you the right to access the source code under said license. You may obtain a copy of source code for the relevant OSS via the following link: https://zoom.us/opensource/source. Please obtain independent legal advice or counsel to determine your responsibility to make source code available under any specific OSS project.”
+Starting from version 1.9.1, an OSS attribution file (oss_attribution.txt) will be provided in each release. Some licenses for OSS contained in our products give you the right to access the source code under said license. You may obtain a copy of source code for the relevant OSS via the following link: https://zoom.us/opensource/source. Please obtain independent legal advice or counsel to determine your responsibility to make source code available under any specific OSS project.
 
 ## About
-The Zoom Web Meeting SDK NPM package is for implementing the Zoom Web Meeting SDK with a frontend framework like React or Angular that uses webpack / babel.
+The Zoom Web Meeting SDK NPM package is for implementing the Zoom Meeting Web SDK with a frontend framework like React or Angular that uses webpack / babel.
 
 There are now two views to choose from, [Component](#use-component-view), and [Client](#use-client-view).
 
@@ -201,6 +185,10 @@ For the full list of features and event listeners, as well as additional guides,
 
 ## Sample App
 Checkout the Zoom [Web SDK Sample App](https://github.com/zoom/sample-app-web), and the [Simple Signature Setup Sample App](https://github.com/zoom/websdk-sample-signature-node.js).
+
+
+## Open Source Software (OSS) Attribution
+Starting from version 1.9.1, an OSS attribution file (oss_attribution.txt) will be provided in each release. Some licenses for OSS contained in our products give you the right to access the source code under said license. You may obtain a copy of source code for the relevant OSS via the following link: https://zoom.us/opensource/source. Please obtain independent legal advice or counsel to determine your responsibility to make source code available under any specific OSS project.”
 
 ## Need help?
 
