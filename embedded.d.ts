@@ -257,6 +257,10 @@ export interface JoinOptions {
    */
   customerKey?: string;
   /**
+   * @param tk Optional 'tk' param to join a webinar with registration
+   */
+  tk?: string;
+  /**
    * @param success join success callback
    */
   success?: Function;
@@ -274,7 +278,7 @@ export interface InitOptions {
    */
   zoomAppRoot: HTMLElement | undefined;
   /**
-   * @param assetPath default 'https://source.zoom.us/2.0.0/lib/av'
+   * @param assetPath default 'https://source.zoom.us/{version}/lib/av'
    */
   assetPath?: string;
   /**
