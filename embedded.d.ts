@@ -24,6 +24,21 @@ export interface ExecutedFailure {
   reason: string;
 }
 /**
+ * Interface for the result of check system requirements.
+ * > if `audio` is `false`, it means the system cannot support voip, but you can join the audio by phone.
+ */
+export interface MediaCompatiblity {
+  /**
+   */
+  audio: boolean;
+  /**
+   */
+  video: boolean;
+  /**
+   */
+  screen: boolean;
+}
+/**
  * The result of asynchronous operation. It is a promise object.
  * - '': Success
  * - ExecutedFailure: Failure. Use `.catch(error=>{})` or `try{ *your code* }catch(error){}` to handle the errors.
@@ -329,6 +344,14 @@ export declare namespace EmbeddedClient {
    */
   function getAttendeeslist(): Participant[];
   /**
+   * Stop the audio
+   * - It works only the audio flag is `true` in the media constraints.
+   *
+   * Version >= 2.1.1
+   * @returns executed promise.
+   */
+  function stopAudio(): ExecutedResult;
+  /**
    * Toggles mute
    * @param mute true to mute, false to unmute
    * @param userId user to toggle mute for
@@ -384,6 +407,17 @@ export declare namespace EmbeddedClient {
    * @param hold true to put on hold, false to remove from hold
    */
   function putOnHold(userId: number, hold: boolean): ExecutedResult;
+  /**
+   * Checks the compatibility of the current browser.
+   * Use this method before calling {@link init} to check if the SDK is compatible with the web browser.
+   *
+   * Version >= 2.1.1
+   * @returns A `MediaCompatiblity` object. The object has following properties:
+   * - `audio`: boolean, whether the audio is compatible with the current web browser.
+   * - `video`: boolean, whether the video is compatible with the current web browser.
+   * - `screen`: boolean, whether the screen is compatible with the current web browser.
+   */
+  function checkSystemRequirements(): MediaCompatiblity;
 }
 
 export declare namespace ZoomMtgEmbedded {
