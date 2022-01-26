@@ -225,7 +225,7 @@ export interface MeetingInfo {
 /**
  * Interface to define a custom button for the Toolbar "More" dropdown menu
  */
-export declare interface CustomizeButton {
+export declare interface CustomButton {
   /**
    * The button's label
    */
@@ -285,6 +285,34 @@ export interface JoinOptions {
   error?: Function;
 }
 export type MeetingInfoType = 'topic' | 'host' | 'mn' | 'pwd' | 'telPwd' | 'invite' | 'participant' | 'dc' | 'enctype';
+export type PopperPlacementType =
+  | 'bottom-end'
+  | 'bottom-start'
+  | 'bottom'
+  | 'left-end'
+  | 'left-start'
+  | 'left'
+  | 'right-end'
+  | 'right-start'
+  | 'right'
+  | 'top-end'
+  | 'top-start'
+  | 'top';
+export interface PositionStyle {
+  top?: string | number;
+  left?: string | number;
+  right?: string | number;
+  bottom?: string | number;
+}
+export interface WidgetStyle {
+  disableDraggable?: boolean;
+  anchorReference?: 'anchorEl' | 'anchorPosition';
+  anchorElement?: HTMLElement | null;
+  anchorPosition?: PositionStyle;
+  modifiers?: object;
+  placement?: PopperPlacementType;
+}
+export type VideoWidgetStyle = Omit<WidgetStyle, 'anchorElement' | 'modifiers' | 'placement' | 'anchorReference'>;
 export interface InitOptions {
   debug?: boolean;
   /**
@@ -312,12 +340,49 @@ export interface InitOptions {
      * Customization options for the client toolbar
      */
     toolbar?: {
-      buttons?: Array<CustomizeButton>;
+      buttons?: Array<CustomButton>;
     };
     /**
-     * @param meetingInfo customize options for meeting info attributes
+     * @param meetingInfo customization options for meeting info attributes
      */
     meetingInfo?: Array<MeetingInfoType>;
+    /**
+     * @param participants customization options for participants popper and popper position
+     */
+    participants?: {
+      popper?: WidgetStyle;
+    };
+    /**
+     * @param setting customization options for setting popper and popper position
+     */
+    setting?: {
+      popper?: WidgetStyle;
+    };
+    /**
+     * @param chat customization options for chat notification, popper, and popper position
+     */
+    chat?: {
+      notificationCls: PositionStyle;
+      popper?: WidgetStyle;
+    };
+    /**
+     * @param meeting customization options for the meeting info popper position
+     */
+    meeting?: {
+      popper?: WidgetStyle;
+    };
+    /**
+     * @param activeApps customization options for the active apps notifier popper position
+     */
+    activeApps?: {
+      popper?: WidgetStyle;
+    };
+    /**
+     * @param video customization options for the video/suspension view
+     */
+    video?: {
+      popper?: VideoWidgetStyle;
+    };
   };
 }
 export declare namespace EmbeddedClient {
