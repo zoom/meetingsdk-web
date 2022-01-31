@@ -64,13 +64,13 @@ export declare namespace ZoomMtgLang {
    * @param lang
    *
    */
-  function load(lang: string): Promise;
+  function load(lang: string): Promise<any>;
   /**
    * load you language resource from json url(https://source.zoom.us/2.2.0/lib/lang/en-US.json) or json object
    * @param url you language resource json link or resource object
    * @param lang you assign lang name
    */
-  function load(url: string | object, lang: string): Promise;
+  function load(url: string | object, lang: string): Promise<any>;
   /**
    * change you UI language
    * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT' or you loaded lang
