@@ -43,7 +43,7 @@ export interface MediaCompatiblity {
  * - '': Success
  * - ExecutedFailure: Failure. Use `.catch(error=>{})` or `try{ *your code* }catch(error){}` to handle the errors.
  */
-export type ExecutedResult = Promise<'' | ExecutedFailure>;
+export type ExecutedResult = Promise<string | ExecutedFailure>;
 /**
  * Interface of recording information
  */
@@ -239,6 +239,11 @@ export declare interface CustomButton {
    */
   className?: string;
 }
+/** Interface defining custom sizing of components */
+export interface CustomSize {
+  width: number;
+  height: number;
+}
 /**
  * Arguments and options for joining a meeting
  */
@@ -246,7 +251,11 @@ export interface JoinOptions {
   /**
    * @param apiKey The Web SDK API key
    */
-  apiKey: string;
+  apiKey?: string;
+  /**
+   * @param sdkKey The Web SDK SDK key
+   */
+  sdkKey?: string;
   /**
    * @param signature Generated signature; please see docs for more info
    */
@@ -284,7 +293,16 @@ export interface JoinOptions {
    */
   error?: Function;
 }
-export type MeetingInfoType = 'topic' | 'host' | 'mn' | 'pwd' | 'telPwd' | 'invite' | 'participant' | 'dc' | 'enctype';
+export type MeetingInfoType =
+  | 'topic'
+  | 'host'
+  | 'mn'
+  | 'pwd'
+  | 'telPwd'
+  | 'invite'
+  | 'participant'
+  | 'dc'
+  | 'enctype';
 export type PopperPlacementType =
   | 'bottom-end'
   | 'bottom-start'
@@ -304,7 +322,7 @@ export interface PositionStyle {
   right?: string | number;
   bottom?: string | number;
 }
-export interface WidgetStyle {
+export interface PopperStyle {
   disableDraggable?: boolean;
   anchorReference?: 'anchorEl' | 'anchorPosition';
   anchorElement?: HTMLElement | null;
@@ -312,7 +330,10 @@ export interface WidgetStyle {
   modifiers?: object;
   placement?: PopperPlacementType;
 }
-export type VideoWidgetStyle = Omit<WidgetStyle, 'anchorElement' | 'modifiers' | 'placement' | 'anchorReference'>;
+export type VideoPopperStyle = Omit<
+  PopperStyle,
+  'anchorElement' | 'modifiers' | 'placement' | 'anchorReference'
+>;
 export interface InitOptions {
   debug?: boolean;
   /**
@@ -337,51 +358,63 @@ export interface InitOptions {
    */
   customize?: {
     /**
-     * Customization options for the client toolbar
+     * Customization options for the toolbar
+     * @param buttons custom buttons to add to the toolbar dropdown menu
      */
     toolbar?: {
       buttons?: Array<CustomButton>;
     };
-    /**
-     * @param meetingInfo customization options for meeting info attributes
-     */
+    /** Customization options for meeting info attributes */
     meetingInfo?: Array<MeetingInfoType>;
     /**
-     * @param participants customization options for participants popper and popper position
+     * Customization options for the participants panel
+     * @param popper options for the underlying popper element
      */
     participants?: {
-      popper?: WidgetStyle;
+      popper?: PopperStyle;
     };
     /**
-     * @param setting customization options for setting popper and popper position
+     * Customization options for the settings panel
+     * @param popper options for the underlying popper element
      */
     setting?: {
-      popper?: WidgetStyle;
+      popper?: PopperStyle;
     };
     /**
-     * @param chat customization options for chat notification, popper, and popper position
+     * Customization options for chat notifications and panel
+     * @param notificationCls options for chat notifications
+     * @param popper options for the underlying popper element
      */
     chat?: {
-      notificationCls: PositionStyle;
-      popper?: WidgetStyle;
+      notificationCls?: PositionStyle;
+      popper?: PopperStyle;
     };
     /**
-     * @param meeting customization options for the meeting info popper position
+     * Customization options for the meeting info panel
+     * @param popper options for the underlying popper element
      */
     meeting?: {
-      popper?: WidgetStyle;
+      popper?: PopperStyle;
     };
     /**
      * @param activeApps customization options for the active apps notifier popper position
      */
     activeApps?: {
-      popper?: WidgetStyle;
+      popper?: PopperStyle;
     };
     /**
-     * @param video customization options for the video/suspension view
+     * Customization options for the video/suspension view
+     * @param popper options for the underlying popper element
+     * @param isResizable whether or not the video view is resizable. Default: true
+     * @param size sizing options for the ribbon view, and all other views
      */
     video?: {
-      popper?: VideoWidgetStyle;
+      popper?: VideoPopperStyle;
+      isResizable?: boolean;
+      viewSizes?: {
+        ribbon?: CustomSize;
+        default?: CustomSize;
+      };
     };
   };
 }
@@ -472,6 +505,15 @@ export declare namespace EmbeddedClient {
    * @param hold true to put on hold, false to remove from hold
    */
   function putOnHold(userId: number, hold: boolean): ExecutedResult;
+  /**
+   * Toggles if a webinar attendee can talk
+   * @param userId user to toggle the talking permission
+   * @param isAllow true to allow the attendee to talk, false to disable talking
+   */
+  function allowAttendeeToTalk(
+    userId: number,
+    isAllow: boolean
+  ): ExecutedResult;
   /**
    * Checks the compatibility of the current browser.
    * Use this method before calling {@link init} to check if the SDK is compatible with the web browser.
