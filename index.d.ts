@@ -57,6 +57,21 @@ declare enum WebSDKInMeetingEvent {
   onMeetingStatus // 1(connecting), 2(connected), 3(disconnected), 4(reconnecting)
 }
 
+export enum BreakoutRoomControlStatus {
+  NotStarted = 1,
+  InProgress = 2,
+  Closing = 3,
+  Closed = 4
+}
+
+export enum BreakoutRoomStatus {
+  NoToken = 1,
+  GotToken = 2,
+  Started = 3,
+  Closing = 4,
+  Closed = 5
+}
+
 export declare namespace ZoomMtgLang {
   /**
    * load Zoom office support lang
@@ -64,13 +79,13 @@ export declare namespace ZoomMtgLang {
    * @param lang
    *
    */
-  function load(lang: string): Promise;
+  function load(lang: string): Promise<any>;
   /**
    * load you language resource from json url(https://source.zoom.us/2.2.0/lib/lang/en-US.json) or json object
    * @param url you language resource json link or resource object
    * @param lang you assign lang name
    */
-  function load(url: string | object, lang: string): Promise;
+  function load(url: string | object, lang: string): Promise<any>;
   /**
    * change you UI language
    * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT' or you loaded lang
@@ -123,6 +138,19 @@ export namespace ZoomMtg {
     success?: Function;
     error?: Function;
   }): string;
+  /**
+   * Use SDKKey/Secret
+   * Don't Generate Signature in front end, please generate backend
+   * https://marketplace.zoom.us/docs/sdk/native-sdks/web/signature
+   */
+  function generateSDKSignature(args: {
+    sdkKey: string;
+    sdkSecret: string;
+    meetingNumber: string;
+    role: string;
+    success?: Function;
+    error?: Function;
+  }): string;
   function setZoomJSLib(path?: string, dir?: string): void;
   function preLoadWasm(): void;
   /*
@@ -147,7 +175,8 @@ export namespace ZoomMtg {
     customerKey?: string;
     tk?: string;
     zak?: string;
-    apiKey: string;
+    apiKey?: string;
+    sdkKey?: string;
     signature: string;
     success: Function;
     error: Function;
@@ -163,7 +192,15 @@ export namespace ZoomMtg {
     success?: Function;
     error?: Function;
   }): void;
+  /**
+   * will drop in version 2.5.0, change to getBreakoutRooms
+   */
   function getBreakoutRoomList(args: {
+    // only meeting
+    success?: Function;
+    error?: Function;
+  }): void;
+  function getBreakoutRooms(args: {
     // only meeting
     success?: Function;
     error?: Function;
