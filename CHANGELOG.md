@@ -1,4 +1,105 @@
 # CHANGELOG
+## version 2.3.0
+## General
+### Added
+1. Support to use SDK key and secret to generate tokens to join meetings (documentation forthcoming)
+
+### Enhanced
+1. Overall video quality of service when in poor or lossy network conditions
+
+### Fixed
+1. Issue where the Chrome browser version was not correctly read if it were greater than version 100
+
+## Client View
+### Added
+1. Support for account/group/user-level settings for controlling webinar chat settings and permissions
+2. Support for smart gallery view for Zoom Room devices
+Remove SharedArrayBuffer (SAB) notification for end users if SAB is not available.
+
+### Enhanced
+1. Overall quality of service for video streams
+2. getBreakoutRooms API function signature to be consistent with other developer platforms
+
+### Fixed
+1. New registration flow not correctly enforcing the ‘tk’ token requirement for joining attendees. 
+2. Incorrect Japanese translations for certain words
+3. Issue where messages in chat history changed lines
+4. Issue where the Breakout room (BO) title changed lines
+
+## Component View
+### Added 
+1. Support for resizing. See [the documentation](https://marketplace.zoom.us/docs/sdk/native-sdks/web/component-view/positioning) for details.
+2. Support for allowing the attendee to talk
+
+### Enhanced
+1. Ability to support Join Before Host and Waiting Room features simultaneously
+
+
+## version 2.2.0
+## Client View
+### Added
+1. Additional languages to the Language Interpretation feature
+
+### Enhanced
+1. Toolbar look-and-feel and style
+
+## Component View
+### Added
+1. Closed caption and live transcription feature
+2. Settings dropdown menu to the participant panel
+3. Chat notifications
+4. Chat unread count and message indicator
+
+### Fixed
+1. Participant videos not being ordered as intended
+2. Active speaker not being bumped to the top of the Ribbon or Gallery View
+3. Issue where the cloud recording setting in the web portal was not respected
+
+
+## version 2.1.1
+## General
+### Fixed
+1. A bug that prevented self-view from working correctly in Chromium browsers without SharedArrayBuffer support
+2. An issue that prevented video turning on without SharedArrayBuffer support in Chromium browsers
+
+## Component View
+### Added
+1. `checkSystemRequirements` API
+2. `stopAudio` API
+
+
+## version 2.1.0
+## General
+### Added
+1. Support for WebCodec Encode API to improve audio/video/sharing quality and experience
+2. Browser-console messages to clarify Gallery View requirements when insufficient – such as SharedArrayBuffer Origin Trial or cross-origin isolation status
+
+### Enhanced
+1. “Chrome Tab” screen share option to include “Share audio” checkbox
+
+## WebSDK Client View
+### Added
+1. Focus mode
+
+### Fixed
+1. Bug where both audio tracks can be heard when using Language Interpretation
+2. Meeting crashes when spotlighting 4+ people
+3. Broken “Learn More” link in Screen Sharing popup when attempting to share without browser access
+4. Inability to change reaction skin tone
+5. “join()” function not returning error codes when password is incorrect
+
+## WebSDK Component View
+### Added
+1. “Tk” parameter to “join()” function to allow users to join Webinars with registration
+
+### Enhanced
+1. Code architecture quality and robustness
+
+### Fixed
+1. Issue where the Gallery View page-change buttons could be positioned incorrectly
+2. Not all hands being lowered properly when clicking “Lower Hand” button
+
+
 ## version 2.0.1
 ## WebSDK Client View
 ## Added
@@ -81,6 +182,7 @@ Note: This feature is dependent on a web release scheduled for June 16, 2021, an
 ## Fixed
 1. Removed the assistant Breakout Room button
 2. Support for attendees joining via new registration flow, where attendees are required to verify their email via correct tk
+
 
 ## version 1.9.5
 ## Added

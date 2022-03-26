@@ -1,6 +1,6 @@
 {
   "name": "@zoomus/websdk",
-  "version": "2.0.1",
+  "version": "2.3.0",
   "description": "Zoom Web SDK",
   "main": "index.js",
   "types": "index.d.ts",
@@ -12,8 +12,8 @@
     "url": "git+https://github.com/zoom/websdk.git"
   },
   "keywords": ["zoom", "web", "sdk"],
-  "author": "Jack Yang",
-  "license": "MIT",
+  "author": "Zoom Video Communications, Inc.",
+  "license": "SEE LICENSE IN LICENSE.md",
   "homepage": "https://github.com/zoom/websdk#readme",
   "bugs": {
     "url": "https://github.com/zoom/websdk/issues"
@@ -41,6 +41,7 @@
     "embedded.d.ts",
     "index.d.ts",
     "CHANGELOG.md",
+    "LICENSE.md",
     "README.md"
   ]
 }
