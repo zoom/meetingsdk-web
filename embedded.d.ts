@@ -24,11 +24,26 @@ export interface ExecutedFailure {
   reason: string;
 }
 /**
+ * Interface for the result of check system requirements.
+ * > if `audio` is `false`, it means the system cannot support voip, but you can join the audio by phone.
+ */
+export interface MediaCompatiblity {
+  /**
+   */
+  audio: boolean;
+  /**
+   */
+  video: boolean;
+  /**
+   */
+  screen: boolean;
+}
+/**
  * The result of asynchronous operation. It is a promise object.
  * - '': Success
  * - ExecutedFailure: Failure. Use `.catch(error=>{})` or `try{ *your code* }catch(error){}` to handle the errors.
  */
-export type ExecutedResult = Promise<'' | ExecutedFailure>;
+export type ExecutedResult = Promise<string | ExecutedFailure>;
 /**
  * Interface of recording information
  */
@@ -210,7 +225,7 @@ export interface MeetingInfo {
 /**
  * Interface to define a custom button for the Toolbar "More" dropdown menu
  */
-export declare interface CustomizeButton {
+export declare interface CustomButton {
   /**
    * The button's label
    */
@@ -224,6 +239,11 @@ export declare interface CustomizeButton {
    */
   className?: string;
 }
+/** Interface defining custom sizing of components */
+export interface CustomSize {
+  width: number;
+  height: number;
+}
 /**
  * Arguments and options for joining a meeting
  */
@@ -231,7 +251,11 @@ export interface JoinOptions {
   /**
    * @param apiKey The Web SDK API key
    */
-  apiKey: string;
+  apiKey?: string;
+  /**
+   * @param sdkKey The Web SDK SDK key
+   */
+  sdkKey?: string;
   /**
    * @param signature Generated signature; please see docs for more info
    */
@@ -257,6 +281,10 @@ export interface JoinOptions {
    */
   customerKey?: string;
   /**
+   * @param tk Optional 'tk' param to join a webinar with registration
+   */
+  tk?: string;
+  /**
    * @param success join success callback
    */
   success?: Function;
@@ -265,7 +293,47 @@ export interface JoinOptions {
    */
   error?: Function;
 }
-export type MeetingInfoType = 'topic' | 'host' | 'mn' | 'pwd' | 'telPwd' | 'invite' | 'participant' | 'dc' | 'enctype';
+export type MeetingInfoType =
+  | 'topic'
+  | 'host'
+  | 'mn'
+  | 'pwd'
+  | 'telPwd'
+  | 'invite'
+  | 'participant'
+  | 'dc'
+  | 'enctype';
+export type PopperPlacementType =
+  | 'bottom-end'
+  | 'bottom-start'
+  | 'bottom'
+  | 'left-end'
+  | 'left-start'
+  | 'left'
+  | 'right-end'
+  | 'right-start'
+  | 'right'
+  | 'top-end'
+  | 'top-start'
+  | 'top';
+export interface PositionStyle {
+  top?: string | number;
+  left?: string | number;
+  right?: string | number;
+  bottom?: string | number;
+}
+export interface PopperStyle {
+  disableDraggable?: boolean;
+  anchorReference?: 'anchorEl' | 'anchorPosition';
+  anchorElement?: HTMLElement | null;
+  anchorPosition?: PositionStyle;
+  modifiers?: object;
+  placement?: PopperPlacementType;
+}
+export type VideoPopperStyle = Omit<
+  PopperStyle,
+  'anchorElement' | 'modifiers' | 'placement' | 'anchorReference'
+>;
 export interface InitOptions {
   debug?: boolean;
   /**
@@ -274,7 +342,7 @@ export interface InitOptions {
    */
   zoomAppRoot: HTMLElement | undefined;
   /**
-   * @param assetPath default 'https://source.zoom.us/2.0.0/lib/av'
+   * @param assetPath default 'https://source.zoom.us/{version}/lib/av'
    */
   assetPath?: string;
   /**
@@ -290,15 +358,64 @@ export interface InitOptions {
    */
   customize?: {
     /**
-     * Customization options for the client toolbar
+     * Customization options for the toolbar
+     * @param buttons custom buttons to add to the toolbar dropdown menu
      */
     toolbar?: {
-      buttons?: Array<CustomizeButton>;
+      buttons?: Array<CustomButton>;
+    };
+    /** Customization options for meeting info attributes */
+    meetingInfo?: Array<MeetingInfoType>;
+    /**
+     * Customization options for the participants panel
+     * @param popper options for the underlying popper element
+     */
+    participants?: {
+      popper?: PopperStyle;
     };
     /**
-     * @param meetingInfo customize options for meeting info attributes
+     * Customization options for the settings panel
+     * @param popper options for the underlying popper element
      */
-    meetingInfo?: Array<MeetingInfoType>;
+    setting?: {
+      popper?: PopperStyle;
+    };
+    /**
+     * Customization options for chat notifications and panel
+     * @param notificationCls options for chat notifications
+     * @param popper options for the underlying popper element
+     */
+    chat?: {
+      notificationCls?: PositionStyle;
+      popper?: PopperStyle;
+    };
+    /**
+     * Customization options for the meeting info panel
+     * @param popper options for the underlying popper element
+     */
+    meeting?: {
+      popper?: PopperStyle;
+    };
+    /**
+     * @param activeApps customization options for the active apps notifier popper position
+     */
+    activeApps?: {
+      popper?: PopperStyle;
+    };
+    /**
+     * Customization options for the video/suspension view
+     * @param popper options for the underlying popper element
+     * @param isResizable whether or not the video view is resizable. Default: true
+     * @param size sizing options for the ribbon view, and all other views
+     */
+    video?: {
+      popper?: VideoPopperStyle;
+      isResizable?: boolean;
+      viewSizes?: {
+        ribbon?: CustomSize;
+        default?: CustomSize;
+      };
+    };
   };
 }
 export declare namespace EmbeddedClient {
@@ -324,6 +441,14 @@ export declare namespace EmbeddedClient {
    * Gets the list of participants
    */
   function getAttendeeslist(): Participant[];
+  /**
+   * Stop the audio
+   * - It works only the audio flag is `true` in the media constraints.
+   *
+   * Version >= 2.1.1
+   * @returns executed promise.
+   */
+  function stopAudio(): ExecutedResult;
   /**
    * Toggles mute
    * @param mute true to mute, false to unmute
@@ -380,6 +505,26 @@ export declare namespace EmbeddedClient {
    * @param hold true to put on hold, false to remove from hold
    */
   function putOnHold(userId: number, hold: boolean): ExecutedResult;
+  /**
+   * Toggles if a webinar attendee can talk
+   * @param userId user to toggle the talking permission
+   * @param isAllow true to allow the attendee to talk, false to disable talking
+   */
+  function allowAttendeeToTalk(
+    userId: number,
+    isAllow: boolean
+  ): ExecutedResult;
+  /**
+   * Checks the compatibility of the current browser.
+   * Use this method before calling {@link init} to check if the SDK is compatible with the web browser.
+   *
+   * Version >= 2.1.1
+   * @returns A `MediaCompatiblity` object. The object has following properties:
+   * - `audio`: boolean, whether the audio is compatible with the current web browser.
+   * - `video`: boolean, whether the video is compatible with the current web browser.
+   * - `screen`: boolean, whether the screen is compatible with the current web browser.
+   */
+  function checkSystemRequirements(): MediaCompatiblity;
 }
 
 export declare namespace ZoomMtgEmbedded {
