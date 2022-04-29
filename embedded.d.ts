@@ -366,6 +366,9 @@ export interface InitOptions {
     };
     /** Customization options for meeting info attributes */
     meetingInfo?: Array<MeetingInfoType>;
+    /** Customize invite url format, https://yourdomain/{0}?pwd={1}, this optional default not work
+    * need request zoom enable `Enable Client SDK Customize Invite Url` >=2.4.0 */
+    inviteUrlFormat?: string;
     /**
      * Customization options for the participants panel
      * @param popper options for the underlying popper element
