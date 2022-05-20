@@ -23,7 +23,9 @@ declare let initArgs: {
   isLockBottom?: boolean; // optional,
   isSupportNonverbal?: boolean; // optional,
   isShowJoiningErrorDialog?: boolean; // optional,
-  inviteUrlFormat?: string; // optional
+  /** Customize invite url format, https://yourdomain/{0}?pwd={1}, this optional default not work
+  * need request zoom enable `Enable Client SDK Customize Invite Url` >=2.4.0 */
+  inviteUrlFormat?: string;
   loginWindow?: {
     width: string;
     height: string;
