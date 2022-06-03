@@ -35,6 +35,8 @@ declare let initArgs: {
   disableReport?: boolean; // optional
   disablePreview?: boolean; // optional
   disableCORP?: boolean; // optional
+  onRetryCallback?: boolean; // optional
+  enableHD?: boolean; // optional
   helper?: string; // optional
   success?: Function;
   error?: Function;
