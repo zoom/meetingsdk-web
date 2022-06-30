@@ -38,6 +38,7 @@ declare let initArgs: {
   onRetryCallback?: boolean; // optional
   enableHD?: boolean; // optional
   helper?: string; // optional
+  externalLinkPage?: string // optional
   success?: Function;
   error?: Function;
 };

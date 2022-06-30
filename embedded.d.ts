@@ -249,11 +249,11 @@ export interface CustomSize {
  */
 export interface JoinOptions {
   /**
-   * @param apiKey The Web SDK API key
+   * @param apiKey The Web SDK API key. Required if sdkKey isn't provided
    */
   apiKey?: string;
   /**
-   * @param sdkKey The Web SDK SDK key
+   * @param sdkKey The Web SDK SDK key. Required if apiKey isn't provided
    */
   sdkKey?: string;
   /**
@@ -285,6 +285,10 @@ export interface JoinOptions {
    */
   tk?: string;
   /**
+   * @param zak Optional 'zak' param to suppport oath start meeting/webinar
+   */
+  zak?: string;
+  /**
    * @param success join success callback
    */
   success?: Function;
@@ -293,16 +297,7 @@ export interface JoinOptions {
    */
   error?: Function;
 }
-export type MeetingInfoType =
-  | 'topic'
-  | 'host'
-  | 'mn'
-  | 'pwd'
-  | 'telPwd'
-  | 'invite'
-  | 'participant'
-  | 'dc'
-  | 'enctype';
+export type MeetingInfoType = 'topic' | 'host' | 'mn' | 'pwd' | 'telPwd' | 'invite' | 'participant' | 'dc' | 'enctype';
 export type PopperPlacementType =
   | 'bottom-end'
   | 'bottom-start'
@@ -316,6 +311,7 @@ export type PopperPlacementType =
   | 'top-end'
   | 'top-start'
   | 'top';
+export type EventType = 'connection-change';
 export interface PositionStyle {
   top?: string | number;
   left?: string | number;
@@ -330,10 +326,7 @@ export interface PopperStyle {
   modifiers?: object;
   placement?: PopperPlacementType;
 }
-export type VideoPopperStyle = Omit<
-  PopperStyle,
-  'anchorElement' | 'modifiers' | 'placement' | 'anchorReference'
->;
+export type VideoPopperStyle = Omit<PopperStyle, 'anchorElement' | 'modifiers' | 'placement' | 'anchorReference'>;
 export interface InitOptions {
   debug?: boolean;
   /**
@@ -366,8 +359,10 @@ export interface InitOptions {
     };
     /** Customization options for meeting info attributes */
     meetingInfo?: Array<MeetingInfoType>;
-    /** Customize invite url format, https://yourdomain/{0}?pwd={1}, this optional default not work
-    * need request zoom enable `Enable Client SDK Customize Invite Url` >=2.4.0 */
+    /**
+     * Customize the meeting invite url format (e.g. https://yourdomain/{0}?pwd={1})
+     * This will not work by default, and you need to set `Enable Client SDK Customize Invite Url`
+     */
     inviteUrlFormat?: string;
     /**
      * Customization options for the participants panel
@@ -513,10 +508,26 @@ export declare namespace EmbeddedClient {
    * @param userId user to toggle the talking permission
    * @param isAllow true to allow the attendee to talk, false to disable talking
    */
-  function allowAttendeeToTalk(
-    userId: number,
-    isAllow: boolean
-  ): ExecutedResult;
+  function allowAttendeeToTalk(userId: number, isAllow: boolean): ExecutedResult;
+  /**
+   * Listen for the events and handle them.
+   * ```javascript
+   * on("connection-change", (payload) => {
+   *  if (payload.state === 'Closed) {
+   *    console.log("Meeting ended")
+   *  }
+   * })
+   * ```
+   * @param event event name (For meeting end event, set the event to "connection-change")
+   * @param callback event handler (event name (For meeting end event, the paylaod of the callback is payload.state === 'Closed')
+   */
+  function on(event: EventType, callback: (payload: any) => void): void;
+  /**
+   * Remove the event handler. Must be used with on() in pairs.
+   * @param event event name
+   * @param callback event handler
+   */
+  function off(event: EventType, callback: (payload: any) => void): void;
   /**
    * Checks the compatibility of the current browser.
    * Use this method before calling {@link init} to check if the SDK is compatible with the web browser.
