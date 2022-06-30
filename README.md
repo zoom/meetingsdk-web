@@ -159,8 +159,6 @@ For the full list of features and event listeners, as well as additional guides,
 
 ## Sample Apps
 
-Checkout the Meeting SDK sample apps:
-
 - [Meeting SDK Web Sample](https://github.com/zoom/meetingsdk-web-sample)
 - [Meeting SDK Angular Sample](https://github.com/zoom/meetingsdk-angular-sample)
 - [Meeing SDK React Sample](https://github.com/zoom/meetingsdk-react-sample)
