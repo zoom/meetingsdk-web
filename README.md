@@ -161,12 +161,13 @@ For the full list of features and event listeners, as well as additional guides,
 
 Checkout the Meeting SDK sample apps:
 
-- [Angular](https://github.com/zoom/meetingsdk-sample-angular)
-- [React](https://github.com/zoom/meetingsdk-sample-react)
-- [Vue](https://github.com/zoom/meetingsdk-sample-vuejs)
-- [JavaScript](https://github.com/zoom/meetingsdk-sample-javascript)
-- [Web](https://github.com/zoom/sample-app-web)
-- [Signature Generator](https://github.com/zoom/meetingsdk-sample-signature-node.js)
+- [Meeting SDK Web Sample](https://github.com/zoom/meetingsdk-web-sample)
+- [Meeting SDK Angular Sample](https://github.com/zoom/meetingsdk-angular-sample)
+- [Meeing SDK React Sample](https://github.com/zoom/meetingsdk-react-sample)
+- [Meeting SDK Vue.js Sample](https://github.com/zoom/meetingsdk-vuejs-sample)
+- [Meeting SDK JavaScript Sample](https://github.com/zoom/meetingsdk-javascript-sample)
+- [Meeting SDK Auth Sample (Node.js)](https://github.com/zoom/meetingsdk-sample-signature-node.js)
+- [Webhook Sample (Node.js)](https://github.com/zoom/webhook-sample-node.js)
 
 ## Need help?
 
