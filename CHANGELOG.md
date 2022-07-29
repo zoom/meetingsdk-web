@@ -1,4 +1,55 @@
 # CHANGELOG
+## version 2.6.0
+## General
+### Fixed
+1. Reverted audio-handling changes in v2.5.0 to support the Chrome 104 beta
+
+## Client View
+### Added
+1. In-session resource (sidecar) support; details forthcoming
+1. Waiting room customizability 
+1. Email watermark support
+1. Support for sending 720p videos on Macs using Intel/AMD chips
+1. Live Transcription and Translation support
+
+### Fixed
+1. Waiting room showing incorrect time when the meeting or webinar had not started
+1. Incorrect string being shown when hovering the join button on the preview page
+1. 404 error when clicking “Learn More” on the screen share permission dialog
+1. Virtual background state not being preserved on page refresh
+1. Inconsistent audio/video settings for attendee promotion and demotion
+
+## Component View
+### Added
+1. Webinar Q&A support
+
+## version 2.5.0
+## Client View
+### Added
+1. Support for testing mics and speakers
+1. Parameter in `init` to enable and configure an intermediary page for users clicking external hyperlinks
+1. Event listener for “Sharing has Started” events
+1. Functional and UI support for new Live Transcription feature
+1. Notifications that recommend upgrading Web SDK version if below the recommend version
+1. Support for preventing device going to sleep when in-meeting
+
+### Enhanced
+1. 720p video subscription logic
+1. Number of Gallery View participants from 9 to 25 (3x3 to 5x5)
+1. “Settings” panel UI and functionality
+
+### Fixed
+1. Issue where an “unrecognized speaker” entry will be shown in the speaker selection list if microphone permissions are not enabled
+1. “Phone Call” panel not showing participant ID and cutting off passcode in webinars
+
+## Component View
+### Added
+1. Archiving privacy notices
+1. Event listener for “Meeting has Ended” events
+### Enhanced
+1. Upgraded package dependency versions
+
+
 ## version 2.4.5
 ## General
 ### Added
