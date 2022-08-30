@@ -167,10 +167,7 @@ export namespace ZoomMtg {
    * 3. WebCodecs will solve response time when start video (Chrome94 release) https://chromestatus.com/feature/5669293909868544
    */
   function prepareWebSDK(origintrials?: Array<string>): void;
-  /*
-    please use prepareWebSDK instead. prepareJssdk will drop sone.
-    */
-  function prepareJssdk(origintrials?: Array<string>): void;
+
   function init(args: typeof initArgs): void;
   function join(args: {
     meetingNumber: string | number;
@@ -180,7 +177,6 @@ export namespace ZoomMtg {
     customerKey?: string;
     tk?: string;
     zak?: string;
-    apiKey?: string;
     sdkKey?: string;
     signature: string;
     success: Function;
@@ -193,14 +189,6 @@ export namespace ZoomMtg {
   function showJoinAudioFunction(args: { show: boolean }): void;
   function showPureSharingContent(args: { show: boolean }): void;
   function getAttendeeslist(args: {
-    // only meeting
-    success?: Function;
-    error?: Function;
-  }): void;
-  /**
-   * will drop in version 2.5.0, change to getBreakoutRooms
-   */
-  function getBreakoutRoomList(args: {
     // only meeting
     success?: Function;
     error?: Function;
@@ -223,6 +211,11 @@ export namespace ZoomMtg {
     success?: Function;
     error?: Function;
   }): void;
+  /**
+   * type=1 invite H.323 device
+   * type=2 invite SIP device
+   * @param args 
+   */
   function inviteCRCDevice(args: {
     ip: string;
     type: Number;
@@ -274,10 +267,31 @@ export namespace ZoomMtg {
     success?: Function;
     error?: Function;
   }): void;
+  /**
+   * 
+   * @param event onReceiveTranscriptionMsg | onReceiveTranscriptionMsg | onAudioQos | onVideoQos
+   * @param callback 
+   */
   function inMeetingServiceListener(event: string, callback: Function): void;
   function reRender(args: { success?: Function; error?: Function }): void;
   function getWebSDKVersion(args: {
     success?: Function;
     error?: Function;
   }): void;
+  /**
+   * subscribe statistic qos data
+   * @param args.audio if true subscribe audio qos
+   * @param args.video if true subscribe video qos
+   */
+  function subscribeStatisticData(args: { audio?: boolean,
+    video?: boolean,
+    success?: Function; error?: Function }): void;
+  /**
+   * unsubscribe statistic qos data
+   * @param args.audio if true unsubscribe audio qos
+   * @param args.video if true unsubscribe video qos
+   */
+  function unSubscribeStatisticData(args: { audio?: boolean,
+    video?: boolean,
+    success?: Function; error?: Function }): void;
 }
