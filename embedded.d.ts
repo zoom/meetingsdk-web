@@ -249,15 +249,11 @@ export interface CustomSize {
  */
 export interface JoinOptions {
   /**
-   * @param apiKey The Web SDK API key. Required if sdkKey isn't provided
-   */
-  apiKey?: string;
-  /**
-   * @param sdkKey The Web SDK SDK key. Required if apiKey isn't provided
+   * @param sdkKey The Web SDK SDK key.
    */
   sdkKey?: string;
   /**
-   * @param signature Generated signature; please see docs for more info
+   * @param signature Generated signature; please see docs for more info https://marketplace.zoom.us/docs/sdk/native-sdks/auth#generate-the-sdk-jwt
    */
   signature: string;
   /**
@@ -311,7 +307,6 @@ export type PopperPlacementType =
   | 'top-end'
   | 'top-start'
   | 'top';
-export type EventType = 'connection-change';
 export interface PositionStyle {
   top?: string | number;
   left?: string | number;
@@ -415,7 +410,61 @@ export interface InitOptions {
       };
     };
   };
+  /**
+   * Maximum participants displayed per screen in Gallery View, up to 25
+   */
+  maximumVideosInGalleryView?: number;
 }
+
+export declare function event_audio_statistic_data_change(payload: {
+  data: {
+    avg_loss: number;
+    encoding: boolean;
+    jitter: number;
+    max_loss: number;
+    rtt: number;
+    sample_rate: number;
+  };
+  type: string;
+}): void;
+/**
+ * Occurs when decode (recevied) the video statistics data is changed
+ * @param payload the event detail
+ * - `data`
+ *  - `encoding`: if encoding is true, means that the data is encoding video data statisitics.
+ *  - `avg_loss`: average package loss for video
+ *  - `jitter`: jitter for video
+ *  - `max_loss`: max package loss for video
+ *  - `rtt`: round trip time for video .
+ *  - `sample_rate`: sample rate video
+ *  - `width`: width for video
+ *  - `height`: height for video
+ *  - `fps`: fps for video
+ * - `type` : string VIDEO_QOS_DATA
+ *
+ * ```javascript
+ * client.on('video_statistic_data_change', (payload) => {
+ *   console.log('emit', payload);
+ *  });
+ * ```
+ * @event
+ */
+
+export declare function event_video_statistic_data_change(payload: {
+  data: {
+    avg_loss: number;
+    encoding: boolean;
+    jitter: number;
+    max_loss: number;
+    rtt: number;
+    sample_rate: number;
+    width: number;
+    height: number;
+    fps: number;
+  };
+  type: string;
+}): void;
+
 export declare namespace EmbeddedClient {
   /**
    * Initializes the M-SDK Components client
@@ -510,6 +559,18 @@ export declare namespace EmbeddedClient {
    */
   function allowAttendeeToTalk(userId: number, isAllow: boolean): ExecutedResult;
   /**
+   * subscribe statistic qos data
+   * @param args.audio if true subscribe audio qos
+   * @param args.video if true subscribe video qos
+   */
+  function subscribeStatisticData(args?: { audio: boolean; video: boolean }): ExecutedResult;
+  /**
+   * unsubscribe statistic qos data
+   * @param args.audio if true unsubscribe audio qos
+   * @param args.video if true unsubscribe video qos
+   */
+  function unSubscribeStatisticData(args?: { audio: boolean; video: boolean }): ExecutedResult;
+  /**
    * Listen for the events and handle them.
    * ```javascript
    * on("connection-change", (payload) => {
@@ -521,13 +582,15 @@ export declare namespace EmbeddedClient {
    * @param event event name (For meeting end event, set the event to "connection-change")
    * @param callback event handler (event name (For meeting end event, the paylaod of the callback is payload.state === 'Closed')
    */
-  function on(event: EventType, callback: (payload: any) => void): void;
+  function on(event: 'connection-change', callback: (payload: any) => void): void;
+  function on(event: 'audio-statistic-data-change', callback: typeof event_audio_statistic_data_change): void;
+  function on(event: 'video-statistic-data-change', callback: typeof event_video_statistic_data_change): void;
   /**
    * Remove the event handler. Must be used with on() in pairs.
    * @param event event name
    * @param callback event handler
    */
-  function off(event: EventType, callback: (payload: any) => void): void;
+  function off(event: string, callback: (payload: any) => void): void;
   /**
    * Checks the compatibility of the current browser.
    * Use this method before calling {@link init} to check if the SDK is compatible with the web browser.
