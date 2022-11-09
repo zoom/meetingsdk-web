@@ -7,7 +7,7 @@
    */
   debug?: boolean; //optional
   /**
-   * leaveUrl: Required. The URL to post after the user leaves the meeting, for example, “http://www.zoom.us”
+   * leaveUrl: Required. The URL to post after the user leaves the meeting. Example: “http://www.zoom.us”
    */
   leaveUrl: string; //required
   /**
@@ -149,8 +149,12 @@
    */
   enableHD?: boolean; // optional
   /**
+   * enableFullHD, optional, >= 2.9.0 default=false, enable webinar attendee receive 1080P video when zoom backend support.
+   */
+  enableFullHD?: boolean;
+  /**
    * helper: default: '', optional. Sets a helper HTML page for working around CORS issues. 
-   * For an example, see: https://github.com/zoom/meetingsdk-web/blob/master/helper.html
+   * Example: https://github.com/zoom/meetingsdk-web/blob/master/helper.html
    */
   helper?: string; // optional
   /**
@@ -181,11 +185,32 @@ export type MeetingInfoType =
   | 'dc'
   | 'enctype'
   | 'report';
+/**
+ * Virtual background (VB) or mask image info
+ */
+export type VbImageInfoType = {
+  /**
+   * VB or mask ID, must be unique
+   */
+  id: String;
+  /**
+   * Name to display for VB or mask.
+   */
+  displayName: String;
+  /**
+    * VB or mask file name.
+    */
+  fileName: string;
+  /**
+   * VB or mask image resource URL
+   */
+  url: string;
+}
 
 /**
  * In meeting event listeners
  */
-export type InMeetingEvent = 'onUserJoin' | 'onUserLeave' | 'onUserIsInWaitingRoom' | 'onMeetingStatus' | 'onPreviewPannel|  receiveSharingChannelReady' | 'onReceiveTranscriptionMsg' | 'onReceiveTranscriptionMsg' | 'onAudioQos' | 'onVideoQos'
+export type InMeetingEvent = 'onUserJoin' | 'onUserLeave' | 'onUserIsInWaitingRoom' | 'onMeetingStatus' | 'onPreviewPannel|  receiveSharingChannelReady' | 'onReceiveTranscriptionMsg' | 'onReceiveTranslateMsg' | 'onAudioQos' | 'onVideoQos'
 
 /**
  * onMeetingStatus
@@ -220,12 +245,11 @@ export enum BreakoutRoomStatus {
 /**
  * ZoomMtg.i18n
  * 
- * ###example
- * you can find key
+ * Examples:
  * 
- * en-US https://source.zoom.us/2.8.0/lib/lang/en-US.json
+ * en-US https://source.zoom.us/2.9.0/lib/lang/en-US.json
  * 
- * zh-CN https://source.zoom.us/2.8.0/lib/lang/zh-CN.json
+ * zh-CN https://source.zoom.us/2.9.0/lib/lang/zh-CN.json
  * ```js
  * ZoomMtg.i18n.load('en-US');
   var userLangTemplate = ZoomMtg.i18n.getAll("en-US");
@@ -298,6 +322,73 @@ export declare namespace ZoomMtgLang {
   function setSupportLanguage(langArray: Array<string>): void;
 }
 
+/**
+ * Virtual background (VB) status success callback
+ * @param args 
+ */
+export function vbStatusDataFunc(data: {
+  /**
+   * Result:
+   */
+  result: {
+    /**
+     * vbList, name is VB image name, must be unique and identify different VB image
+     */
+    vbList: Array<VbImageInfoType>;
+    /**
+     * Whether or not VB is locked.
+     */
+    lock: boolean,
+    /**
+     * Enable a blurred background or not.
+     */
+    blur: boolean,
+    /**
+     * If true, the user can enable VB, mask, or blur through the UI 
+     * and the developer can't call the following APIs to control it:
+     * updateVirtualBackgroundList
+     * setVirtualBackground
+     * lockVirtualBackground
+     */
+    status: boolean,
+    /**
+     * True if the user selected VB, false if not.
+     */
+    vb: boolean, 
+    /**
+     * True if the user selected mask, false if not.
+     */
+    mask: boolean
+    /**
+     * The current user's VB ID.
+     */
+    id: any;
+  }
+}): void;
+
+/**
+ * Support for VB callback
+ * @param args 
+ */
+export function vbSupportDataFunc(data: {
+  /**
+   * Result:
+   */
+  result: {
+    /**
+     * True if the user can support VB, false if not.
+     */
+    vb: boolean;
+    /**
+     * True if the user can support mask, false if not.
+     */
+    mask: boolean;
+    /**
+     * True if VB is enabled, false if not.
+     */
+    enable: boolean;
+  }
+}): void;
 /**
  * ZoomMtg
  */
@@ -406,7 +497,7 @@ export namespace ZoomMtg {
      */
     zak?: string;
     /**
-     * Require. only support use SDK Key after >= 2.7.0.
+     * Required. Only sdkKey is supported for joining meetings on version 2.7.0 and higher.
      */
     sdkKey?: string;
     /**
@@ -468,13 +559,35 @@ export namespace ZoomMtg {
      * Required
      */
     show: boolean }): void;
+   /**
+    * Set customize polling url, only work when Enable Client SDK Customize Invite URL flag for your account
+    * @param args 
+    */ 
+  function setCustomizedPollingUrl(args: { 
+    /**
+     * customize create polling url or callback
+     */
+    create?: string | Function;
+    /**
+     * customize edit polling url or callback
+     */
+    edit?: string | Function;
+    /**
+     * Callback function on success.
+     */
+     success?: Function; 
+     /**
+      * Callback function in the event of an error.
+      */
+     error?: Function
+  }): void;
   /**
    * Shows or hides border around shared content.
    * @param args 
    */
     function showPureSharingContent(args: { 
     /**
-     * Required, true is for hide border.
+     * Required, true to hide border, false to show it.
      */
     show: boolean }): void;
   /**
@@ -561,7 +674,7 @@ export namespace ZoomMtg {
    */
   function inviteByPhone(args: {
     /**
-     * The phone number. For example: +1123456789
+     * The phone number. Example: +1123456789
      */
     phoneNumber: string; 
     /**
@@ -739,6 +852,14 @@ export namespace ZoomMtg {
    */
   function leaveMeeting(args: { 
     /**
+     * >=2.9.0 default is false, if confirm = true, will show leave option, not leave direct.
+     */
+     confirm?: boolean;
+     /**
+     * >=2.9.0 callback when click cancel.
+     */
+     cancelCallback?: Function;
+    /**
      * Callback function on success.
      */
      success?: Function; 
@@ -786,7 +907,7 @@ export namespace ZoomMtg {
    * @param event 
    * @param callback 
    * Only supported in meetings.
-   * ###example
+   * Example:
   ```js
   ZoomMtg.inMeetingServiceListener('onUserJoin', function (data) {
     console.log(data);
@@ -803,7 +924,7 @@ export namespace ZoomMtg {
    * Listens for sharing channel readiness to receive.
    * @param event 
    * @param callback 
-   * ###example
+   * Example:
    * ```js
   ZoomMtg.inMeetingServiceListener('receiveSharingChannelReady', function (data) {
     console.log(data);
@@ -816,7 +937,7 @@ export namespace ZoomMtg {
    * Listens for waiting room and audio/video preview page status.
    * @param event 
    * @param callback 
-   * ###example
+   * Example:
    * ```js
 
   ZoomMtg.inMeetingServiceListener('onUserIsInWaitingRoom', function (data) {
@@ -834,7 +955,7 @@ export namespace ZoomMtg {
    * Listens for meeting status.
    * @param event 
    * @param callback
-   * ###example
+   * Example:
    * ```js
   ZoomMtg.inMeetingServiceListener('onMeetingStatus', function (data) {
     // {status: 1(connecting), 2(connected), 3(disconnected), 4(reconnecting)}
@@ -849,7 +970,7 @@ export namespace ZoomMtg {
    * @param event 
    * @param callback 
 
-   * ###example
+   * Example:
    * ```js
 
   ZoomMtg.inMeetingServiceListener('onReceiveTranscriptionMsg', function (data) {
@@ -862,12 +983,12 @@ export namespace ZoomMtg {
   ```
      * @category Listener
    */
-  function inMeetingServiceListener(event: 'onReceiveTranscriptionMsg' | 'onReceiveTranscriptionMsg', callback: Function): void;
+  function inMeetingServiceListener(event: 'onReceiveTranscriptionMsg' | 'onReceiveTranslateMsg', callback: Function): void;
   /**
    * Listens for audio and video quality of service (QoS) events.
    * @param event 
    * @param callback 
-   * ###example
+   * Example:
    * ```js
   ZoomMtg.inMeetingServiceListener('onAudioQos', function (data) {
     console.log('onAudioQos', data);
@@ -952,4 +1073,92 @@ export namespace ZoomMtg {
       * Callback function in the event of an error.
       */
      error?: Function }): void;
+  /**
+   * Checks if the browser supports virtual background (VB) and mask, needs "virtual background" enabled first.
+   * @category VirtualBackground
+   */
+  function isSupportVirtualBackground(args: {
+    /**
+     * Callback function on success.
+     */
+    success?: typeof vbSupportDataFunc | Function;
+    /**
+      * Callback function in the event of an error.
+      */
+     error?: Function;
+  }): void;
+  /**
+   * Get virtual background status
+   * @category VirtualBackground
+   */
+  function getVirtualBackgroundStatus(args: {
+    /**
+     * Callback function on success.
+     */
+     success?: typeof vbStatusDataFunc | Function;
+    /**
+      * Callback function in the event of an error.
+      */
+     error?: Function;
+  }): void;
+  /**
+   * update vb/mask background image list
+   * @param args 
+   * @category VirtualBackground
+   */
+  function updateVirtualBackgroundList(args: {
+    /**
+     * vb list
+     */
+    vbList?: Array<VbImageInfoType>;
+    /**
+     * Callback function on success.
+     */
+     success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+     error?: Function
+  }): void;
+  /**
+   * Change virtual background (VB) from vbList if names match.
+   * If ID is empty, clear VB and mask.
+   * If id='blur', blur background instead
+   * @param args
+   * @category VirtualBackground
+   */
+  function setVirtualBackground(args: {
+    /**
+     * VB or mask background ID
+     */
+    id?: string,
+    /**
+     * Callback function on success.
+     */
+     success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+     error?: Function
+  }): void;
+  /**
+   * 
+   * Lock VB or mask to a specific image.
+   * @param args
+   * @category VirtualBackground
+   */
+  function lockVirtualBackground(args: {
+    /**
+     * Lock or unlock VB or mask.
+     */
+    isLock: boolean;
+    /**
+     * Callback function on success.
+     */
+     success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+     error?: Function
+  }):void;
 }
