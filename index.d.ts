@@ -140,7 +140,7 @@
    */
   onRetryCallback?: Function; // optional
   /**
-   * isSupportSimulive, default false, set true will send cookie to zoom backend in order to support simulive
+   * isSupportSimulive, default false, Simulive not with credentialless mode. https://developer.chrome.com/blog/coep-credentialless-origin-trial/
    */
   isSupportSimulive?: boolean; // optional
   /**
@@ -213,6 +213,49 @@ export type VbImageInfoType = {
 export type InMeetingEvent = 'onUserJoin' | 'onUserLeave' | 'onUserIsInWaitingRoom' | 'onMeetingStatus' | 'onPreviewPannel|  receiveSharingChannelReady' | 'onReceiveTranscriptionMsg' | 'onReceiveTranslateMsg' | 'onAudioQos' | 'onVideoQos'
 
 /**
+ *  for the APIs that take images, The value of the image type returned by the getVideoSourcesCallBack method passed in the shareSource api
+ */
+export type NativeImageType = {
+  /**
+   * The data URL of the image.
+   */
+  toDataURL(): string;
+}
+/**
+ * each `DesktopCapturerSource` represents a screen or an individual window that can be captured. The type of the return value of the getVideoSourcesCallBack method passed in the shareSource api
+ */
+export type DesktopCapturerSource = {
+  /**
+   * appIcon.toDataURL() method used to display app icon.
+   */
+  appIcon: NativeImageType;
+  /**
+   * display_id
+   */
+  display_id: string;
+  /**
+   * app id: Used to pass the id to the media stream
+   */
+  id: string;
+  /**
+   * app name
+   */
+  name: string;
+  /**
+   * thumbnail.toDataURL() method used to display app screenshots.
+   */
+  thumbnail: NativeImageType;
+  /**
+   * imgSrc（Options） The <img/> src url of the app screenshot, Used to display app screenshots.If this parameter is passed, it will be used in preference to thumbnail.
+   */
+  imgSrc?: string;
+  /**
+   * appIconSrc（Options）The <img/> src url of the app icon, Used to display app icon.If this parameter is passed, it will be used in preference to appIcon.
+   */
+  appIconSrc?: string;
+}
+
+/**
  * onMeetingStatus
  */
 export declare enum onMeetingStatus {
@@ -242,6 +285,7 @@ export enum BreakoutRoomStatus {
   Closing = 4,
   Closed = 5
 }
+
 /**
  * ZoomMtg.i18n
  * 
@@ -389,6 +433,12 @@ export function vbSupportDataFunc(data: {
     enable: boolean;
   }
 }): void;
+
+/**
+ * This method will be called when the “screen share” is clicked, Support for get screen share sources callback. 
+ */
+export function getShareSourcesFunc(): Promise<DesktopCapturerSource[]>;
+
 /**
  * ZoomMtg
  */
@@ -1161,4 +1211,23 @@ export namespace ZoomMtg {
       */
      error?: Function
   }):void;
+
+  /**
+   * In the electron application, if this method is registered, getVideoSourcesCallBack will be called when "screen share" is clicked to obtain the application information returned by electron that can share the desktop. provide a callback function return desktopCapturer share sources in electron app.
+   * @param args
+   */
+  function shareSource(args: {
+    /**
+     * callback function need return electron share source;
+     */
+    getVideoSourcesCallBack: typeof getShareSourcesFunc | Function; 
+    /**
+     * Callback function on success.
+     */
+    success?: Function; 
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
 }
