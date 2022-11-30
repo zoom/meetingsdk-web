@@ -90,6 +90,14 @@ export interface RecordingInfo {
   isUserEnableRecordingReminder: boolean;
 }
 /**
+ * Status of cloud recording
+ */
+export enum RecordingStatus {
+  Recording = 'Recording',
+  Paused = 'Paused',
+  Stopped = 'Stopped'
+}
+/**
  * Interface for a participant.
  */
 export interface Participant {
@@ -278,6 +286,176 @@ export interface VbImageInfoType {
   fileName: string;
   displayName: string;
   url: string;
+}
+/**
+ * Source of the live transcription message
+ */
+export enum LiveTranscriptionMessageSource {
+  /**
+   * unspecified
+   */
+  Unspecified = 0,
+  /**
+   *  user typed caption in the meeting
+   */
+  InMeetingManual = 1,
+  /**
+   * using the external captioner
+   */
+  ExternalCaptioner = 2,
+  /**
+   * 	automatic speech recognition
+   */
+  ASR = 4
+}
+/**
+ * language code of the live transcription
+ */
+export enum LiveTranscriptionLanguageCode {
+  /**
+   * English
+   */
+  English = 0,
+  /**
+   * Chinese
+   */
+  'Chinese (Simplified)' = 1,
+  /**
+   * Japanese
+   */
+  Japanese = 2,
+  /**
+   * German
+   */
+  German = 3,
+  /**
+   * French
+   */
+  French = 4,
+  /**
+   * Russian
+   */
+  Russian = 5,
+  /**
+   * Portuguese
+   */
+  Portuguese = 6,
+  /**
+   * Spanish
+   */
+  Spanish = 7,
+  /**
+   * Korean
+   */
+  Korean = 8,
+  /**
+   * Italian
+   */
+  Italian = 9,
+  /**
+   * Reserved
+   */
+  Reserved = 10,
+  /**
+   * Vietnamese
+   */
+  Vietnamese = 11,
+  /**
+   * Dutch
+   */
+  Dutch = 12,
+  /**
+   * Ukrainian
+   */
+  Ukrainian = 13,
+  /**
+   * Arabic
+   */
+  Arabic = 14,
+  /**
+   * Bengali
+   */
+  Bengali = 15,
+  /**
+   * Chinese (Traditional)'
+   */
+  'Chinese (Traditional)' = 16,
+  /**
+   * Czech
+   */
+  Czech = 17,
+  /**
+   * Estonian
+   */
+  Estonian = 18,
+  /**
+   * Finnish
+   */
+  Finnish = 19,
+  /**
+   * Greek
+   */
+  Greek = 20,
+  /**
+   * Hebrew
+   */
+  Hebrew = 21,
+  /**
+   * Hindi
+   */
+  Hindi = 22,
+  /**
+   * Hungarian
+   */
+  Hungarian = 23,
+  /**
+   * Indonesian
+   */
+  Indonesian = 24,
+  /**
+   * Malay
+   */
+  Malay = 25,
+  /**
+   * Persian
+   */
+  Persian = 26,
+  /**
+   * Polish
+   */
+  Polish = 27,
+  /**
+   * Romanian
+   */
+  Romanian = 28,
+  /**
+   * Swedish
+   */
+  Swedish = 29,
+  /**
+   * Tamil
+   */
+  Tamil = 30,
+  /**
+   * Telugu
+   */
+  Telugu = 31,
+  /**
+   * Tagalog
+   */
+  Tagalog = 32,
+  /**
+   * Turkish
+   */
+  Turkish = 33,
+  /**
+   * No translation
+   */
+  NoTranslation = 400,
+  /**
+   * manual caption
+   */
+  DefaultManualInput = 401
 }
 /**
  * Arguments and options for joining a meeting.
@@ -501,6 +679,49 @@ export declare function event_video_statistic_data_change(payload: {
   type: string;
 }): void;
 
+export declare function event_caption_message(payload: {
+  /**
+   * message ID
+   */
+  msgId: string;
+  /**
+   * user ID of the message
+   */
+  userId: number;
+  /**
+   * display name
+   */
+  displayName: string;
+  /**
+   * avatar
+   */
+  avatar?: string;
+  /**
+   * text content
+   */
+  text: string;
+  /**
+   * source of the live transcription message
+   */
+  source: LiveTranscriptionMessageSource;
+  /**
+   *  language code of the live translation
+   */
+  language: LiveTranscriptionLanguageCode;
+  /**
+   * timestamp
+   */
+  timestamp: number;
+  /**
+   * Is this sentence over?
+   */
+  done?: boolean;
+}): void;
+
+export declare function event_recording_change(payload: RecordingStatus): void;
+
+export declare function event_local_recording_change(payload: { userId: number; bLocalRecord: boolean }): void;
+
 export declare namespace EmbeddedClient {
   /**
    * Initializes the Meeting SDK for web component view client.
@@ -663,6 +884,9 @@ export declare namespace EmbeddedClient {
   function on(event: 'connection-change', callback: (payload: any) => void): void;
   function on(event: 'audio-statistic-data-change', callback: typeof event_audio_statistic_data_change): void;
   function on(event: 'video-statistic-data-change', callback: typeof event_video_statistic_data_change): void;
+  function on(event: 'caption-message', callback: typeof event_caption_message): void;
+  function on(event: 'recording-change', callback: typeof event_recording_change): void;
+  function on(event: 'local-recording-change', callback: typeof event_local_recording_change): void;
   /**
    * Remove the event handler. Must be used with on() in pairs.
    * @param event event name. Same as 'on' event name list
