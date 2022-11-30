@@ -1,161 +1,135 @@
-# Zoom Web SDK
+# Zoom Meeting SDK for Web
+
 Use of this SDK is subject to our [Terms of Use](https://zoom.us/docs/en-us/zoom_api_license_and_tou.html)
 
-## Open Source Software (OSS) Attribution
-Starting from version 1.9.1, an OSS attribution file (oss_attribution.txt) will be provided in each release. Some licenses for OSS contained in our products give you the right to access the source code under said license. You may obtain a copy of source code for the relevant OSS via the following link: https://zoom.us/opensource/source. Please obtain independent legal advice or counsel to determine your responsibility to make source code available under any specific OSS project.
-
-## About
-The Zoom Web Meeting SDK NPM package is for implementing the Zoom Meeting Web SDK with a frontend framework like React or Angular that uses webpack / babel.
-
-There are now two views to choose from, [Component](#use-component-view), and [Client](#use-client-view).
-
-- The new [Component View](#use-component-view), allows for an easier setup and more flexibility.
-- The existing [Client View](#use-client-view) mirrors the [Zoom Web Client](https://support.zoom.us/hc/en-us/articles/214629443-Zoom-Web-Client).
-
-NOTE: Please read [how to improve Web SDK performance in Chrome](https://marketplace.zoom.us/docs/sdk/overview/improve-performance).
+The [Zoom Meeting SDK](https://marketplace.zoom.us/docs/sdk/native-sdks/web) embeds the Zoom Meeting and Webinar experience in a website through a highly optimized WebAssembly module.
 
 ## Installation
-In your frontend project, install the Web SDK:
 
-`$ npm install @zoomus/websdk --save`
+In your frontend project, install the Meeting SDK:
 
-## Use Component View
-
-### Usage
-
-In the component file where you want to use the Web Meeting SDK, import `ZoomMtgEmbedded` and create the client.
-
-```js
-import ZoomMtgEmbedded from "@zoomus/websdk/embedded";
-
-const client = ZoomMtgEmbedded.createClient();
+```bash
+$ npm install @zoomus/websdk --save
 ```
 
-In the HTML file, set an id attribute on the HTML element where you want to render the Web Meeting SDK. It will be hidden until you start or join a meeting.
+There are two views to choose from, [Component View](#usage-component-view), and [Client View](#usage-client-view).
+
+## Usage - Component View
+
+![Zoom Meeting SDK Component View](https://marketplace.zoom.us/docs/static/msdk-web-component-view-64311bbbf32eaddfc2f3fac6e89928df.gif)
+
+> The Component View provides the option to display the Meeting SDK in components on your page. This allows for a more flexible design.
+
+In the component file where you want to use the Meeting SDK, import `ZoomMtgEmbedded` and create the client.
+
+```js
+import ZoomMtgEmbedded from "@zoomus/websdk/embedded"
+
+const client = ZoomMtgEmbedded.createClient()
+```
+
+In the HTML file, set an id attribute on the HTML element where you want to render the Meeting SDK. It will be hidden until you start or join a meeting or webinar.
 
 ```html
-<div id=”meetingSDKElement”>
+<div id="meetingSDKElement">
    <!-- Zoom Meeting SDK Rendered Here -->
 </div>
 ```
 
-Back in the JavaScript file, init the SDK with the HTML element above:
+Back in the component file, init the Meeting SDK with the HTML element above:
 
 ```js
-let meetingSDKElement = document.getElementById('meetingSDKElement');
+let meetingSDKElement = document.getElementById('meetingSDKElement')
 
-client.init({
-  debug: true,
-  zoomAppRoot: meetingSDKElement,
-  language: 'en-US',
-  customize: {
-    meetingInfo: ['topic', 'host', 'mn', 'pwd', 'telPwd', 'invite', 'participant', 'dc', 'enctype'],
-    toolbar: {
-      buttons: [
-        {
-          text: 'Custom Button',
-          className: 'CustomButton',
-          onClick: () => {
-            console.log('custom button');
-          }
-        }
-      ]
-    }
-  }
-});
+client.init({ zoomAppRoot: meetingSDKElement, language: 'en-US' })
 ```
 
-Here are the required properties for the `client.join()` function. You can get the Meeting Number and password from the [Zoom Meeting APIs](https://marketplace.zoom.us/docs/api-reference/zoom-api/meetings/meetingcreate).
+Now we will start or join the meeting or webinar. Here are the required properties for the `client.join()` function. You can get the Meeting or Webinar number and passcode from the [Zoom APIs](https://marketplace.zoom.us/docs/api-reference/zoom-api/meetings/meetingcreate).
 
-| Parameter  | Description  |
+| Key  | 	Value Description  |
 |---|---|
-| `apiKey`  | Required, your Zoom JWT App API Key.  |
-| `signature` | Required, your signature. [Instructions here](https://github.com/zoom/websdk-sample-signature-node.js). |
-| `meetingNumber`  | Required, the Zoom Meeting number.  |
-| `password`  | Requried, leave as empty string if the meeting only requires the waiting room.  |
-| `userName`  | Required, the name of the user starting or joining the meeting.  |
-| `userEmail`  | Optional, the email of the user starting or joining the meeting.  |
+| `sdkKey`  | Required, your SDK Key.  |
+| `signature` | Required, your [SDK JWT](https://marketplace.zoom.us/docs/sdk/native-sdks/auth). |
+| `meetingNumber`  | Required, the Zoom Meeting or Webinar Number.  |
+| `password`  | Required, leave as empty string if the Meeting or Webinar only requires the waiting room.  |
+| `userName`  | Required, the name of the user starting or joining the Meeting or Webinar.  |
+| `userEmail`  | Required for Webinar, optional for Meeting, required for Meeting and Webinar if registration is required. The email of the user starting or joining the Meeting or Webinar.  |
+| `tk`  | Required if your Meeting or Webinar requires [registration](https://support.zoom.us/hc/en-us/articles/360054446052-Managing-meeting-and-webinar-registration). The registrant's token. |
+| `zak`  | Required if you are starting a Meeting or Webinar. The host's [Zoom Access Key (ZAK)](https://marketplace.zoom.us/docs/sdk/native-sdks/auth#get-a-users-zak-token).  |
 
-Then, join the meeting.
+Then, start or join the meeting or webinar.
 
 ```js
 client.join({
-	apiKey: apiKey,
-	signature: signature,
-	meetingNumber: meetingNumber,
-	password: password,
-	userName: userName
+   sdkKey: sdkKey,
+   signature: signature,
+   meetingNumber: meetingNumber,
+   password: password,
+   userName: userName
 })
 ```
 
-For the full list of features and event listeners, as well as additional guides, please see our [Meeting SDK docs](https://marketplace.zoom.us/docs/sdk/native-sdks/web).
+For the full list of features and event listeners, as well as additional guides, see our [Meeting SDK docs](https://marketplace.zoom.us/docs/sdk/native-sdks/web/component-view).
 
-## Use Client View
+## Usage - Client View
 
-### Usage
-In the component file where you want to use the Web SDK, import `ZoomMtg` and call the `preLoadWasm()` and `prepareJssdk()` functions.
+![Zoom Meeting SDK Client View](https://marketplace.zoom.us/docs/static/msdk-web-client-view-6276487add553e9849f39a7cec9ac7c7.gif)
 
-```js
-import { ZoomMtg } from '@zoomus/websdk';
+> The Client View provides the option to display the Meeting SDK as a full page. This allows for a familiar Zoom Meeting experience because the Client View is the same as the [Zoom Web Client](https://support.zoom.us/hc/en-us/articles/214629443-Zoom-Web-Client), except it lives inside your own web page.
 
-ZoomMtg.preLoadWasm();
-ZoomMtg.prepareJssdk();
-```
-
-NOTE: The following directory (already in node_modules) must be accessible in your url path:
-
-- `node_modules/@zoomus/websdk/dist/lib/`
-
-Or, you can set a custom path to the Web SDK's lib directory using:
+In the component file where you want to use the Meeting SDK, import `ZoomMtg` and call the `preLoadWasm()`, `prepareJssdk()`, and `setZoomJSLib()` functions.
 
 ```js
-ZoomMtg.setZoomJSLib('http://localhost:9999/custom/path/to/lib/', '/av')
+import { ZoomMtg } from '@zoomus/websdk'
+
+ZoomMtg.preLoadWasm()
+ZoomMtg.prepareJssdk()
+
+// loads language files, also passes any error messages to the ui
+ZoomMtg.i18n.load('en-US')
+ZoomMtg.i18n.reload('en-US')
+
+ZoomMtg.setZoomJSLib('https://source.zoom.us/{VERSION_NUMBER}/lib', '/av')
 ```
 
-NOTE: The following files (already in node_modules) must be globally accessible (equivalent of link and script tag in index.html):
+> When imported, the Meeting SDK adds new elements to the DOM to handle client overlays and accessibility elements. To manage or manipulate this DOM element within your app [see this guide](https://marketplace.zoom.us/docs/sdk/native-sdks/web/client-view/import#about-appended-dom-elements).
 
-- `node_modules/@zoomus/websdk/dist/css/bootstrap.css`
-- `node_modules/@zoomus/websdk/dist/css/react-select.css`
+Add the following styles to the HTML page you want the Meeting SDK to live on, or `index.html` if you are using a single page app framework.
 
-Set the config variables (reference below):
-
-```js
-// setup your signautre endpoint here: https://github.com/zoom/websdk-sample-signature-node.js
-var signatureEndpoint = 'http://localhost:4000'
-var apiKey = 'JWT_API_KEY'
-var meetingNumber = 123456789
-var role = 0
-var leaveUrl = 'http://localhost:9999'
-var userName = 'WebSDK'
-var userEmail = ''
-var passWord = ''
+```html
+<head>
+  <!-- For Client View -->
+  <link type="text/css" rel="stylesheet" href="https://source.zoom.us/{VERSION_NUMBER}/css/bootstrap.css" />
+  <link type="text/css" rel="stylesheet" href="https://source.zoom.us/{VERSION_NUMBER}/css/react-select.css" />
+</head>
 ```
 
-Config variables reference:
+> Replace `{VERSION_NUMBER}` in the code above with the [latest version number](https://marketplace.zoom.us/docs/changelog#labels/meeting-sdk-web).
 
-| Variable                   | Description |
-| -----------------------|-------------|
-| signatureEndpoint          | Required, the endpoint url that returns a signature. [Get a signature endpoint here.](https://github.com/zoom/websdk-sample-signature-node.js) |
-| apiKey                   | Required, your Zoom JWT App API Key. |
-| meetingNumber                   | The Zoom meeting / webinar number. |
-| role                   | Required, 0 to join the meeting / webinar, 1 to start the meeting. |
-| leaveUrl                   | Required, the URL the user is taken to once the meeting is over. |
-| userName                   | Required, A name for the user joining / starting the meeting / webinar. |
-| userEmail                   | Optional, the user joining / starting the meeting / webinar. |
-| passWord                   | Optional, meeting password. Leave as empty string if the meeting does not require a password. |
+Back in the component file we will init and start or join the meeting or webinar. Here are the required properties for the `ZoomMtg.init()` function.
 
-Generate the meeting signature to authenticate, [instructions here](https://github.com/zoom/websdk-sample-signature-node.js).
+| Key  | 	Value Description  |
+|---|---|
+| `leaveUrl` |  Required, the URL the participant is taken to once they leave or when the meeting ends. |
 
-```js
-var signature = 'eHUzSlBhQV9SSlcyLTlsNV9IQWFMQS4xMjM0NTY3ODkuMTU4MzE2OTUzODc3My4wLkJMNEtiM3FINGx5ZzA1MUZtbGJOcGtPRnlFQS9lQUR2bGllVzJNNGZJeWs9'
-```
+Here are the required properties for the `ZoomMtg.join()` function. You can get the Meeting or Webinar number and passcode from the [Zoom APIs](https://marketplace.zoom.us/docs/api-reference/zoom-api/meetings/meetingcreate).
 
-Then init, and join the meeting.
+| Key  | 	Value Description  |
+|---|---|
+| `sdkKey`  | Required, your SDK Key.  |
+| `signature` | Required, your [SDK JWT](https://marketplace.zoom.us/docs/sdk/native-sdks/auth). |
+| `meetingNumber`  | Required, the Zoom Meeting or Webinar Number.  |
+| `passWord`  | Required, leave as empty string if the Meeting or Webinar only requires the waiting room.  |
+| `userName`  | Required, the name of the user starting or joining the Meeting or Webinar.  |
+| `userEmail`  | Required for Webinar, optional for Meeting, required for Meeting and Webinar if registration is required. The email of the user starting or joining the Meeting or Webinar.  |
+| `tk`  | Required if your Meeting or Webinar requires [registration](https://support.zoom.us/hc/en-us/articles/360054446052-Managing-meeting-and-webinar-registration). The registrant's token. |
+| `zak`  | Required if you are starting a Meeting or Webinar. The host's [Zoom Access Key (ZAK)](https://marketplace.zoom.us/docs/sdk/native-sdks/auth#get-a-users-zak-token).  |
+
+Then, init, and start or join the meeting or webinar.
 
 ```js
 ZoomMtg.init({
   leaveUrl: leaveUrl,
-  isSupportAV: true,
   success: (success) => {
     console.log(success)
 
@@ -163,7 +137,7 @@ ZoomMtg.init({
       signature: signature,
       meetingNumber: meetingNumber,
       userName: userName,
-      apiKey: apiKey,
+      sdkKey: sdkKey,
       userEmail: userEmail,
       passWord: passWord,
       success: (success) => {
@@ -181,11 +155,17 @@ ZoomMtg.init({
 })
 ```
 
-For the full list of features and event listeners, as well as additional guides, please see our [Meeting SDK docs](https://marketplace.zoom.us/docs/sdk/native-sdks/web).
+For the full list of features and event listeners, as well as additional guides, see our [Meeting SDK docs](https://marketplace.zoom.us/docs/sdk/native-sdks/web/client-view).
 
-## Sample App
-Checkout the Zoom [Web SDK Sample App](https://github.com/zoom/sample-app-web), and the [Simple Signature Setup Sample App](https://github.com/zoom/websdk-sample-signature-node.js).
+## Sample Apps
 
+- [Meeting SDK Web Sample](https://github.com/zoom/meetingsdk-web-sample)
+- [Meeting SDK Angular Sample](https://github.com/zoom/meetingsdk-angular-sample)
+- [Meeing SDK React Sample](https://github.com/zoom/meetingsdk-react-sample)
+- [Meeting SDK Vue.js Sample](https://github.com/zoom/meetingsdk-vuejs-sample)
+- [Meeting SDK JavaScript Sample](https://github.com/zoom/meetingsdk-javascript-sample)
+- [Meeting SDK Auth Sample (Node.js)](https://github.com/zoom/meetingsdk-sample-signature-node.js)
+- [Webhook Sample (Node.js)](https://github.com/zoom/webhook-sample-node.js)
 
 ## Need help?
 

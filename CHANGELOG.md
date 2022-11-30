@@ -1,4 +1,242 @@
 # CHANGELOG
+## version 2.9.5
+## Client View
+### Added
+1. Gallery view support for Firefox with SharedArrayBuffer enabled.
+1. Electron web view screen sharing support via `shareSource` option.
+1. Support for broadcasting audio messages to breakout rooms.
+1. Support to send or receive files in chat messages.
+
+### Enhanced
+1. Waiting page to auto join meeting or webinar when started.
+1. `onRetryCallback` to provide the meeting UID, such that it can be used to end a meeting via REST API when a “meeting cannot be started because another meeting is running” error is encountered.
+
+### Fixed
+1. Subtitle blocked when showing captions.
+1. An issue where promoting an attendee or demoting a panelist would cause the QA and raise-hand buttons to be unclickable.
+1. Missing options in sign language view.
+1. Issue where sign language view sometimes dropped to an invisible area.
+1. Meeting password unintentionally visible to attendees in certain cases.
+1. Error code 1005 message to correctly read as “No response from web, try again later.” when encountering issues joining webinars.
+1. Webinar UI not resizing correctly for attendees after the host stops screen sharing.
+
+## Component View
+### Added
+1. Gallery View support for Firefox with SharedArrayBuffer enabled.
+1. Support for the host to start a breakout room automatically or manually..
+1. Support for a participant to join a breakout room.
+1. Support for broadcasting chat messages to breakout rooms.
+1. Multi-language transcription feature.  
+1. Caption, transcription, and translation support.
+1. `caption-message`, `recording-change`, and `local-recording-change` events callbacks.
+
+## version 2.9.0
+## General
+### Added
+1. API for managing virtual background.
+1. Free meeting end dialog.
+
+## Client View
+### Added
+1. American Sign Language (ASL) support.
+1. API for customizing the polling link (`setCustomizedPollingUrl`).
+1. Support for sending emojis in chat.
+
+### Enhanced
+1. `leaveMeeting` API by adding a `cancelCallback` option.
+
+### Fixed
+1. A bug where the audio device would unintentionally switch to “Microsoft Teams Audio Device (Virtual)”, resulting in audio cut-off.
+1. Links in chat not redirecting users properly due to improper URL encoding.
+1. Safari audio issues due to auto-join, by disabling auto-join.
+1. Incorrect labels on the waiting page when the meeting had, in fact, started.
+1. `Video` settings unintentionally being shown to webinar attendees in certain cases.
+1. Attendee view in webinar not properly following host’s view when set accordingly.
+
+### Removed
+1. SDK key length check.
+
+## Component View
+### Added
+1. API for sending a private chat.
+
+### Enhanced
+1. Video view toggle (gallery view, speaker view, etc.) from tabs to dropdown.
+
+## version 2.8.0
+## General
+The following release notes apply to the Meeting SDK for Web client view and component view.
+
+### Fixed
+1. Poor-quality audio issues on Safari in certain cases.
+
+## Client View
+The following release notes apply to the Meeting SDK for Web client view.
+### Added
+1. Support for sharing audio and video to breakout rooms.
+1. Support for audio and video settings in audio and video menus.
+1. Support for captions in webinars.
+
+### Enhanced
+1. Gallery View support on all devices, including low-end devices.
+1. Camera to remain off if the user turns it off on the preview page, even when the host requires video to be on.
+1. Screen sharing to include sharing to all breakout rooms as an option.
+1. Interpretation feature to include host controls.
+1. API reference documentation.
+1. Support for sending 720p video on macOS devices using an M1 or M2 chip when gallery view enabled.
+1. “Copy invite link” support for Zoom Events.
+1. Dropdown menu options offered by chevron buttons on audio and video toolbar buttons.
+
+### Fixed
+1. View button not correctly showing when the user screen shares in a meeting or webinar.
+1. Black rectangle afterimage when changing to speaker view in full screen.
+1. Last frame afterimage when starting focus mode in certain cases.
+1. Inconsistent mic animation between toolbar and participant list.
+1. Active speaker not changing correctly in speaker view.
+1. “Is livestream enabled” flag not being set properly for Zoom Events.
+1. Incorrect active speaker when selecting “See myself as the active speaker” in certain cases.
+1. Breakout rooms not being numbered when created by co-hosts with the automatically-assign option.
+1. Incorrect text in the join-breakout-room pop-up window in certain cases.
+1. Automatically turn on camera when the host schedules a meeting with the turn on host and participant video option (v2.6.0 and v2.7.0).
+1. Audio did not work on Safari for iPadOS.
+1. Audio status display incorrect in participants list.
+1. When assigned to a breakout room, shows a popup window but no breakout room name.
+
+## Component View
+The following release notes apply to the Meeting SDK for Web component view.
+### Added
+1. Support for local audio speaker and mic test.
+
+### Enhanced
+1. Settings panel to include audio testing.
+1. Q&A feature to sort by upvoted questions.
+
+### Fixed
+1. Audio did not work on Safari for iPadOS.
+
+## version 2.7.0
+## General
+### Removed
+1. API Key property. [Migrate to SDK Key for versions 2.7.0 and above](https://marketplace.zoom.us/docs/guides/build/jwt-app/jwt-app-migration/#jwt-app-type-to-sdk-app-type-migration)
+
+## Client View
+### Added
+1. Live stream support
+1. Live transcription event listeners
+1. Quality of service (audio/video statistics data) event listeners
+
+### Enhanced
+1. Participant list scroll performance (virtualization)
+1. Participant in-meeting ID to be consistent and persistent across main session and breakout rooms
+1. Support host/co-host edit resources in Webinar
+1. Footer look-and-feel, and code structure
+
+### Fixed
+1. Captions not showing properly in v2.6.0
+1. Issues showing participants’ name tags when using no-branding wallpapers
+1. Panelists not being able to chat when chat is disabled for attendees
+1. “Settings” panel not closing after leaving a meeting
+1. Issues changing to the “Resource” tab from the “Chat” tab when clicked on by panelists and attendees in webinars
+1. “Claim Host” and “Cancel” buttons being missing from the “Claim Host” dialog
+1. Inability to click “Join” button when showing the audio/video preview page in a small iframe
+
+## Component View
+### Added
+1. 5x5 gallery view support
+1. Support for customized waiting rooms
+1. Option in “Settings” panel to toggle sending video in 720p when there are no hardware/account limitations
+1. Quality of service (audio/video statistics data) event listeners
+1. Support for panelists to delete or dismiss Q&A questions in webinars
+
+### Enhanced
+1. Component View demo to use SDK Key + Secret instead of API Key + Secret
+
+### Fixed
+1. Self-view resizing issues in Firefox, Safari, and Chrome without SharedArrayBuffer access
+1. Virtual background images files not loading properly when waiting room is enabled
+1. Placeholder tips not showing in Q&A panel
+1. Attendee’s question being removed in “My Questions” tab when dismissed by host
+1. Host being able to chat when chat is disabled
+
+## version 2.6.0
+## General
+### Fixed
+1. Reverted audio-handling changes in v2.5.0 to support the Chrome 104 beta
+
+## Client View
+### Added
+1. In-session resource (sidecar) support; details forthcoming
+1. Waiting room customizability 
+1. Email watermark support
+1. Support for sending 720p videos on Macs using Intel/AMD chips
+1. Live Transcription and Translation support
+
+### Fixed
+1. Waiting room showing incorrect time when the meeting or webinar had not started
+1. Incorrect string being shown when hovering the join button on the preview page
+1. 404 error when clicking “Learn More” on the screen share permission dialog
+1. Virtual background state not being preserved on page refresh
+1. Inconsistent audio/video settings for attendee promotion and demotion
+
+## Component View
+### Added
+1. Webinar Q&A support
+
+## version 2.5.0
+## Client View
+### Added
+1. Support for testing mics and speakers
+1. Parameter in `init` to enable and configure an intermediary page for users clicking external hyperlinks
+1. Event listener for “Sharing has Started” events
+1. Functional and UI support for new Live Transcription feature
+1. Notifications that recommend upgrading Web SDK version if below the recommend version
+1. Support for preventing device going to sleep when in-meeting
+
+### Enhanced
+1. 720p video subscription logic
+1. Number of Gallery View participants from 9 to 25 (3x3 to 5x5)
+1. “Settings” panel UI and functionality
+
+### Fixed
+1. Issue where an “unrecognized speaker” entry will be shown in the speaker selection list if microphone permissions are not enabled
+1. “Phone Call” panel not showing participant ID and cutting off passcode in webinars
+
+## Component View
+### Added
+1. Archiving privacy notices
+1. Event listener for “Meeting has Ended” events
+### Enhanced
+1. Upgraded package dependency versions
+
+
+## version 2.4.5
+## General
+### Added
+1. Support for pronouns
+1. Labels to video tiles showing participants’ audio connection status
+
+### Fixed
+1. Conflicts between 720p and virtual backgrounds running at the same time
+
+## Client View
+### Added
+1. Support for [Webinar Session Branding](https://support.zoom.us/hc/en-us/articles/4836268732045-Using-Webinar-Session-Branding)
+
+### Fixed
+1. Preview page sometimes not remembering the user’s audio or video preference
+1. “NEW: Mask your Background” notice showing when it should not
+1. Recording notification not showing properly for panelists in webinars
+1. Post-poll result strings unintentionally showing {0} to attendees
+1. Issues with the Report feature’s UI and reports failing when the reporter’s email does not match the join email
+1. Avatar not showing correctly in the Q&A menu
+1. “Back” button not working in the “Unencrypted Connections” panel
+
+## Component View
+### Added
+1. Webinar-specific chat control options
+1. Notifications of recordings in progress when toggled or restarted in webinars
+
+
 ## version 2.4.0
 ## General
 ### Added
