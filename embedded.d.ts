@@ -45,30 +45,30 @@ export interface MediaCompatiblity {
  */
 export type ExecutedResult = Promise<string | ExecutedFailure>;
 /**
- * Interface of chat message
+ * Chat message interface.
  */
 export interface ChatMessage {
   /**
-   * message id,used for delete/modify message
+   * Message ID. Used to delete or modify a message.
    */
   id?: string;
   /**
-   * message content
+   * Message content.
    */
   message: string;
   /**
-   * message sender, includes name,userId and avatar
+   * Message sender. Includes name, userId, and avatar.
    */
   sender: { name: string; userId: number; avatar?: string };
   /**
-   * message receiver,inclides name,userId
+   * Message receiver. Includes name and userId.
    */
   receiver: {
     name: string;
     userId: number;
   };
   /**
-   * timestamp of message
+   * Timestamp of message.
    */
   timestamp: number;
 }
@@ -90,7 +90,7 @@ export interface RecordingInfo {
   isUserEnableRecordingReminder: boolean;
 }
 /**
- * Status of cloud recording
+ * Cloud recording status.
  */
 export enum RecordingStatus {
   Recording = 'Recording',
@@ -98,7 +98,7 @@ export enum RecordingStatus {
   Stopped = 'Stopped'
 }
 /**
- * Interface for a participant.
+ * Participant interface.
  */
 export interface Participant {
   /**
@@ -134,11 +134,11 @@ export interface Participant {
   isGuest: boolean;
   /**
    * User's avatar.
-   * User's can set their avatar in their [web profile](https://zoom.us/profile).
+   * Users can set their avatar in their [web profile](https://zoom.us/profile).
    */
   avatar: string;
   /**
-   * Whether the user is phone call user.
+   * Whether the user is a phone call user.
    */
   isPhoneUser: boolean;
   /**
@@ -182,7 +182,7 @@ export interface Participant {
   bLocalRecord?: boolean;
 }
 /**
- * Interface of meeting information.
+ * The meeting information interface.
  */
 export interface MeetingInfo {
   /**
@@ -234,7 +234,7 @@ export interface MeetingInfo {
    */
   network: string;
   /**
-   * Whether the user is in the meeting or not.
+   * Whether the user is in the meeting.
    */
   isInMeeting: boolean;
   /**
@@ -267,7 +267,7 @@ export declare interface CustomButton {
    */
   text: string;
   /**
-   * Callback when the button's clicked.
+   * Callback when the button is clicked.
    */
   onClick: Function;
   /**
@@ -275,12 +275,12 @@ export declare interface CustomButton {
    */
   className?: string;
 }
-/** Interface to define custom component sizes. */
+/** Interface defining custom component sizes. */
 export interface CustomSize {
   width: number;
   height: number;
 }
-/** Interface defining virtual background image */
+/** Interface defining the virtual background image. */
 export interface VbImageInfoType {
   id: string;
   fileName: string;
@@ -288,28 +288,28 @@ export interface VbImageInfoType {
   url: string;
 }
 /**
- * Source of the live transcription message
+ * The live transcription message's source.
  */
 export enum LiveTranscriptionMessageSource {
   /**
-   * unspecified
+   * Unspecified.
    */
   Unspecified = 0,
   /**
-   *  user typed caption in the meeting
+   *  User-typed caption in the meeting.
    */
   InMeetingManual = 1,
   /**
-   * using the external captioner
+   * Using the external captioner.
    */
   ExternalCaptioner = 2,
   /**
-   * 	automatic speech recognition
+   * 	Automatic speech recognition.
    */
   ASR = 4
 }
 /**
- * language code of the live transcription
+ * The live transcription's language code.
  */
 export enum LiveTranscriptionLanguageCode {
   /**
@@ -449,13 +449,125 @@ export enum LiveTranscriptionLanguageCode {
    */
   Turkish = 33,
   /**
-   * No translation
+   * No translation.
    */
   NoTranslation = 400,
   /**
-   * manual caption
+   * Manual caption.
    */
   DefaultManualInput = 401
+}
+/**
+ * The participant properties interface.
+ */
+interface ParticipantPropertiesPayload {
+  /**
+   * The user's ID.
+   */
+  userId: number;
+  /**
+   * Avatar of the user.
+   */
+  avatar?: string;
+  /**
+   * Whether the user can edit closed caption.
+   */
+  bCCEditor?: boolean;
+  /**
+   * Whether the user is a guest (does not belong to the same account).
+   */
+  isGuest?: boolean;
+  /**
+   *  Whether the user is on hold.
+   */
+  bHold?: boolean;
+  /**
+   * Whether the user's hand is raised.
+   */
+  bRaiseHand?: boolean;
+  /**
+   * The breakout room's ID.
+   */
+  bid?: number;
+  /**
+   * Display name.
+   */
+  displayName?: string;
+  /**
+   * The current client's type.
+   */
+  os?: number;
+  /**
+   * The user's role.
+   */
+  userRole?: number;
+  /**
+   * Whether the user is the host.
+   */
+  isHost?: boolean;
+  /**
+   * Whether the user is a co-host.
+   */
+  bCoHost: boolean;
+  /**
+   * The type of user:
+   * - `9`: Client
+   * - `5`: Phone
+   * - `15`: H323 device
+   */
+  userType?: number;
+  /**
+   * The internal ID.
+   */
+  zoomID?: string;
+  /**
+   * The user's audio.
+   */
+  audio?: string;
+  /**
+   * @ignore
+   */
+  caps?: number;
+  /**
+   * Whether the audio is muted.
+   */
+  muted?: boolean;
+  /**
+   * Whether the user is starting the video.
+   */
+  bVideoOn?: boolean;
+  /**
+   * Nonverbal feedback.
+   */
+  feedback?: number;
+  /**
+   * Whether the user is starting sharing.
+   */
+  sharerOn?: boolean;
+  /**
+   * Whether sharing is paused.
+   */
+  sharerPause?: boolean;
+  /**
+   * Whether the user is starting local recording.
+   */
+  bLocalRecord?: boolean;
+  /**
+   * Whether a new user joins the meeting due to failover or an on hold change.
+   */
+  source?: 'on hold' | 'failover';
+  /**
+   * Whether the participants leave the meeting due to failover or an on hold change.
+   */
+  reason?: 'on hold' | 'failover';
+  /**
+   * Participants's audio status.
+   * - 0: NotConnect,
+   * - 1: Connecting,
+   * - 2: ConnectSuccess,
+   * - 3: ConnectFail,
+   */
+  audioConnectionStatus?: number;
 }
 /**
  * Arguments and options for joining a meeting.
@@ -475,7 +587,7 @@ export interface JoinOptions {
    */
   meetingNumber: string;
   /**
-   * @param password The Zoom Meeting password
+   * @param password The meeting password.
    */
   password?: string;
   /**
@@ -552,7 +664,7 @@ export interface InitOptions {
    */
   webEndpoint?: string;
   /**
-   * @param language Default 'en-US'
+   * @param language Default 'en-US'.
    */
   language?: string;
   /**
@@ -561,36 +673,36 @@ export interface InitOptions {
   customize?: {
     /**
      * Customization options for the toolbar.
-     * @param buttons custom buttons to add to the toolbar dropdown menu.
+     * @param buttons Custom buttons to add to the toolbar dropdown menu.
      */
     toolbar?: {
       buttons?: Array<CustomButton>;
     };
-    /** Customization options for meeting info attributes */
+    /** Customization options for meeting info attributes. */
     meetingInfo?: Array<MeetingInfoType>;
     /**
-     * Customize the meeting invite url format (e.g. https://yourdomain/{0}?pwd={1}).
+     * Customize the meeting invite URL format (e.g. https://yourdomain/{0}?pwd={1}).
      * This will not work by default, you need to set `Enable Client SDK Customize Invite Url`.
      */
     inviteUrlFormat?: string;
     /**
      * Customization options for the participants panel.
-     * @param popper options for the underlying popper element.
+     * @param popper Options for the underlying popper element.
      */
     participants?: {
       popper?: PopperStyle;
     };
     /**
      * Customization options for the settings panel.
-     * @param popper options for the underlying popper element.
+     * @param popper Options for the underlying popper element.
      */
     setting?: {
       popper?: PopperStyle;
     };
     /**
      * Customization options for chat notifications and panel.
-     * @param notificationCls options for chat notifications.
-     * @param popper options for the underlying popper element.
+     * @param notificationCls Options for chat notifications.
+     * @param popper Options for the underlying popper element.
      */
     chat?: {
       notificationCls?: PositionStyle;
@@ -598,22 +710,22 @@ export interface InitOptions {
     };
     /**
      * Customization options for the meeting info panel.
-     * @param popper options for the underlying popper element.
+     * @param popper Options for the underlying popper element.
      */
     meeting?: {
       popper?: PopperStyle;
     };
     /**
-     * @param activeApps customization options for the active apps notifier popper position.
+     * @param activeApps Customization options for the active apps notifier popper position.
      */
     activeApps?: {
       popper?: PopperStyle;
     };
     /**
      * Customization options for the video or suspension view.
-     * @param popper options for the underlying popper element.
-     * @param isResizable whether or not the video view is resizable. Default is true.
-     * @param size sizing options for the ribbon view and all other views.
+     * @param popper Options for the underlying popper element.
+     * @param isResizable Whether the video view is resizable. Default is true.
+     * @param size Sizing options for the ribbon view and all other views.
      */
     video?: {
       popper?: VideoPopperStyle;
@@ -625,7 +737,7 @@ export interface InitOptions {
     };
   };
   /**
-   * Maximum participants displayed per screen in Gallery View, up to 25.
+   * Maximum participants displayed per screen in gallery view, up to 25.
    */
   maximumVideosInGalleryView?: number;
 }
@@ -642,18 +754,18 @@ export declare function event_audio_statistic_data_change(payload: {
   type: string;
 }): void;
 /**
- * Occurs when decode (received) the video statistics data is changed.
- * @param payload the event detail
+ * Occurs when the video statistics data is changed; decode (received).
+ * @param payload The event detail.
  * - `data`
- *  - `encoding`: if encoding is true, this means that the data is encoding video data statistics.
- *  - `avg_loss`: average package loss for video.
- *  - `jitter`: jitter for video.
- *  - `max_loss`: max package loss for video.
- *  - `rtt`: round trip time for video.
- *  - `sample_rate`: sample rate for video.
- *  - `width`: width for video.
- *  - `height`: height for video.
- *  - `fps`: fps for video.
+ *  - `encoding`: If encoding is true, the data is encoding video data statistics.
+ *  - `avg_loss`: The video's average package loss.
+ *  - `jitter`: The video's jitter.
+ *  - `max_loss`: The video's maximum package loss.
+ *  - `rtt`: The video's round trip time.
+ *  - `sample_rate`: The video's sample rate.
+ *  - `width`: The video's width.
+ *  - `height`: The video's height.
+ *  - `fps`: The video's frames per second (fps).
  * - `type` : string VIDEO_QOS_DATA.
  *
  * ```javascript
@@ -681,39 +793,39 @@ export declare function event_video_statistic_data_change(payload: {
 
 export declare function event_caption_message(payload: {
   /**
-   * message ID
+   * Message ID.
    */
   msgId: string;
   /**
-   * user ID of the message
+   * User sending the message.
    */
   userId: number;
   /**
-   * display name
+   * Display name.
    */
   displayName: string;
   /**
-   * avatar
+   * Avatar.
    */
   avatar?: string;
   /**
-   * text content
+   * Text content.
    */
   text: string;
   /**
-   * source of the live transcription message
+   * Source of the live transcription message.
    */
   source: LiveTranscriptionMessageSource;
   /**
-   *  language code of the live translation
+   * Language code of the live translation.
    */
   language: LiveTranscriptionLanguageCode;
   /**
-   * timestamp
+   * Timestamp.
    */
   timestamp: number;
   /**
-   * Is this sentence over?
+   * Whether the sentence is done.
    */
   done?: boolean;
 }): void;
@@ -722,15 +834,23 @@ export declare function event_recording_change(payload: RecordingStatus): void;
 
 export declare function event_local_recording_change(payload: { userId: number; bLocalRecord: boolean }): void;
 
+export declare function event_user_added(payload: ParticipantPropertiesPayload): void;
+
+export declare function event_user_removed(payload: ParticipantPropertiesPayload): void;
+
+export declare function event_user_updated(payload: ParticipantPropertiesPayload): void;
+
+export declare function event_peer_share_state_change(payload: { userId: number; action: string }): void;
+
 export declare namespace EmbeddedClient {
   /**
    * Initializes the Meeting SDK for web component view client.
-   * @param args init options
+   * @param args Init options.
    */
   function init(args: InitOptions): ExecutedResult;
   /**
    * Joins a meeting and renders the client.
-   * @param args join options
+   * @param args Join options.
    */
   function join(args: JoinOptions): ExecutedResult;
   /**
@@ -750,38 +870,38 @@ export declare namespace EmbeddedClient {
    * Only works if the audio flag is `true` in the media constraints.
    *
    * For version 2.1.1 and higher.
-   * @returns executed promise.
+   * @returns Executed promise.
    */
   function stopAudio(): ExecutedResult;
   /**
    * Toggles mute.
-   * @param mute true to mute, false to unmute.
-   * @param userId user to toggle mute for.
+   * @param mute True to mute, false to unmute.
+   * @param userId User to toggle mute for.
    */
   function mute(mute: boolean, userId?: Number): ExecutedResult;
   /**
    * Mutes all participants.
-   * @param muteAll true to mute, false to unmute.
+   * @param muteAll True to mute, false to unmute.
    */
   function muteAll(muteAll: boolean): ExecutedResult;
   /**
    * Renames participant.
-   * @param newName new name.
-   * @param userId user to rename.
+   * @param newName New name.
+   * @param userId User to rename.
    */
   function rename(newName: string, userId: number): ExecutedResult;
   /**
-   * Admits a participant from the waiting room.
-   * @param userId user to admit.
+   * Admits a participant into the meeting from the waiting room.
+   * @param userId User to admit.
    */
   function admit(userId: number): ExecutedResult;
   /**
-   * Admits all participants in the waiting room.
+   * Admits all participants into the meeting from the waiting room.
    */
   function admitAll(): ExecutedResult;
   /**
    * Expels a user from the meeting.
-   * @param userId user to expel.
+   * @param userId User to expel.
    */
   function expel(userId: number): ExecutedResult;
   /**
@@ -791,12 +911,12 @@ export declare namespace EmbeddedClient {
   function record(record: 'start' | 'pause' | 'stop'): ExecutedResult;
   /**
    * Locks meeting.
-   * @param lockMeeting true to lock, false to unlock.
+   * @param lockMeeting True to lock, false to unlock.
    */
   function lockMeeting(lockMeeting: boolean): ExecutedResult;
   /**
    * Leaves the meeting. If leaving as a host, pass in the userId to assign as the new host.
-   * @param userId The user ID to assign as the new host (if leaving as a host).
+   * @param userId User to assign as the new host (if leaving as a host).
    */
   function leaveMeeting(userId?: number): ExecutedResult;
   /**
@@ -805,71 +925,108 @@ export declare namespace EmbeddedClient {
   function endMeeting(): ExecutedResult;
   /**
    * Toggles if a user is on hold.
-   * @param userId user to toggle hold status for.
-   * @param hold true to put on hold, false to remove from hold.
+   * @param userId User to toggle hold status for.
+   * @param hold True to put on hold, false to remove from hold.
    */
   function putOnHold(userId: number, hold: boolean): ExecutedResult;
   /**
    * Toggles if a webinar attendee can talk.
-   * @param userId user to toggle the talking permission.
-   * @param isAllow true to allow the attendee to talk, false to disable talking.
+   * @param userId User to toggle the talking permission.
+   * @param isAllow True to allow the attendee to talk, false to disable talking.
    */
   function allowAttendeeToTalk(userId: number, isAllow: boolean): ExecutedResult;
   /**
-   * subscribe statistic quality of service (QoS) data
-   * @param args.audio if true subscribe audio QoS.
-   * @param args.video if true subscribe video QoS.
+   * Subscribes to the statistic quality of service (QoS) data.
+   * @param args.audio If true, subscribe to the audio QoS.
+   * @param args.video If true, subscribe to the video QoS.
    */
   function subscribeStatisticData(args?: { audio: boolean; video: boolean }): ExecutedResult;
   /**
-   * unsubscribe statistic quality of service (QoS) data.
-   * @param args.audio if true unsubscribe audio QoS.
-   * @param args.video if true unsubscribe video QoS.
+   * Unsubscribes to the statistic quality of service (QoS) data.
+   * @param args.audio If true, unsubscribe to the audio QoS.
+   * @param args.video If true, unsubscribe to the video QoS.
    */
   function unSubscribeStatisticData(args?: { audio: boolean; video: boolean }): ExecutedResult;
   /**
-   * Send private chat message to meeting participants. This API does not support send chat message in webinar
-   * @param chatMessage the chat message to be sent, it cannot be undefined/null/empoty
-   * @param userId the message receiver's userId
+   * Sends private chat message to meeting participants. This API does not support send chat message in webinar.
+   * @param chatMessage the chat message to be sent, it cannot be undefined, null, or empty.
+   * @param userId the message receiver's userId.
    */
   function sendChat(chatMessage: string, userId: number): Promise<ChatMessage | Error>;
   /**
-   * Get the current status of virtual background setting
+   * Gets the current status of the virtual background setting.
    * @category VirtualBackground
    */
   function getVirtualBackgroundStatus(): { id: string; isVbOn: boolean; isLock: boolean; vbList: VbImageInfoType[] };
   /**
-   * Check if the device support the virtual background
+   * Checks if the device supports the virtual background feature.
    * @category VirtualBackground
    */
   function isSupportVirtualBackground(): Boolean;
   /**
-   * Lock the current virtual background image
-   * @param isLock true to lock the current virtual background image, false to unlock
+   * Locks the current virtual background image.
+   * @param isLock true to lock the current virtual background image, false to unlock.
    * @category VirtualBackground
    */
   function lockVirtualBackground(isLock: boolean): ExecutedResult;
   /**
-   * Update the virtual background image options
-   * Cannot update the virtual background image list with the virtual background settings tab open
-   * Cannot update the virtual background image if the user selected 'blur' or virtual background image
-   * 'id' attribute of the image in list must be unique and cannot be 'blur'
-   * 'id', 'fileName', 'displayName', 'url' are all required for each image of the list
-   * @param vbImageList the image list for virtual background settings
+   * Updates the virtual background (VB) image options.
+   * Cannot update the VB image list with the VB settings tab open.
+   * Cannot update the VB image if the user selected 'blur' or VB image.
+   * 'id' attribute of the image in the list must be unique and cannot be 'blur'.
+   * 'id', 'fileName', 'displayName', 'url' are all required for each image of the list.
+   * @param vbImageList the image list for VB settings.
    * @category VirtualBackground
    */
   function updateVirtualBackgroundList(vbImageList: VbImageInfoType[]): ExecutedResult;
   /**
-   * Set the virtual background image by image id
-   * Cannot remove virtual background if a virtual background image is selected by UI or set by this API
-   * Cannot set new virtual background image if the virtual background image is locked
-   * The image with 'vbImageId' must exist in the current virtual background image list
-   * @param vbImageId: the id of the in the image list for the target virtual background image, '' for no virtual background and 'blur' for the blur virtual background
+   * Sets the virtual background (VB) image by image ID.
+   * You cannot remove the VB if a VB image has been selected by a user using the UI or if it has been already set by this API.
+   * You cannot set a new VB image if the VB image is locked.
+   * The image with vbImageId must exist in the current VB image list.
+   * @param vbImageId: the ID of the in the image list for the target VB image, '' for no VB and 'blur' for the blur VB.
    * @category VirtualBackground
    */
   function setVirtualBackground(vbImageId: string): ExecutedResult;
   /**
-   * Listen for the events and handle them.
+   * Returns true if the current user is a co-host, false otherwise.
+   */
+  function isCoHost(): boolean;
+  /**
+   * Returns true if the current user is the host, false otherwise.
+   */
+  function isHost(): boolean;
+  /**
+   * Returns true if the current user is the original meeting host, false otherwise.
+   */
+  function isOriginHost(): boolean;
+  /**
+   * Makes the user with the corresponding user ID into a co-host.
+   * @param userId A valid user ID in the current meeting.
+   */
+  function makeCoHost(userId: number): ExecutedResult;
+  /**
+   * Makes the user with the corresponding user ID into the host.
+   * @param userId A valid user ID in the current meeting.
+   */
+  function makeHost(userId: number): ExecutedResult;
+  /**
+   * Restores the host status to the current user if the request is valid.
+   */
+  function reclaimHost(): ExecutedResult;
+  /**
+   * Allows user to claim the host status using the host key.
+   * Only successful in meetings with no host.
+   * @param hostKey The host key.
+   */
+  function claimHostWithHostKey(hostKey: string): ExecutedResult;
+  /**
+   * Removes the co-host status from the corresponding user.
+   * @param userId A valid user ID of a co-host in the current meeting.
+   */
+  function revokeCoHost(userId: number): ExecutedResult;
+  /**
+   * Listens for the events and handles them.
    * For example:
    * ```javascript
    * on("connection-change", (payload) => {
@@ -878,8 +1035,8 @@ export declare namespace EmbeddedClient {
    *  }
    * })
    * ```
-   * @param event event name (for meeting end event, set the event to "connection-change").
-   * @param callback event handler (for meeting end event, the payload of the callback is payload.state === 'Closed')
+   * @param event Event name (for meeting end event, set the event to "connection-change").
+   * @param callback Event handler (for meeting end event, the payload of the callback is payload.state === 'Closed').
    */
   function on(event: 'connection-change', callback: (payload: any) => void): void;
   function on(event: 'audio-statistic-data-change', callback: typeof event_audio_statistic_data_change): void;
@@ -887,9 +1044,13 @@ export declare namespace EmbeddedClient {
   function on(event: 'caption-message', callback: typeof event_caption_message): void;
   function on(event: 'recording-change', callback: typeof event_recording_change): void;
   function on(event: 'local-recording-change', callback: typeof event_local_recording_change): void;
+  function on(event: 'user-added', callback: typeof event_user_added): void;
+  function on(event: 'user-removed', callback: typeof event_user_removed): void;
+  function on(event: 'user-updated', callback: typeof event_user_updated): void;
+  function on(event: 'peer-share-state-change', callback: typeof event_peer_share_state_change): void;
   /**
-   * Remove the event handler. Must be used with on() in pairs.
-   * @param event event name. Same as 'on' event name list
+   * Removes the event handler. Must be used with on() in pairs.
+   * @param event event name. Same as 'on' event name list.
    * @param callback event handler.
    */
   function off(event: string, callback: (payload: any) => void): void;
@@ -909,6 +1070,7 @@ export declare namespace EmbeddedClient {
 export declare namespace ZoomMtgEmbedded {
   const VERSION: string;
   function createClient(): typeof EmbeddedClient;
+  function destroyClient(): void;
 }
 
 export default ZoomMtgEmbedded;

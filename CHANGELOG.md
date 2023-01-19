@@ -1,4 +1,39 @@
 # CHANGELOG
+## version 2.9.7
+## General
+### Added
+1. APIs for host and co-host status management. See API reference for details.
+1. “Camera not connected” icon for when the user does not have a camera connected.
+1. Support for recording with Zoom IQ.
+
+## Client View
+### Added
+1. “Optimize for Video Clip” feature, which shares video with higher frames per second (fps).
+1. Network quality indication to active speaker view.
+
+### Fixed
+1. An issue where attendees could submit a poll without adding responses, resulting in a polling error.
+1. Participants not having “Collapse All“ and “Expand All” options when self-selecting a Breakout Room.
+1. Users not being taken correctly to the post-meeting survey URL.
+1. Inability to properly scroll up on the caption language-selection menu when the screen was too small.
+1. Video being displayed in unintentional ways when switching to focus mode.
+1. Participants’ view not reverting to their previous view mode when spotlight is removed.
+1. Webinar attendees being unable to hear audio on mobile browsers in certain cases.
+1. ‘disableJoinAudio’ argument in ‘init()’ function not being properly read.
+
+## Component view
+### Added
+1. API to destroy the Component View client to allow re-creation from scratch.
+1. Event listener API for listening to screen share-related events.
+1. Event listener API for listening to Participant-related events.
+
+### Enhanced
+1. Toolbar to show more icons when in Gallery View.
+1. Chat privilege dropdown menu with a clarifying header.
+
+### Fixed
+1. Incorrect “Email is Blocked by Administrator” errors when joining a meeting or webinar requiring registration in certain cases.
+
 ## version 2.9.5
 ## Client View
 ### Added
@@ -84,7 +119,6 @@ The following release notes apply to the Meeting SDK for Web client view.
 1. Interpretation feature to include host controls.
 1. API reference documentation.
 1. Support for sending 720p video on macOS devices using an M1 or M2 chip when gallery view enabled.
-1. “Copy invite link” support for Zoom Events.
 1. Dropdown menu options offered by chevron buttons on audio and video toolbar buttons.
 
 ### Fixed
@@ -93,7 +127,6 @@ The following release notes apply to the Meeting SDK for Web client view.
 1. Last frame afterimage when starting focus mode in certain cases.
 1. Inconsistent mic animation between toolbar and participant list.
 1. Active speaker not changing correctly in speaker view.
-1. “Is livestream enabled” flag not being set properly for Zoom Events.
 1. Incorrect active speaker when selecting “See myself as the active speaker” in certain cases.
 1. Breakout rooms not being numbered when created by co-hosts with the automatically-assign option.
 1. Incorrect text in the join-breakout-room pop-up window in certain cases.
