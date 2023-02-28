@@ -161,6 +161,14 @@ declare let initArgs: {
    * externalLinkPage: an intermediary HTML page for outgoing hyperlinks.
    */
   externalLinkPage?: string // optional
+  /** 
+   * defaultView: 'gallery' , optional. set the default video layout gallery, if Gallery View can be shown. (default is speaker)
+   */
+  defaultView?: string // optional
+  /**
+   * Show (default, false) or hide (true) the "Share tab audio" checkbox when sharing a Chrome tab
+   */
+  hideShareAudioOption?: boolean;
   /**
    * success: optional, callback function on success.
    */
@@ -210,7 +218,7 @@ export type VbImageInfoType = {
 /**
  * In meeting event listeners.
  */
-export type InMeetingEvent = 'onUserJoin' | 'onUserLeave' | 'onUserUpdate' | 'onUserIsInWaitingRoom' | 'onMeetingStatus' | 'onPreviewPannel|  receiveSharingChannelReady' | 'onReceiveTranscriptionMsg' | 'onReceiveTranslateMsg' | 'onAudioQos' | 'onVideoQos' | 'onClaimStatus'
+export type InMeetingEvent = 'onUserJoin' | 'onUserLeave' | 'onUserUpdate' | 'onUserIsInWaitingRoom' | 'onMeetingStatus' | 'onPreviewPannel|  receiveSharingChannelReady' | 'onReceiveTranscriptionMsg' | 'onReceiveTranslateMsg' | 'onAudioQos' | 'onVideoQos' | 'onClaimStatus' | 'onNetworkQualityChange'
 
 /**
  *  For the APIs that take images, the value of the image type returned by the getVideoSourcesCallBack method, passed in the shareSource API.
@@ -458,11 +466,11 @@ export namespace ZoomMtg {
    */
   function generateSDKSignature(args: {
     /**
-     * Required, your SDK JWT key
+     * Required, your Meeting SDK SDK key or client id
      */
     sdkKey: string;
     /**
-     * Required, your SDK JWT secret
+     * Required, your Meeting SDK SDK secret or client secret
      */
     sdkSecret: string;
     /**
@@ -1179,6 +1187,23 @@ function claimHostWithHostKey(args: {
   @category Listener
    */
   function inMeetingServiceListener(event: 'onClaimStatus', callback: Function): void;
+
+  /**
+   * Listens for user network quality change.
+   * @param event 
+   * @param callback 
+   * Example:
+  ```js
+  ZoomMtg.inMeetingServiceListener('onNetworkQualityChange', function (data) {
+    // {level: 0 || 1 || 2 || 3 || 4 || 5, userId, type: 'uplink' }
+    // 0,1 => bad; 2 => normal; 3,4,5 => good;
+    console.log(data);
+  });
+  ```
+  @category Listener
+   */
+  function inMeetingServiceListener(event: 'onNetworkQualityChange' , callback: Function): void;
+
   /**
    * Re-renders the UI, for example, after changing the UI language in a meeting.
    * @param args 
