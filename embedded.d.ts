@@ -460,7 +460,7 @@ export enum LiveTranscriptionLanguageCode {
 /**
  * The participant properties interface.
  */
-interface ParticipantPropertiesPayload {
+export interface ParticipantPropertiesPayload {
   /**
    * The user's ID.
    */
@@ -570,11 +570,21 @@ interface ParticipantPropertiesPayload {
   audioConnectionStatus?: number;
 }
 /**
+ * The view types
+ */
+export enum SuspensionViewType {
+  Minimized = 'minimized',
+  Speaker = 'speaker',
+  Ribbon = 'ribbon',
+  Gallery = 'gallery',
+  Active = 'active'
+}
+/**
  * Arguments and options for joining a meeting.
  */
 export interface JoinOptions {
   /**
-   * @param sdkKey The Web SDK SDK key.
+   * @param sdkKey The Meeting SDK SDK key or client id.
    */
   sdkKey?: string;
   /**
@@ -618,6 +628,19 @@ export interface JoinOptions {
    * @param error Join error callback.
    */
   error?: Function;
+}
+/**
+ * Interface of active speaker in meeting.
+ */
+interface ActiveSpeaker {
+  /**
+   * User ID.
+   */
+  userId: number;
+  /**
+   * User's display name.
+   */
+  displayName?: string;
 }
 export type MeetingInfoType = 'topic' | 'host' | 'mn' | 'pwd' | 'telPwd' | 'invite' | 'participant' | 'dc' | 'enctype';
 export type PopperPlacementType =
@@ -725,7 +748,8 @@ export interface InitOptions {
      * Customization options for the video or suspension view.
      * @param popper Options for the underlying popper element.
      * @param isResizable Whether the video view is resizable. Default is true.
-     * @param size Sizing options for the ribbon view and all other views.
+     * @param viewSizes Sizing options for the ribbon view and all other views.
+     * @param defaultViewType default view type for the meeting
      */
     video?: {
       popper?: VideoPopperStyle;
@@ -733,6 +757,22 @@ export interface InitOptions {
       viewSizes?: {
         ribbon?: CustomSize;
         default?: CustomSize;
+      };
+      defaultViewType?: SuspensionViewType;
+    };
+    /**
+     * Customization options for screen sharing. Note that audio-sharing is currently only supported for Chrome tabs, and users CANNOT SPEAK
+     * while sharing audio. Users can speak by (1) pausing or (2) ending an audio screen share
+     */
+    sharing?: {
+      /**
+       * Start-screen-share options
+       */
+      options?: {
+        /**
+         * Show (default, false) or hide (true) the "Share tab audio" checkbox when sharing a Chrome tab
+         */
+        hideShareAudioOption?: boolean;
       };
     };
   };
@@ -841,7 +881,7 @@ export declare function event_user_removed(payload: ParticipantPropertiesPayload
 export declare function event_user_updated(payload: ParticipantPropertiesPayload): void;
 
 export declare function event_peer_share_state_change(payload: { userId: number; action: string }): void;
-
+export declare function event_audio_active_speaker(payload: Array<ActiveSpeaker>): void;
 export declare namespace EmbeddedClient {
   /**
    * Initializes the Meeting SDK for web component view client.
@@ -1048,6 +1088,7 @@ export declare namespace EmbeddedClient {
   function on(event: 'user-removed', callback: typeof event_user_removed): void;
   function on(event: 'user-updated', callback: typeof event_user_updated): void;
   function on(event: 'peer-share-state-change', callback: typeof event_peer_share_state_change): void;
+  function on(event: 'active-speaker', callback: typeof event_audio_active_speaker): void;
   /**
    * Removes the event handler. Must be used with on() in pairs.
    * @param event event name. Same as 'on' event name list.
