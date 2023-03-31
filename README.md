@@ -77,13 +77,13 @@ For the full list of features and event listeners, as well as additional guides,
 
 > The Client View provides the option to display the Meeting SDK as a full page. This allows for a familiar Zoom Meeting experience because the Client View is the same as the [Zoom Web Client](https://support.zoom.us/hc/en-us/articles/214629443-Zoom-Web-Client), except it lives inside your own web page.
 
-In the component file where you want to use the Meeting SDK, import `ZoomMtg` and call the `preLoadWasm()`, `prepareJssdk()`, and `setZoomJSLib()` functions.
+In the component file where you want to use the Meeting SDK, import `ZoomMtg` and call the `preLoadWasm()`, `prepareWebSDK()`, and `setZoomJSLib()` functions.
 
 ```js
 import { ZoomMtg } from '@zoomus/websdk'
 
 ZoomMtg.preLoadWasm()
-ZoomMtg.prepareJssdk()
+ZoomMtg.prepareWebSDK()
 
 // loads language files, also passes any error messages to the ui
 ZoomMtg.i18n.load('en-US')
