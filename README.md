@@ -12,7 +12,7 @@ In your frontend project, install the Meeting SDK:
 $ npm install @zoomus/websdk --save
 ```
 
-There are two views to choose from, [Component View](#usage-component-view), and [Client View](#usage-client-view).
+There are two views to choose from, [Component View](https://github.com/zoom/meetingsdk-web#usage---component-view), and [Client View](https://github.com/zoom/meetingsdk-web#usage---client-view).
 
 ## Usage - Component View
 
