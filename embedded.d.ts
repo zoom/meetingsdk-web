@@ -170,9 +170,6 @@ export interface Participant {
    * Whether the share is paused.
    */
   sharePause: boolean;
-  /**
-   * User's SDK key, if using one.
-   */
   sdkKey: string;
   astAdmin?: boolean;
   rmcAdmin?: boolean;
@@ -589,7 +586,7 @@ export interface JoinOptions {
   sdkKey?: string;
   /**
    * @param signature The generated signature to create or join the meeting.
-   * See [Generate the SDK JWT](https://marketplace.zoom.us/docs/sdk/native-sdks/auth#generate-the-sdk-jwt) for details.
+   * See [Generate the SDK JWT](https://developers.zoom.us/docs/meeting-sdk/auth/) for details.
    */
   signature: string;
   /**
@@ -632,7 +629,7 @@ export interface JoinOptions {
 /**
  * Interface of active speaker in meeting.
  */
-interface ActiveSpeaker {
+export interface ActiveSpeaker {
   /**
    * User ID.
    */
@@ -688,8 +685,40 @@ export interface InitOptions {
   webEndpoint?: string;
   /**
    * @param language Default 'en-US'.
+   * @property de-DE - German Deutsch
+   * @property es-ES - Spanish Español
+   * @property fr-FR - French Français
+   * @property id-ID - Indonesian Bahasa Indonesia
+   * @property it-IT - Italian Italia
+   * @property jp-JP - Japanese 日本語
+   * @property ko-KO - Korean 한국
+   * @property nl-NL - Dutch Nederlands
+   * @property pl-PL - Polish Polska
+   * @property pt-PT - Portuguese Português
+   * @property ru-RU - Russian Русский
+   * @property tr-TR - Turkish Türkçe
+   * @property zh-CN - Chinese 简体中文
+   * @property zh-TW - Chinese 繁体中文
+   * @property vi-VN - Vietnamese Tiếng Việt
+   * @property en-US - English Default
    */
-  language?: string;
+  language?:
+    | 'en-US'
+    | 'de-DE'
+    | 'es-ES'
+    | 'fr-FR'
+    | 'jp-JP'
+    | 'pt-PT'
+    | 'ru-RU'
+    | 'zh-CN'
+    | 'zh-TW'
+    | 'ko-KO'
+    | 'vi-VN'
+    | 'it-IT'
+    | 'pl-PL'
+    | 'tr-TR'
+    | 'id-ID'
+    | 'nl-NL';
   /**
    * @param customize Optional customization options for the embedded client.
    */

@@ -145,7 +145,7 @@ declare let initArgs: {
   isSupportSimulive?: boolean; // optional
   /**
    * enableHD: optional, >=2.8.0 default=true. <2.8.0 default is false. Enables or disables 720p (bandwidth and hardware restrictions apply). See for details:
-   * https://marketplace.zoom.us/docs/sdk/overview/720p/
+   * https://developers.zoom.us/docs/meeting-sdk/web/720p/
    */
   enableHD?: boolean; // optional
   /**
@@ -294,14 +294,35 @@ export enum BreakoutRoomStatus {
   Closed = 5
 }
 
+
+/**
+ * Interface for the result of check feature support information on user's platform.
+ * If a feature in supportFeatures array, means this feature is supported on current platform.
+ * If a feature in unSupportFeatures array, means this feature is not supported on current platform.
+ */
+export interface SupportFeatures {
+  /**
+   * @ignore
+   */
+  platform: string;
+  /**
+   * @ignore
+   */
+  supportFeatures: Array<string>;
+  /**
+   * @ignore
+   */
+  unSupportFeatures: Array<string>;
+}
+
 /**
  * ZoomMtg.i18n
  * 
  * Examples:
  * 
- * en-US https://source.zoom.us/2.9.0/lib/lang/en-US.json
+ * en-US https://source.zoom.us/{VERSION_NUMBER}/lib/lang/en-US.json
  * 
- * zh-CN https://source.zoom.us/2.9.0/lib/lang/zh-CN.json
+ * zh-CN https://source.zoom.us/{VERSION_NUMBER}/lib/lang/zh-CN.json
  * ```js
  * ZoomMtg.i18n.load('en-US');
   var userLangTemplate = ZoomMtg.i18n.getAll("en-US");
@@ -319,12 +340,12 @@ export enum BreakoutRoomStatus {
 export declare namespace ZoomMtgLang {
   /**
    * Loads translations.
-   * See for abbreviation descriptions: https://marketplace.zoom.us/docs/api-reference/other-references/abbreviation-lists/#languages
-   * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT'
+   * See for abbreviation descriptions: https://developers.zoom.us/docs/meeting-sdk/web/client-view/multi-language/
+   * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT', 'id-ID', 'nl-NL'
    * @param lang
    *
    */
-  function load(lang: 'de-DE'| 'es-ES'| 'en-US'| 'fr-FR'| 'jp-JP'| 'pt-PT'| 'ru-RU'| 'zh-CN'| 'zh-TW'| 'ko-KO'| 'vi-VN'| 'it-IT'): Promise<any>;
+  function load(lang: 'de-DE'| 'es-ES'| 'en-US'| 'fr-FR'| 'jp-JP'| 'pt-PT'| 'ru-RU'| 'zh-CN'| 'zh-TW'| 'ko-KO'| 'vi-VN'| 'it-IT'| 'id-ID'| 'nl-NL'): Promise<any>;
   /**
    * Loads translation URL. Use the URL provided by Zoom or your own resource object.
    * For the Zoom-provided JSON language use this syntax: https://source.zoom.us/{VERSION_NUMBER}/lib/lang/{LANG_CODE}.json. 
@@ -336,7 +357,7 @@ export declare namespace ZoomMtgLang {
   function load(url: string | object, lang: string): Promise<any>;
   /**
    * Changes UI language. Set a supported language when joining a meeting.
-   * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT' or you loaded lang
+   * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT', 'id-ID', 'nl-NL' or you loaded lang
    * @param lang
    *
    */
@@ -369,7 +390,7 @@ export declare namespace ZoomMtgLang {
   /**
    * Sets the support language array.
    * @param langArray Array of the languages that you want to support. 
-   * This will replace the default: ['de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT']
+   * This will replace the default: ['de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT', 'id-ID', 'nl-NL']
    */
   function setSupportLanguage(langArray: Array<string>): void;
 }
@@ -459,7 +480,7 @@ export namespace ZoomMtg {
   /**
    * Generate each time you join a meeting or webinar through a server-side function where you can securely store SDK credentials.
    * See Generate the SDK JWT key for details: 
-   * https://marketplace.zoom.us/docs/sdk/native-sdks/auth/#generate-the-sdk-jwt
+   * https://developers.zoom.us/docs/meeting-sdk/auth/
    * See the Sample Signature app for an example:
    * https://github.com/zoom/meetingsdk-sample-signature-node.js
    * @category Join
@@ -506,7 +527,7 @@ export namespace ZoomMtg {
    * Note that Chrome origin trials (OT) provide many new features before Chrome releases. See the following links for details: 
    * https://developer.chrome.com/origintrials/#/trials/active and https://developer.chrome.com/blog/origin-trials/
    * The Meeting SDK for Web can use:
-   * 1. SharedArrayBuffer (SAB) OT for gallery view (Chrome 92 to 103). See: https://marketplace.zoom.us/docs/sdk/overview/websdk-gallery-view/
+   * 1. SharedArrayBuffer (SAB) OT for gallery view (Chrome 92 to 103). See: https://developers.zoom.us/docs/meeting-sdk/web/gallery-view/
    * 2. WebAssembly SIMD to improve video and sharing performance (Chrome91 release). See: https://chromestatus.com/feature/6533147810332672
    * 3. WebCodecs to address latency when starting video (Chrome94 release). See: https://chromestatus.com/feature/5669293909868544
    * @category Join
@@ -560,7 +581,7 @@ export namespace ZoomMtg {
      */
     sdkKey?: string;
     /**
-     * Required. The signature to start or join a meeting. See https://marketplace.zoom.us/docs/sdk/native-sdks/auth/ for details.
+     * Required. The signature to start or join a meeting. See https://developers.zoom.us/docs/meeting-sdk/auth/ for details.
      */
     signature: string;
     /**
@@ -1386,4 +1407,34 @@ function claimHostWithHostKey(args: {
      */
     error?: Function;
   }): void;
+
+  /**
+   * Get the support or unsuppport features on the current browser/platform.
+   *
+   * @returns A `SupportFeatures` object. The object has following properties:
+   * - `platform`: string, the browser version info or platform version info.
+   * - `supportFeatures`: Array<string>, contains all the support features on current platform.
+   * - `unSupportFeatures`: Array<string>, contains all the unsupport features on current platform.
+   */
+  function checkFeatureRequirements(): SupportFeatures;
+
+  /**
+   * Stop Incoming Audio
+   * Don't support mobile device
+   */
+  function stopIncomingAudio(args: {
+      /**
+       * stop = true, stop incoming audio
+       */
+      stop: boolean;
+      /**
+       * Callback function on success.
+       */
+      success?: Function; 
+      /**
+       * Callback function in the event of an error.
+       */
+      error?: Function;
+    }
+  ): SupportFeatures;
 }

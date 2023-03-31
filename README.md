@@ -2,7 +2,7 @@
 
 Use of this SDK is subject to our [Terms of Use](https://zoom.us/docs/en-us/zoom_api_license_and_tou.html)
 
-The [Zoom Meeting SDK](https://marketplace.zoom.us/docs/sdk/native-sdks/web) embeds the Zoom Meeting and Webinar experience in a website through a highly optimized WebAssembly module.
+The [Zoom Meeting SDK](https://developers.zoom.us/docs/meeting-sdk/web/) embeds the Zoom Meeting and Webinar experience in a website through a highly optimized WebAssembly module.
 
 ## Installation
 
@@ -44,18 +44,18 @@ let meetingSDKElement = document.getElementById('meetingSDKElement')
 client.init({ zoomAppRoot: meetingSDKElement, language: 'en-US' })
 ```
 
-Now we will start or join the meeting or webinar. Here are the required properties for the `client.join()` function. You can get the Meeting or Webinar number and passcode from the [Zoom APIs](https://marketplace.zoom.us/docs/api-reference/zoom-api/meetings/meetingcreate).
+Now we will start or join the meeting or webinar. Here are the required properties for the `client.join()` function. You can get the Meeting or Webinar number and passcode from the [Zoom APIs](https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#overview).
 
 | Key  | 	Value Description  |
 |---|---|
 | `sdkKey`  | Required, your SDK Key.  |
-| `signature` | Required, your [SDK JWT](https://marketplace.zoom.us/docs/sdk/native-sdks/auth). |
+| `signature` | Required, your [SDK JWT](https://developers.zoom.us/docs/meeting-sdk/auth/). |
 | `meetingNumber`  | Required, the Zoom Meeting or Webinar Number.  |
 | `password`  | Required, leave as empty string if the Meeting or Webinar only requires the waiting room.  |
 | `userName`  | Required, the name of the user starting or joining the Meeting or Webinar.  |
 | `userEmail`  | Required for Webinar, optional for Meeting, required for Meeting and Webinar if registration is required. The email of the user starting or joining the Meeting or Webinar.  |
 | `tk`  | Required if your Meeting or Webinar requires [registration](https://support.zoom.us/hc/en-us/articles/360054446052-Managing-meeting-and-webinar-registration). The registrant's token. |
-| `zak`  | Required if you are starting a Meeting or Webinar. The host's [Zoom Access Key (ZAK)](https://marketplace.zoom.us/docs/sdk/native-sdks/auth#get-a-users-zak-token).  |
+| `zak`  | Required if you are starting a Meeting or Webinar. The host's [Zoom Access Key (ZAK)](https://developers.zoom.us/docs/meeting-sdk/auth/#start-meetings-and-webinars-with-a-zoom-users-zak-token).  |
 
 Then, start or join the meeting or webinar.
 
@@ -69,7 +69,7 @@ client.join({
 })
 ```
 
-For the full list of features and event listeners, as well as additional guides, see our [Meeting SDK docs](https://marketplace.zoom.us/docs/sdk/native-sdks/web/component-view).
+For the full list of features and event listeners, as well as additional guides, see our [Meeting SDK docs](https://developers.zoom.us/docs/meeting-sdk/web/component-view/).
 
 ## Usage - Client View
 
@@ -92,7 +92,7 @@ ZoomMtg.i18n.reload('en-US')
 ZoomMtg.setZoomJSLib('https://source.zoom.us/{VERSION_NUMBER}/lib', '/av')
 ```
 
-> When imported, the Meeting SDK adds new elements to the DOM to handle client overlays and accessibility elements. To manage or manipulate this DOM element within your app [see this guide](https://marketplace.zoom.us/docs/sdk/native-sdks/web/client-view/import#about-appended-dom-elements).
+> When imported, the Meeting SDK adds new elements to the DOM to handle client overlays and accessibility elements. To manage or manipulate this DOM element within your app [see this guide](https://developers.zoom.us/docs/meeting-sdk/web/client-view/import/#appended-dom-elements).
 
 Add the following styles to the HTML page you want the Meeting SDK to live on, or `index.html` if you are using a single page app framework.
 
@@ -104,7 +104,7 @@ Add the following styles to the HTML page you want the Meeting SDK to live on, o
 </head>
 ```
 
-> Replace `{VERSION_NUMBER}` in the code above with the [latest version number](https://marketplace.zoom.us/docs/changelog#labels/meeting-sdk-web).
+> Replace `{VERSION_NUMBER}` in the code above with the [latest version number](https://devsupport.zoom.us/hc/en-us/sections/9220917097869-web).
 
 Back in the component file we will init and start or join the meeting or webinar. Here are the required properties for the `ZoomMtg.init()` function.
 
@@ -112,18 +112,18 @@ Back in the component file we will init and start or join the meeting or webinar
 |---|---|
 | `leaveUrl` |  Required, the URL the participant is taken to once they leave or when the meeting ends. |
 
-Here are the required properties for the `ZoomMtg.join()` function. You can get the Meeting or Webinar number and passcode from the [Zoom APIs](https://marketplace.zoom.us/docs/api-reference/zoom-api/meetings/meetingcreate).
+Here are the required properties for the `ZoomMtg.join()` function. You can get the Meeting or Webinar number and passcode from the [Zoom APIs](https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#overview).
 
 | Key  | 	Value Description  |
 |---|---|
 | `sdkKey`  | Required, your SDK Key.  |
-| `signature` | Required, your [SDK JWT](https://marketplace.zoom.us/docs/sdk/native-sdks/auth). |
+| `signature` | Required, your [SDK JWT](https://developers.zoom.us/docs/meeting-sdk/auth/). |
 | `meetingNumber`  | Required, the Zoom Meeting or Webinar Number.  |
 | `passWord`  | Required, leave as empty string if the Meeting or Webinar only requires the waiting room.  |
 | `userName`  | Required, the name of the user starting or joining the Meeting or Webinar.  |
 | `userEmail`  | Required for Webinar, optional for Meeting, required for Meeting and Webinar if registration is required. The email of the user starting or joining the Meeting or Webinar.  |
 | `tk`  | Required if your Meeting or Webinar requires [registration](https://support.zoom.us/hc/en-us/articles/360054446052-Managing-meeting-and-webinar-registration). The registrant's token. |
-| `zak`  | Required if you are starting a Meeting or Webinar. The host's [Zoom Access Key (ZAK)](https://marketplace.zoom.us/docs/sdk/native-sdks/auth#get-a-users-zak-token).  |
+| `zak`  | Required if you are starting a Meeting or Webinar. The host's [Zoom Access Key (ZAK)](https://developers.zoom.us/docs/meeting-sdk/auth/#start-meetings-and-webinars-with-a-zoom-users-zak-token).  |
 
 Then, init, and start or join the meeting or webinar.
 
@@ -155,7 +155,7 @@ ZoomMtg.init({
 })
 ```
 
-For the full list of features and event listeners, as well as additional guides, see our [Meeting SDK docs](https://marketplace.zoom.us/docs/sdk/native-sdks/web/client-view).
+For the full list of features and event listeners, as well as additional guides, see our [Meeting SDK docs](https://developers.zoom.us/docs/meeting-sdk/web/client-view/).
 
 ## Sample Apps
 
