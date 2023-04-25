@@ -16,7 +16,7 @@ There are two views to choose from, [Component View](https://github.com/zoom/mee
 
 ## Usage - Component View
 
-![Zoom Meeting SDK Component View](https://marketplace.zoom.us/docs/static/msdk-web-component-view-64311bbbf32eaddfc2f3fac6e89928df.gif)
+![Zoom Meeting SDK Component View](https://github.com/zoom/meetingsdk-web-sample/raw/master/images/meetingsdk-web-component-view.gif)
 
 > The Component View provides the option to display the Meeting SDK in components on your page. This allows for a more flexible design.
 
@@ -73,7 +73,7 @@ For the full list of features and event listeners, as well as additional guides,
 
 ## Usage - Client View
 
-![Zoom Meeting SDK Client View](https://marketplace.zoom.us/docs/static/msdk-web-client-view-6276487add553e9849f39a7cec9ac7c7.gif)
+![Zoom Meeting SDK Client View](https://github.com/zoom/meetingsdk-web-sample/raw/master/images/meetingsdk-web-client-view.gif)
 
 > The Client View provides the option to display the Meeting SDK as a full page. This allows for a familiar Zoom Meeting experience because the Client View is the same as the [Zoom Web Client](https://support.zoom.us/hc/en-us/articles/214629443-Zoom-Web-Client), except it lives inside your own web page.
 
