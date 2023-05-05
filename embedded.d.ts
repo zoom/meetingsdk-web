@@ -92,11 +92,13 @@ export interface RecordingInfo {
 /**
  * Cloud recording status.
  */
-export enum RecordingStatus {
+
+export const enum RecordingStatus {
   Recording = 'Recording',
   Paused = 'Paused',
   Stopped = 'Stopped'
 }
+export type RecordingStatusValue = 'Recording' | 'Paused' | 'Stopped';
 /**
  * Participant interface.
  */
@@ -170,6 +172,9 @@ export interface Participant {
    * Whether the share is paused.
    */
   sharePause: boolean;
+  /**
+   * This field is meant for internal use only, and is unrelated to the user's account SDK key
+   */
   sdkKey: string;
   astAdmin?: boolean;
   rmcAdmin?: boolean;
@@ -177,6 +182,10 @@ export interface Participant {
    * Whether the participant started local recording (such as on computer).
    */
   bLocalRecord?: boolean;
+  /**
+   * Optional. An identifier for the user that you can get back from the Meeting API.
+   */
+  customerKey?: string;
 }
 /**
  * The meeting information interface.
@@ -569,13 +578,14 @@ export interface ParticipantPropertiesPayload {
 /**
  * The view types
  */
-export enum SuspensionViewType {
+export const enum SuspensionViewType {
   Minimized = 'minimized',
   Speaker = 'speaker',
   Ribbon = 'ribbon',
   Gallery = 'gallery',
   Active = 'active'
 }
+export type SuspensionViewValue = 'minimized' | 'speaker' | 'ribbon' | 'gallery' | 'active';
 /**
  * Arguments and options for joining a meeting.
  */
@@ -787,7 +797,7 @@ export interface InitOptions {
         ribbon?: CustomSize;
         default?: CustomSize;
       };
-      defaultViewType?: SuspensionViewType;
+      defaultViewType?: SuspensionViewType | SuspensionViewValue;
     };
     /**
      * Customization options for screen sharing. Note that audio-sharing is currently only supported for Chrome tabs, and users CANNOT SPEAK
@@ -803,6 +813,12 @@ export interface InitOptions {
          */
         hideShareAudioOption?: boolean;
       };
+    };
+    /**
+     * Customization options for preview, disable preview by default
+     */
+    preview?: {
+      disable?: boolean;
     };
   };
   /**
@@ -859,6 +875,40 @@ export declare function event_video_statistic_data_change(payload: {
   };
   type: string;
 }): void;
+/**
+ * Occurs when the share video statistics data is changed; decode (received).
+ * @param payload The event detail.
+ * - `data`
+ *  - `encoding`: If encoding is true, the data is encoding share video data statistics.
+ *  - `avg_loss`: The share video's average package loss.
+ *  - `fps`: The share video's frames per second (fps).
+ *  - `height`: The share video's height.
+ *  - `jitter`: The share video's jitter.
+ *  - `max_loss`: The share video's maximum package loss.
+ *  - `rtt`: The share video's round trip time.
+ *  - `width`: The share video's width.
+ * - `type` : string VIDEOSHARE_QOS_DATA.
+ *
+ * ```javascript
+ * client.on('share_statistic_data_change', (payload) => {
+ *   console.log('emit', payload);
+ *  });
+ * ```
+ * @event
+ */
+export declare function event_share_statistic_data_change(payload: {
+  data: {
+    encoding: boolean;
+    avg_loss: number;
+    fps: number;
+    height: number;
+    jitter: number;
+    max_loss: number;
+    rtt: number;
+    width: number;
+  };
+  type: string;
+}): void;
 
 export declare function event_caption_message(payload: {
   /**
@@ -899,7 +949,7 @@ export declare function event_caption_message(payload: {
   done?: boolean;
 }): void;
 
-export declare function event_recording_change(payload: RecordingStatus): void;
+export declare function event_recording_change(payload: RecordingStatus | RecordingStatusValue): void;
 
 export declare function event_local_recording_change(payload: { userId: number; bLocalRecord: boolean }): void;
 
@@ -1008,14 +1058,16 @@ export declare namespace EmbeddedClient {
    * Subscribes to the statistic quality of service (QoS) data.
    * @param args.audio If true, subscribe to the audio QoS.
    * @param args.video If true, subscribe to the video QoS.
+   * @param args.share If true, subscribe to the share Qos.
    */
-  function subscribeStatisticData(args?: { audio: boolean; video: boolean }): ExecutedResult;
+  function subscribeStatisticData(args?: { audio: boolean; video: boolean; share: boolean }): ExecutedResult;
   /**
    * Unsubscribes to the statistic quality of service (QoS) data.
    * @param args.audio If true, unsubscribe to the audio QoS.
    * @param args.video If true, unsubscribe to the video QoS.
+   * @param args.share If true, unsubscribe to the share QoS.
    */
-  function unSubscribeStatisticData(args?: { audio: boolean; video: boolean }): ExecutedResult;
+  function unSubscribeStatisticData(args?: { audio: boolean; video: boolean; share: boolean }): ExecutedResult;
   /**
    * Sends private chat message to meeting participants. This API does not support send chat message in webinar.
    * @param chatMessage the chat message to be sent, it cannot be undefined, null, or empty.
@@ -1095,6 +1147,19 @@ export declare namespace EmbeddedClient {
    */
   function revokeCoHost(userId: number): ExecutedResult;
   /**
+   * Pins the corresponding user
+   * @param userId A valid user ID in the current meeting.
+   */
+  function addPin(userId: number): ExecutedResult;
+  /**
+   * Removes all pinned users
+   */
+  function removeAllPins(): ExecutedResult;
+  /**
+   * Gets the pinned user list
+   */
+  function getPinList(): number[];
+  /**
    * Listens for the events and handles them.
    * For example:
    * ```javascript
@@ -1110,6 +1175,7 @@ export declare namespace EmbeddedClient {
   function on(event: 'connection-change', callback: (payload: any) => void): void;
   function on(event: 'audio-statistic-data-change', callback: typeof event_audio_statistic_data_change): void;
   function on(event: 'video-statistic-data-change', callback: typeof event_video_statistic_data_change): void;
+  function on(event: 'share-statistic-data-change', callback: typeof event_share_statistic_data_change): void;
   function on(event: 'caption-message', callback: typeof event_caption_message): void;
   function on(event: 'recording-change', callback: typeof event_recording_change): void;
   function on(event: 'local-recording-change', callback: typeof event_local_recording_change): void;

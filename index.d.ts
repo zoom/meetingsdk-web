@@ -218,7 +218,7 @@ export type VbImageInfoType = {
 /**
  * In meeting event listeners.
  */
-export type InMeetingEvent = 'onUserJoin' | 'onUserLeave' | 'onUserUpdate' | 'onUserIsInWaitingRoom' | 'onMeetingStatus' | 'onPreviewPannel|  receiveSharingChannelReady' | 'onReceiveTranscriptionMsg' | 'onReceiveTranslateMsg' | 'onAudioQos' | 'onVideoQos' | 'onClaimStatus' | 'onNetworkQualityChange'
+export type InMeetingEvent = 'onUserJoin' | 'onUserLeave' | 'onUserUpdate' | 'onUserIsInWaitingRoom' | 'onMeetingStatus' | 'onPreviewPannel|  receiveSharingChannelReady' | 'onReceiveTranscriptionMsg' | 'onReceiveTranslateMsg' | 'onAudioQos' | 'onVideoQos' | 'onShareQos' |'onClaimStatus' | 'onNetworkQualityChange'
 
 /**
  *  For the APIs that take images, the value of the image type returned by the getVideoSourcesCallBack method, passed in the shareSource API.
@@ -1191,10 +1191,14 @@ function claimHostWithHostKey(args: {
   ZoomMtg.inMeetingServiceListener('onVideoQos', function (data) {
     console.log('onVideoQos', data);
   });
+
+  ZoomMtg.inMeetingServiceListener('onShareQos', function (data) {
+    console.log('onShareQos', data);
+  });
   ```
      * @category Listener
    */
-  function inMeetingServiceListener(event: 'onAudioQos' | 'onVideoQos', callback: Function): void;
+  function inMeetingServiceListener(event: 'onAudioQos' | 'onVideoQos' | 'onShareQos', callback: Function): void;
   /**
    * Listens for claim status after calling claimHost with host key.
    * @param event 
@@ -1267,6 +1271,10 @@ function claimHostWithHostKey(args: {
      */
     video?: boolean,
     /**
+     * If true, subscribe to share QoS data.
+     */
+    share?: boolean,
+    /**
      * Callback function on success.
      */
      success?: Function; 
@@ -1289,6 +1297,10 @@ function claimHostWithHostKey(args: {
      * If true, unsubscribe to video QoS data.
      */
     video?: boolean,
+     /**
+     * If true, unsubscribe to share QoS data.
+     */
+    share?: boolean,
     /**
      * Callback function on success.
      */
