@@ -110,6 +110,10 @@ export interface Participant {
   /**
    * User's display name.
    */
+  userName: string;
+  /**
+   * @deprecated on 3.0.0, use `userName`
+   */
   displayName: string;
   /**
    * User's audio state.
@@ -150,9 +154,17 @@ export interface Participant {
   /**
    * Whether the user is on hold.
    */
+  isHold: boolean;
+  /**
+   * @deprecated on 3.0.0, use `isHold`
+   */
   bHold: boolean;
   /**
    * Whether the user is started video.
+   */
+  video: boolean;
+  /**
+   * @deprecated on 3.0.0, use `video`
    */
   bVideoOn: boolean;
   /**
@@ -172,11 +184,15 @@ export interface Participant {
    * Whether the share is paused.
    */
   sharePause: boolean;
+  isAssistant?: boolean;
   /**
-   * This field is meant for internal use only, and is unrelated to the user's account SDK key
+   * * @deprecated on 3.0.0, use `isAssistant`
    */
-  sdkKey: string;
   astAdmin?: boolean;
+  isAdmin?: boolean;
+  /**
+   * @deprecated on 3.0.0, use `isAdmin`
+   */
   rmcAdmin?: boolean;
   /**
    * Whether the participant started local recording (such as on computer).
@@ -186,6 +202,42 @@ export interface Participant {
    * Optional. An identifier for the user that you can get back from the Meeting API.
    */
   customerKey?: string;
+  /**
+   * User pronoun
+   */
+  pronoun?: string;
+  /**
+   * @deprecated on 3.0.0, use `pronoun`
+   */
+  strPronoun?: string;
+  /**
+   * Participants's audio status.
+   * - 0: NotConnect,
+   * - 1: Connecting,
+   * - 2: ConnectSuccess,
+   * - 3: ConnectFail,
+   */
+  audioStatus?: number;
+  /**
+   * @deprecated on 3.0.0, use `audioStatus`
+   */
+  audioConnectionStatus?: number;
+  /**
+   * Is connect video
+   */
+  isVideoConnect?: boolean;
+  /**
+   * @deprecated on 3.0.0, use `isVideoConnect`
+   */
+  bVideoConnect?: boolean;
+  /**
+   * participantUUID
+   */
+  participantUUID?: string;
+  /**
+   * @deprecated on 3.0.0, use `participantUUID`
+   */
+  userGuid?: string;
 }
 /**
  * The meeting information interface.
@@ -678,6 +730,39 @@ export interface PopperStyle {
   placement?: PopperPlacementType;
 }
 export type VideoPopperStyle = Omit<PopperStyle, 'anchorElement' | 'modifiers' | 'placement' | 'anchorReference'>;
+export type LanguageOptionType =
+  | 'en-US'
+  | 'de-DE'
+  | 'es-ES'
+  | 'fr-FR'
+  | 'jp-JP'
+  | 'pt-PT'
+  | 'ru-RU'
+  | 'zh-CN'
+  | 'zh-TW'
+  | 'ko-KO'
+  | 'vi-VN'
+  | 'it-IT'
+  | 'pl-PL'
+  | 'tr-TR'
+  | 'id-ID'
+  | 'nl-NL';
+/**
+ * Options to customize video.
+ * @param popper Options for the underlying popper element.
+ * @param isResizable Whether the video container is resizable. Default is true.
+ * @param viewSizes Sizing options for (a) ribbon view, and (b) all other views.
+ * @param defaultViewType default view type for the meeting. Note that this is an init-only option, and does nothing post-init
+ */
+export interface VideoOptions {
+  popper?: VideoPopperStyle;
+  isResizable?: boolean;
+  viewSizes?: {
+    ribbon?: CustomSize;
+    default?: CustomSize;
+  };
+  defaultViewType?: SuspensionViewType;
+}
 export interface InitOptions {
   debug?: boolean;
   /**
@@ -785,20 +870,8 @@ export interface InitOptions {
     };
     /**
      * Customization options for the video or suspension view.
-     * @param popper Options for the underlying popper element.
-     * @param isResizable Whether the video view is resizable. Default is true.
-     * @param viewSizes Sizing options for the ribbon view and all other views.
-     * @param defaultViewType default view type for the meeting
      */
-    video?: {
-      popper?: VideoPopperStyle;
-      isResizable?: boolean;
-      viewSizes?: {
-        ribbon?: CustomSize;
-        default?: CustomSize;
-      };
-      defaultViewType?: SuspensionViewType | SuspensionViewValue;
-    };
+    video?: VideoOptions;
     /**
      * Customization options for screen sharing. Note that audio-sharing is currently only supported for Chrome tabs, and users CANNOT SPEAK
      * while sharing audio. Users can speak by (1) pausing or (2) ending an audio screen share
@@ -813,12 +886,6 @@ export interface InitOptions {
          */
         hideShareAudioOption?: boolean;
       };
-    };
-    /**
-     * Customization options for preview, disable preview by default
-     */
-    preview?: {
-      disable?: boolean;
     };
   };
   /**
@@ -876,12 +943,12 @@ export declare function event_video_statistic_data_change(payload: {
   type: string;
 }): void;
 /**
- * Occurs when the share video statistics data is changed; decode (received).
+ * Occurs when the share statistics data is changed during decoding (received) or encoding (sent).
  * @param payload The event detail.
  * - `data`
- *  - `encoding`: If encoding is true, the data is encoding share video data statistics.
+ *  - `encoding`: If `encoding` is true, the following metrics stand for the Send data statistics, otherwise, it stands for the Receive data statistics.
  *  - `avg_loss`: The share video's average package loss.
- *  - `fps`: The share video's frames per second (fps).
+ *  - `fps`: The share video's frames per second (FPS).
  *  - `height`: The share video's height.
  *  - `jitter`: The share video's jitter.
  *  - `max_loss`: The share video's maximum package loss.
@@ -1058,7 +1125,7 @@ export declare namespace EmbeddedClient {
    * Subscribes to the statistic quality of service (QoS) data.
    * @param args.audio If true, subscribe to the audio QoS.
    * @param args.video If true, subscribe to the video QoS.
-   * @param args.share If true, subscribe to the share Qos.
+   * @param args.share If true, subscribe to the share QoS.
    */
   function subscribeStatisticData(args?: { audio: boolean; video: boolean; share: boolean }): ExecutedResult;
   /**
@@ -1069,7 +1136,7 @@ export declare namespace EmbeddedClient {
    */
   function unSubscribeStatisticData(args?: { audio: boolean; video: boolean; share: boolean }): ExecutedResult;
   /**
-   * Sends private chat message to meeting participants. This API does not support send chat message in webinar.
+   * Sends private chat message to meeting participants. This API does not support sending chat messages in a webinar.
    * @param chatMessage the chat message to be sent, it cannot be undefined, null, or empty.
    * @param userId the message receiver's userId.
    */
@@ -1147,18 +1214,41 @@ export declare namespace EmbeddedClient {
    */
   function revokeCoHost(userId: number): ExecutedResult;
   /**
-   * Pins the corresponding user
+   * Pins the corresponding user.
    * @param userId A valid user ID in the current meeting.
    */
   function addPin(userId: number): ExecutedResult;
   /**
-   * Removes all pinned users
+   * Removes all pinned users.
    */
   function removeAllPins(): ExecutedResult;
   /**
-   * Gets the pinned user list
+   * Gets the pinned userId list.
    */
   function getPinList(): number[];
+  /**
+   * Gets the current translation map for the given language.
+   * @param lng The target language
+   */
+  function getLanguageTranslation(lng: LanguageOptionType): ExecutedResult;
+  /**
+   * Updates the translations for the given language.
+   * For example:
+   * ```javascript
+   * updateLanguageTranslation("en-US", {
+   *  key1: value1,
+   *  key2: value2
+   * })
+   * ```
+   * @param lng The target language
+   * @param userLangDict The new translation mapping
+   */
+  function updateLanguageTranslation(lng: LanguageOptionType, userLangDict: Object): ExecutedResult;
+  /**
+   * Updates video attributes and induces a re-render with the respective updates
+   * @param videoOptions Options to customize video
+   */
+  function updateVideoOptions(videoOptions: VideoOptions): void;
   /**
    * Listens for the events and handles them.
    * For example:
