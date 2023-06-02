@@ -218,7 +218,7 @@ export type VbImageInfoType = {
 /**
  * In meeting event listeners.
  */
-export type InMeetingEvent = 'onUserJoin' | 'onUserLeave' | 'onUserUpdate' | 'onUserIsInWaitingRoom' | 'onMeetingStatus' | 'onPreviewPannel|  receiveSharingChannelReady' | 'onReceiveTranscriptionMsg' | 'onReceiveTranslateMsg' | 'onAudioQos' | 'onVideoQos' | 'onShareQos' |'onClaimStatus' | 'onNetworkQualityChange'
+export type InMeetingEvent = 'onUserJoin' | 'onUserLeave' | 'onUserUpdate' | 'onUserIsInWaitingRoom' | 'onMeetingStatus' | 'onPreviewPannel|  receiveSharingChannelReady' | 'onReceiveTranscriptionMsg' | 'onReceiveTranslateMsg' | 'onAudioQos' | 'onVideoQos' | 'onShareQos' |'onClaimStatus' | 'onNetworkQualityChange' | 'onMediaCapturePermissionChange' | 'onMediaCaptureStatusChange'
 
 /**
  *  For the APIs that take images, the value of the image type returned by the getVideoSourcesCallBack method, passed in the shareSource API.
@@ -1230,6 +1230,38 @@ function claimHostWithHostKey(args: {
   function inMeetingServiceListener(event: 'onNetworkQualityChange' , callback: Function): void;
 
   /**
+   * Listens for media capture permission after calling request media capture permission.
+   * @param event 
+   * @param callback
+   * Example:
+   * ```js
+  ZoomMtg.inMeetingServiceListener('onMediaCapturePermissionChange', function (data) {
+    // {allow: true || false}
+    console.log(data);
+  });
+  ```
+  @category Listener
+   */
+  function inMeetingServiceListener(event: 'onMediaCapturePermissionChange', callback: Function): void;
+
+  /**
+   * Listens for media capture status change.
+   * @param event 
+   * @param callback
+   * Example:
+   * ```js
+  ZoomMtg.inMeetingServiceListener('onMediaCaptureStatusChange', function (data) {
+    // {status: 0|1|2, userId}
+    // 0=> not start, 1=> start, 2=> pause
+    console.log(data);
+  });
+  ```
+  @category Listener
+   */
+  function inMeetingServiceListener(event: 'onMediaCaptureStatusChange', callback: Function): void;
+
+
+  /**
    * Re-renders the UI, for example, after changing the UI language in a meeting.
    * @param args 
    */
@@ -1448,5 +1480,47 @@ function claimHostWithHostKey(args: {
        */
       error?: Function;
     }
-  ): SupportFeatures;
+  ): void;
+
+  /**
+   * media capture Permission
+   * for current user request media capture permission
+   * Use ZoomMtg.inMeetingServiceListener('onMediaCapturePermissionChange', function({allow: boolean}){}) to listen for the request result.
+   */
+  function mediaCapturePermission(args: {
+      /**
+       * operate = 'request', request media capture permission
+       */
+      operate: string;
+      /**
+       * Callback function on success.
+       */
+      success?: Function; 
+      /**
+       * Callback function in the event of an error.
+       */
+      error?: Function;
+    }
+  ): void;
+
+  /**
+   * start pause or stop media capture
+   * Use ZoomMtg.inMeetingServiceListener('onMediaCaptureStatusChange', function({status: 0|1|2, userId}){}) to listen for the media capture status.
+   */
+  function mediaCapture(args: {
+      /**
+       * record = "start" | "pause" | "stop"
+       */
+      record: string;
+      /**
+       * Callback function on success.
+       */
+      success?: Function; 
+      /**
+       * Callback function in the event of an error.
+       */
+      error?: Function;
+    }
+  ): void;
+
 }
