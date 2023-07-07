@@ -8,7 +8,7 @@
  *  - `closed`: The meeting is not joined.
  *  - `on hold`: The user is on hold (in a waiting room).
  *  - `reconnecting`: The meeting is reconnecting.
- * - INVALID_PARAMETERS: The parameters passing to the method is invalid, perhaps the wrong user ID or the wrong value, see the relevant reason for details.
+ * - INVALID_PARAMETERS: The parameters passed to the method are invalid. This may be due to an incorrect user ID or value. See the relevant reason for details.
  * - OPERATION_LOCKED: The operation can not be completed because the relevant property is locked, see the relevant reason for details.
  */
 export type ErrorTypes =
@@ -112,7 +112,7 @@ export interface Participant {
    */
   userName: string;
   /**
-   * @deprecated on 3.0.0, use `userName`
+   * @deprecated in v3.0.0, use `userName`
    */
   displayName: string;
   /**
@@ -156,15 +156,15 @@ export interface Participant {
    */
   isHold: boolean;
   /**
-   * @deprecated on 3.0.0, use `isHold`
+   * @deprecated in v3.0.0, use `isHold`
    */
   bHold: boolean;
   /**
-   * Whether the user is started video.
+   * Whether the user started video.
    */
   video: boolean;
   /**
-   * @deprecated on 3.0.0, use `video`
+   * @deprecated in v3.0.0, use `video`
    */
   bVideoOn: boolean;
   /**
@@ -186,12 +186,12 @@ export interface Participant {
   sharePause: boolean;
   isAssistant?: boolean;
   /**
-   * * @deprecated on 3.0.0, use `isAssistant`
+   * * @deprecated in v3.0.0, use `isAssistant`
    */
   astAdmin?: boolean;
   isAdmin?: boolean;
   /**
-   * @deprecated on 3.0.0, use `isAdmin`
+   * @deprecated in v3.0.0, use `isAdmin`
    */
   rmcAdmin?: boolean;
   /**
@@ -207,7 +207,7 @@ export interface Participant {
    */
   pronoun?: string;
   /**
-   * @deprecated on 3.0.0, use `pronoun`
+   * @deprecated in v3.0.0, use `pronoun`
    */
   strPronoun?: string;
   /**
@@ -219,15 +219,15 @@ export interface Participant {
    */
   audioStatus?: number;
   /**
-   * @deprecated on 3.0.0, use `audioStatus`
+   * @deprecated in v3.0.0, use `audioStatus`
    */
   audioConnectionStatus?: number;
   /**
-   * Is connect video
+   * Whether video is connected.
    */
   isVideoConnect?: boolean;
   /**
-   * @deprecated on 3.0.0, use `isVideoConnect`
+   * @deprecated in v3.0.0, use `isVideoConnect`
    */
   bVideoConnect?: boolean;
   /**
@@ -235,7 +235,7 @@ export interface Participant {
    */
   participantUUID?: string;
   /**
-   * @deprecated on 3.0.0, use `participantUUID`
+   * @deprecated in v3.0.0, use `participantUUID`
    */
   userGuid?: string;
 }
@@ -528,7 +528,7 @@ export interface ParticipantPropertiesPayload {
    */
   avatar?: string;
   /**
-   * Whether the user can edit closed caption.
+   * Whether the user can edit closed captions.
    */
   bCCEditor?: boolean;
   /**
@@ -643,7 +643,7 @@ export type SuspensionViewValue = 'minimized' | 'speaker' | 'ribbon' | 'gallery'
  */
 export interface JoinOptions {
   /**
-   * @param sdkKey The Meeting SDK SDK key or client id.
+   * @param sdkKey The Meeting SDK SDK key or client ID.
    */
   sdkKey?: string;
   /**
@@ -873,8 +873,8 @@ export interface InitOptions {
      */
     video?: VideoOptions;
     /**
-     * Customization options for screen sharing. Note that audio-sharing is currently only supported for Chrome tabs, and users CANNOT SPEAK
-     * while sharing audio. Users can speak by (1) pausing or (2) ending an audio screen share
+     * Customization options for screen sharing. When sharing a Chromium browser tab, users can transmit both audio playing in the tab and from their microphone.
+     * When sharing using a non-Chromium browser, users can only share their window or entire browser and no screen audio, but they can use their microphone audio.
      */
     sharing?: {
       /**
@@ -892,6 +892,113 @@ export interface InitOptions {
    * Maximum participants displayed per screen in gallery view, up to 25.
    */
   maximumVideosInGalleryView?: number;
+}
+
+export interface BoRoomAttendee {
+  /**
+   * User ID.
+   */
+  userId: number;
+  /**
+   * User's display name.
+   */
+  displayName: string;
+  /**
+   * User's avatar.
+   */
+  avatar: string;
+  /**
+   * Whether the user is in the breakout room.
+   */
+  isInRoom: boolean;
+  userGuid: string;
+}
+export interface Room {
+  /**
+   * Room Id.
+   */
+  roomId: string;
+  /**
+   * Room Name.
+   */
+  name: string;
+  /**
+   * attendees in room.
+   */
+  attendeeList: Array<BoRoomAttendee>;
+}
+
+export interface RoomOption {
+  /**
+   * whether to automatically join the room when the participant is assigned to a room.
+   */
+  isAutoJoinRoom?: boolean;
+  /**
+   * whether to allow participants in the room to return to the main session.
+   */
+  isBackToMainSessionEnabled?: boolean;
+  /**
+   * Whether to set a timer for the breakout room.
+   */
+  isTimerEnabled?: boolean;
+  /**
+   * duration of the timer.
+   */
+  timerDuration?: number;
+  /**
+   * whether to automatically return to the main session when time up.
+   */
+  isTimerAutoEnabled?: boolean;
+  /**
+   * when the breakout room is closing, the buffer time to leave the room.
+   */
+  waitSeconds?: number;
+}
+
+export enum BreakoutRoomStatus {
+  /**
+   * Room is not open.
+   */
+  NotStarted = 1,
+  /**
+   * Room is open.
+   */
+  InProgress = 2,
+  /**
+   * Room is closing, there may be a closing countdown.
+   */
+  Closing = 3,
+  /**
+   * Room is closed.
+   */
+  Closed = 4
+}
+
+export enum BreakoutRoomAttendeeStatus {
+  /**
+   * Unassigned.
+   */
+  Initial = 'initial',
+  /**
+   * Assigned but not in room.
+   */
+  Invited = 'invited',
+  /**
+   * Joining the room.
+   */
+  Joining = 'joining',
+  /**
+   * In room.
+   */
+  InRoom = 'in room',
+  /**
+   * Leaving the room.
+   */
+  Leaving = 'leaving',
+  /**
+   * In the main session.
+   */
+  MainSession = 'main session'
 }
 
 export declare function event_audio_statistic_data_change(payload: {
@@ -1028,6 +1135,7 @@ export declare function event_user_updated(payload: ParticipantPropertiesPayload
 
 export declare function event_peer_share_state_change(payload: { userId: number; action: string }): void;
 export declare function event_audio_active_speaker(payload: Array<ActiveSpeaker>): void;
+export declare function event_room_state_change(payload: { status: BreakoutRoomStatus }): void;
 export declare namespace EmbeddedClient {
   /**
    * Initializes the Meeting SDK for web component view client.
@@ -1228,7 +1336,7 @@ export declare namespace EmbeddedClient {
   function getPinList(): number[];
   /**
    * Gets the current translation map for the given language.
-   * @param lng The target language
+   * @param lng The target language.
    */
   function getLanguageTranslation(lng: LanguageOptionType): ExecutedResult;
   /**
@@ -1240,15 +1348,81 @@ export declare namespace EmbeddedClient {
    *  key2: value2
    * })
    * ```
-   * @param lng The target language
-   * @param userLangDict The new translation mapping
+   * @param lng The target language.
+   * @param userLangDict The new translation mapping.
    */
   function updateLanguageTranslation(lng: LanguageOptionType, userLangDict: Object): ExecutedResult;
   /**
-   * Updates video attributes and induces a re-render with the respective updates
+   * Updates video attributes and induces a re-render with the respective updates.
    * @param videoOptions Options to customize video
    */
   function updateVideoOptions(videoOptions: VideoOptions): void;
+  /**
+   * Host assign an unassigned participant to a room.
+   * @param userId user id
+   * @param targetRoomId room id
+   */
+  function assignUserToRoom(userId: number, targetRoomId: string): ExecutedResult;
+  /**
+   * Host can broadcast content in the main session and all rooms.
+   * @param content content of broadcast
+   */
+  function broadcast(content: string): ExecutedResult;
+  /**
+   * Host close the room.
+   */
+  function closeAllBreakoutRooms(): ExecutedResult;
+  /**
+   * Get the current room.
+   */
+  function getCurrentBreakoutRoom(): {};
+  /**
+   * If you are the host, will get all the rooms
+   * If you are the participant, will get the assigned room
+   */
+  function getBreakoutRoomList(): Room[];
+  /**
+   * Get room options
+   */
+  function getBreakoutRoomOptions(): RoomOption;
+  /**
+   * The status of room
+   */
+  function getBreakoutRoomStatus(): BreakoutRoomStatus;
+  /**
+   * The room status of attendee
+   */
+  function getUserStatus(): BreakoutRoomAttendeeStatus;
+  /**
+   * Join a breakout room
+   *  - Join only after the room is open
+   * @param roomId id a room
+   */
+  function joinBreakoutRoom(roomId: string): ExecutedResult;
+  /**
+   * Leave the room
+   * - If the room is not allowed to leave, can not return to main session.
+   */
+  function leaveBreakoutRoom(): ExecutedResult;
+  /**
+   * Host move an participant in room to the specified room
+   * @param userId user id
+   * @param targetRoomId room id
+   */
+  function moveUserToBreakoutRoom(userId: number, targetRoomId: string): ExecutedResult;
+  /**
+   * Open the created rooms
+   * @param rooms Room list Required; Need to include roomId and roomName, room name can be renamed.
+   * @param options Room option; Default options = {
+      isAutoJoinRoom: false,
+      isBackToMainSessionEnabled: true,
+      isTimerEnabled: false,
+      timerDuration: 1800,
+      isTimerAutoEnabled: false,
+      waitSeconds: 60,
+    }
+   */
+  function openBreakoutRooms(rooms: Room[], options?: RoomOption): ExecutedResult;
   /**
    * Listens for the events and handles them.
    * For example:
@@ -1274,6 +1448,9 @@ export declare namespace EmbeddedClient {
   function on(event: 'user-updated', callback: typeof event_user_updated): void;
   function on(event: 'peer-share-state-change', callback: typeof event_peer_share_state_change): void;
   function on(event: 'active-speaker', callback: typeof event_audio_active_speaker): void;
+  function on(event: 'room-state-change', callback: typeof event_room_state_change): void;
+  function on(event: 'main-session-user-updated', callback: (payload: {}) => void): void;
+  function on(event: 'broadcast-message', callback: (payload: { message: string }) => void): void;
   /**
    * Removes the event handler. Must be used with on() in pairs.
    * @param event event name. Same as 'on' event name list.

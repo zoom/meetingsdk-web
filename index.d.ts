@@ -162,11 +162,11 @@ declare let initArgs: {
    */
   externalLinkPage?: string // optional
   /** 
-   * defaultView: 'gallery' , optional. set the default video layout gallery, if Gallery View can be shown. (default is speaker)
+   * defaultView: 'gallery' or 'speaker'. Optional. Sets the default video layout to gallery view (if supported) or 'speaker' (default value).
    */
   defaultView?: string // optional
   /**
-   * Show (default, false) or hide (true) the "Share tab audio" checkbox when sharing a Chrome tab
+   * Shows (false, default value) or hides (true) the "Share tab audio" checkbox when sharing a Chrome tab.
    */
   hideShareAudioOption?: boolean;
   /**
@@ -218,7 +218,7 @@ export type VbImageInfoType = {
 /**
  * In meeting event listeners.
  */
-export type InMeetingEvent = 'onUserJoin' | 'onUserLeave' | 'onUserUpdate' | 'onUserIsInWaitingRoom' | 'onMeetingStatus' | 'onPreviewPannel|  receiveSharingChannelReady' | 'onReceiveTranscriptionMsg' | 'onReceiveTranslateMsg' | 'onAudioQos' | 'onVideoQos' | 'onShareQos' |'onClaimStatus' | 'onNetworkQualityChange' | 'onMediaCapturePermissionChange' | 'onMediaCaptureStatusChange'
+export type InMeetingEvent = 'onUserJoin' | 'onUserLeave' | 'onUserUpdate' | 'onUserIsInWaitingRoom' | 'onMeetingStatus' | 'onPreviewPannel|  receiveSharingChannelReady' | 'onReceiveTranscriptionMsg' | 'onReceiveTranslateMsg' | 'onAudioQos' | 'onVideoQos' | 'onShareQos' |'onClaimStatus' | 'onNetworkQualityChange' | 'onMediaCapturePermissionChange' | 'onMediaCaptureStatusChange' | 'onRoomStatusChange'
 
 /**
  *  For the APIs that take images, the value of the image type returned by the getVideoSourcesCallBack method, passed in the shareSource API.
@@ -293,12 +293,93 @@ export enum BreakoutRoomStatus {
   Closing = 4,
   Closed = 5
 }
-
+/**
+ * Allocation pattern of breakout room
+ * @enum
+ */
+export enum BreakoutRoomAllocationPattern {
+  auto = 1,
+  manually = 2,
+  selfSelect = 3,
+}
 
 /**
- * Interface for the result of check feature support information on user's platform.
- * If a feature in supportFeatures array, means this feature is supported on current platform.
- * If a feature in unSupportFeatures array, means this feature is not supported on current platform.
+ * Room Status of attendee
+ * @enum
+ */
+export enum BreakoutRoomAttendeeStatus {
+  /**
+   * Unassigned
+   */
+  Initial = 'initial',
+  /**
+   * Assigned but not in room
+   */
+  Invited = 'be invited',
+  /**
+   * Joining the room
+   */
+  Joining = 'joining',
+  /**
+   * In room
+   */
+  InRoom = 'in room',
+  /**
+   * Leaving the room
+   */
+  Returning = 'returning',
+  /**
+   * Not joined to the room
+   */
+  NotJoined = 'not joined',
+  /**
+   * Time up
+   */
+  TimeUp = 'time up',
+  /**
+   * In the main session
+   */
+  MainSession = 'main session',
+}
+
+/**
+ * Room creation options.
+ */
+export interface RoomOption {
+  /**
+   * Whether to automatically join the room when the participant is assigned to a room.
+   */
+  isAutoJoinRoom?: boolean;
+  /**
+   * Whether to allow participants in the room to return to the main session.
+   */
+  isBackToMainSessionEnabled?: boolean;
+  /**
+   * Whether to set a timer for the breakout room.
+   */
+  isTimerEnabled?: boolean;
+  /**
+   * Duration of the timer.
+   */
+  timerDuration?: number;
+  /**
+   * Whether not notify me.
+   */
+  notNotifyMe?: boolean;
+  /**
+   * Whether Countdown after closing breakout room.
+   */
+  needCountDown?: boolean;
+  /**
+   * When the breakout room is closing, the buffer time to leave the room, 10 | 15 | 30 | 60 | 120.
+   */
+  waitSeconds?: number;
+}
+
+/**
+ * Interface for the result of the check feature support information on the user's platform.
+ * Features in the supportFeatures array are supported on the current platform.
+ * Features in the unSupportFeatures array are not supported on the current platform.
  */
 export interface SupportFeatures {
   /**
@@ -1251,7 +1332,7 @@ function claimHostWithHostKey(args: {
    * Example:
    * ```js
   ZoomMtg.inMeetingServiceListener('onMediaCaptureStatusChange', function (data) {
-    // {status: 0|1|2, userId}
+    // {status: 0|1|2, userId: number}
     // 0=> not start, 1=> start, 2=> pause
     console.log(data);
   });
@@ -1259,6 +1340,22 @@ function claimHostWithHostKey(args: {
   @category Listener
    */
   function inMeetingServiceListener(event: 'onMediaCaptureStatusChange', callback: Function): void;
+
+  /**
+   * Listens for breakout room status change
+   * @param event 
+   * @param callback
+   * Example:
+   * ```js
+  ZoomMtg.inMeetingServiceListener('onRoomStatusChange', function (data) {
+    // {status: 2|3|4}
+    // 2=> InProgress, 3=> Closing, 4=> Closed
+    console.log(data);
+  });
+  ```
+  @category Listener
+   */
+  function inMeetingServiceListener(event: 'onRoomStatusChange', callback: Function): void;
 
 
   /**
@@ -1452,19 +1549,18 @@ function claimHostWithHostKey(args: {
     error?: Function;
   }): void;
 
-  /**
-   * Get the support or unsuppport features on the current browser/platform.
+   /**
+   * Get the supported or unsupported features on the current browser/platform.
    *
    * @returns A `SupportFeatures` object. The object has following properties:
    * - `platform`: string, the browser version info or platform version info.
-   * - `supportFeatures`: Array<string>, contains all the support features on current platform.
-   * - `unSupportFeatures`: Array<string>, contains all the unsupport features on current platform.
+   * - `supportFeatures`: Array<string>, contains all the support features on the current platform.
+   * - `unSupportFeatures`: Array<string>, contains all the unsupported features on the current platform.
    */
   function checkFeatureRequirements(): SupportFeatures;
 
   /**
    * Stop Incoming Audio
-   * Don't support mobile device
    */
   function stopIncomingAudio(args: {
       /**
@@ -1483,8 +1579,8 @@ function claimHostWithHostKey(args: {
   ): void;
 
   /**
-   * media capture Permission
-   * for current user request media capture permission
+   * Media capture permission
+   * For current user to request media capture permission.
    * Use ZoomMtg.inMeetingServiceListener('onMediaCapturePermissionChange', function({allow: boolean}){}) to listen for the request result.
    */
   function mediaCapturePermission(args: {
@@ -1504,7 +1600,7 @@ function claimHostWithHostKey(args: {
   ): void;
 
   /**
-   * start pause or stop media capture
+   * Start, pause, or stop media capture.
    * Use ZoomMtg.inMeetingServiceListener('onMediaCaptureStatusChange', function({status: 0|1|2, userId}){}) to listen for the media capture status.
    */
   function mediaCapture(args: {
@@ -1522,5 +1618,356 @@ function claimHostWithHostKey(args: {
       error?: Function;
     }
   ): void;
+  /**
+   * Ask the host to join the breakout room to help. The host can decline or postpone the request for help.
+   * - Only a non-host or non-co-host can call this method.
+   * @param args 
+   * @category BreakoutRoom
+   */
+  function askForHelp(args: {
+    /**
+     * Callback function on success.
+     */
+     success?: Function; 
+    /**
+     * Callback function in the event of an error.
+     */
+     error?: Function
+  }): void;
+  /**
+   * Postpone the request for help.
+   * - Only the host can call this method.
+   * @category BreakoutRoom
+   */
+  function postponeHelping(args: {
+    /**
+     * User ID of the user who requested help.
+     */
+    userId: number;
+    /**
+     * Callback function on success.
+     */
+    success?: Function; 
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+  /**
+   * Host and co-host create breakout rooms.
+   * @category BreakoutRoom
+   *
+   */
+  function createBreakoutRoom(args: {
+    /**
+     * data: number | string | Array<string>. Three types of parameters:
+     *  - number : the number of rooms to create. The specified number of rooms will be created and the room will be automatically named.
+     *  - string : the name of the room. The specified name of room will be created.
+     *  - Array<string>: list of room names. The specified rooms will be created.
+     */
+    data: number | string | Array<string>,
+    /**
+     * pattern BreakoutRoomAllocationPattern; How to assign the participants to the rooms. Default is `Manually`
+      *  - `BreakoutRoomAllocationPattern.auto`: Distribute participants evenly to each room.
+      *  - `BreakoutRoomAllocationPattern.manually`: Assign participants manually later.
+      *  - `BreakoutRoomAllocationPattern.selfSelect`: Participants will choose the room to join.
+      *
+      *  - Room List: success
+      *  - Errors:
+      *    - INVALID_OPERATION (breakout room has started!)
+      *    - INVALID_PARAMETERS (exceed maximum size): maximum_size = 50; if support big rooms plan, up to 100
+      */
+    pattern?: BreakoutRoomAllocationPattern,
+    /**
+     * Callback function on success.
+     */
+    success?: Function; 
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+  /**
+   * 
+   * Open the created rooms (host or co-host only).
+   * @category BreakoutRoom
+   */
+  function openBreakoutRooms(args: {
+    /**
+     * Room options. Default options = {
+      isAutoJoinRoom: false,
+      isBackToMainSessionEnabled: true,
+      isTimerEnabled: false,
+      timerDuration: 1800,
+      notNotifyMe: false,
+      needCountDown: true,
+      waitSeconds: 60,
+     */
+    options?: RoomOption,
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): void;
+  /**
+   * 
+   * Close the room (host and co-host only).
+   * @category BreakoutRoom
+   */
+  function closeBreakoutRooms(args: {
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): void;
+  /**
+   * Host and cohost can broadcast content in the main session and all rooms.
+   * @category BreakoutRoom
+   */
+    function broadcast(args: {
+      /**
+        * Content of broadcast.
+        */
+      content: string
+      /**
+        * Callback function on success.
+        */
+      success?: Function; 
+      /**
+        * Callback function in the event of an error.
+        */
+      error?: Function;
+    }): void;
+  /**
+   * Assign an unassigned participant to a room (host and co-host only).
+   * @category BreakoutRoom
+   */
+    function assignUserToBreakoutRoom(args: {
+      /**
+        * userId user ID.
+        */
+      userId: number,
+      /**
+        * Target room ID. The getBreakoutRooms method returns the breakout room ID (boId).
+        */
+      targetRoomId: string,
+      /**
+        * Callback function on success.
+        */
+      success?: Function; 
+      /**
+        * Callback function in the event of an error.
+        */
+      error?: Function;
+    }): void;
 
+  /**
+   * Move a participant in room to the specified room (host and co-host only).
+   * @category BreakoutRoom
+   */
+  function moveUserToBreakoutRoom(args: {
+    /**
+      * User ID
+      */
+    userId: number,
+    /**
+      * Target room ID. The getBreakoutRooms method returns the breakout room ID (boId).
+      */
+    targetRoomId: string,
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): void;
+  /**
+    * Join a breakout room
+    *  - Join only after the room is open.
+    * @category BreakoutRoom
+    */
+  function joinBreakoutRoom(args: {
+    /**
+      * The room ID.
+      */
+    roomId: string
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): void;
+
+  /**
+   * Leave the room
+   * - If the participant is not allowed to leave a room, the participant cannot return to the main session.
+   * @category BreakoutRoom
+   */
+  function leaveBreakoutRoom(args: {
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): void;
+  /**
+   * Get the current breakout room.
+   * @category BreakoutRoom
+   */
+  function getCurrentBreakoutRoom(args: {
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): {
+    attendeeStatus: BreakoutRoomAttendeeStatus;
+    name: string;
+    roomId: string;
+  };
+  /**
+   * 
+   * Get breakout room options.
+   * @category BreakoutRoom
+   */
+  function getBreakoutRoomOptions(args: {
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): RoomOption;
+  /**
+   * 
+   * The status of the breakout room.
+   * @category BreakoutRoom
+   */
+  function getBreakoutRoomStatus(args: {
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): BreakoutRoomControlStatus;
+  /**
+   * The break room status of the attendee.
+   * @category BreakoutRoom
+   */
+  function getUserStatus(args: {
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): BreakoutRoomAttendeeStatus;
+  /**
+   * Gets the unassigned list of attendees.
+   * @category BreakoutRoom
+   */
+  function getUnassignedAttendeeList(args: {
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): void;
+  /**
+   * Pins the corresponding user.
+   */
+  function operatePin(args: {
+    /**
+      * operate 'add' | 'replace' | 'remove' spotlight.
+      */
+    operate: 'add' | 'replace' | 'remove';
+    /**
+      * userId A valid user ID in the current meeting.
+      */
+    userId: number;
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): void;
+  /**
+   * Gets the pinned userId list.
+   */
+  function getPinList(args: {
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): number[];
+  /**
+   * Operates Spotlight user (host and cohost only).
+   */
+  function operateSpotlight(args: {
+    /**
+      * operate 'add' | 'replace' | 'remove' spotlight.
+      */
+    operate: 'add' | 'replace' | 'remove';
+    /**
+      * A valid user ID in the current meeting.
+      */
+    userId: number;
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): void;
+  /**
+   * Gets the Spotlight userId list.
+   */
+  function getSpotlightList(args: {
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): number[];
 }
