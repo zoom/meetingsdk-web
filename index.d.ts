@@ -1,7 +1,7 @@
 /**
  * initArgs
  */
- declare let initArgs: {
+declare let initArgs: {
   /**
    * debug: default: false, optional. Turns on debug mode to print logs in the browser console.
    */
@@ -145,28 +145,36 @@
   isSupportSimulive?: boolean; // optional
   /**
    * enableHD: optional, >=2.8.0 default=true. <2.8.0 default is false. Enables or disables 720p (bandwidth and hardware restrictions apply). See for details:
-   * https://marketplace.zoom.us/docs/sdk/overview/720p/
+   * https://developers.zoom.us/docs/meeting-sdk/web/720p/
    */
   enableHD?: boolean; // optional
   /**
-   * enableFullHD, optional, >= 2.9.0 default=false, enable webinar attendee receive 1080P video when zoom backend support.
+   * enableFullHD: optional, >= 2.9.0 default=false, enable webinar attendee receive 1080P video when zoom backend support.
    */
   enableFullHD?: boolean;
   /**
-   * helper: default: '', optional. Sets a helper HTML page for working around CORS issues. 
+   * helper: optional, default: ''. Sets a helper HTML page for working around CORS issues. 
    * Example: https://github.com/zoom/meetingsdk-web/blob/master/helper.html
    */
   helper?: string; // optional
   /**
-   * externalLinkPage: Set an intermediary HTML page for outgoing hyperlinks.
+   * externalLinkPage: an intermediary HTML page for outgoing hyperlinks.
    */
   externalLinkPage?: string // optional
+  /** 
+   * defaultView: 'gallery' or 'speaker'. Optional. Sets the default video layout to gallery view (if supported) or 'speaker' (default value).
+   */
+  defaultView?: string // optional
   /**
-   * success: callback, optional. Callback function on success.
+   * Shows (false, default value) or hides (true) the "Share tab audio" checkbox when sharing a Chrome tab.
+   */
+  hideShareAudioOption?: boolean;
+  /**
+   * success: optional, callback function on success.
    */
   success?: Function;
   /**
-   * error: callback, optional. Callback function on error.
+   * error: optional, callback function on error.
    */
   error?: Function;
 };
@@ -186,7 +194,7 @@ export type MeetingInfoType =
   | 'enctype'
   | 'report';
 /**
- * Virtual background (VB) or mask image info
+ * Virtual background (VB) or mask image information.
  */
 export type VbImageInfoType = {
   /**
@@ -202,18 +210,18 @@ export type VbImageInfoType = {
     */
   fileName: string;
   /**
-   * VB or mask image resource URL
+   * VB or mask image resource URL.
    */
   url: string;
 }
 
 /**
- * In meeting event listeners
+ * In meeting event listeners.
  */
-export type InMeetingEvent = 'onUserJoin' | 'onUserLeave' | 'onUserIsInWaitingRoom' | 'onMeetingStatus' | 'onPreviewPannel|  receiveSharingChannelReady' | 'onReceiveTranscriptionMsg' | 'onReceiveTranslateMsg' | 'onAudioQos' | 'onVideoQos'
+export type InMeetingEvent = 'onUserJoin' | 'onUserLeave' | 'onUserUpdate' | 'onUserIsInWaitingRoom' | 'onMeetingStatus' | 'onPreviewPannel|  receiveSharingChannelReady' | 'onReceiveTranscriptionMsg' | 'onReceiveTranslateMsg' | 'onAudioQos' | 'onVideoQos' | 'onShareQos' |'onClaimStatus' | 'onNetworkQualityChange' | 'onMediaCapturePermissionChange' | 'onMediaCaptureStatusChange' | 'onRoomStatusChange'
 
 /**
- *  for the APIs that take images, The value of the image type returned by the getVideoSourcesCallBack method passed in the shareSource api
+ *  For the APIs that take images, the value of the image type returned by the getVideoSourcesCallBack method, passed in the shareSource API.
  */
 export type NativeImageType = {
   /**
@@ -222,23 +230,23 @@ export type NativeImageType = {
   toDataURL(): string;
 }
 /**
- * each `DesktopCapturerSource` represents a screen or an individual window that can be captured. The type of the return value of the getVideoSourcesCallBack method passed in the shareSource api
+ * Each `DesktopCapturerSource` represents a screen or an individual window that can be captured. The type of the return value of the getVideoSourcesCallBack method is passed in the shareSource API.
  */
 export type DesktopCapturerSource = {
   /**
-   * appIcon.toDataURL() method used to display app icon.
+   * appIcon.toDataURL() method used to display the app icon.
    */
   appIcon: NativeImageType;
   /**
-   * display_id
+   * The display ID.
    */
   display_id: string;
   /**
-   * app id: Used to pass the id to the media stream
+   * The app ID used to pass the ID to the media stream.
    */
   id: string;
   /**
-   * app name
+   * The app name.
    */
   name: string;
   /**
@@ -246,11 +254,11 @@ export type DesktopCapturerSource = {
    */
   thumbnail: NativeImageType;
   /**
-   * imgSrc（Options） The <img/> src url of the app screenshot, Used to display app screenshots.If this parameter is passed, it will be used in preference to thumbnail.
+   * (Optional） The app screenshot's image source URL, used to display app screenshots. If you pass this parameter, the SDK uses it as the thumbnail.
    */
   imgSrc?: string;
   /**
-   * appIconSrc（Options）The <img/> src url of the app icon, Used to display app icon.If this parameter is passed, it will be used in preference to appIcon.
+   * (Optional）The app icon's image source URL, used to display app icon. If you pass this parameter, the SDK uses in as the app icon.
    */
   appIconSrc?: string;
 }
@@ -285,15 +293,117 @@ export enum BreakoutRoomStatus {
   Closing = 4,
   Closed = 5
 }
+/**
+ * Allocation pattern of breakout room
+ * @enum
+ */
+export enum BreakoutRoomAllocationPattern {
+  auto = 1,
+  manually = 2,
+  selfSelect = 3,
+}
+
+/**
+ * Room Status of attendee
+ * @enum
+ */
+export enum BreakoutRoomAttendeeStatus {
+  /**
+   * Unassigned
+   */
+  Initial = 'initial',
+  /**
+   * Assigned but not in room
+   */
+  Invited = 'be invited',
+  /**
+   * Joining the room
+   */
+  Joining = 'joining',
+  /**
+   * In room
+   */
+  InRoom = 'in room',
+  /**
+   * Leaving the room
+   */
+  Returning = 'returning',
+  /**
+   * Not joined to the room
+   */
+  NotJoined = 'not joined',
+  /**
+   * Time up
+   */
+  TimeUp = 'time up',
+  /**
+   * In the main session
+   */
+  MainSession = 'main session',
+}
+
+/**
+ * Room creation options.
+ */
+export interface RoomOption {
+  /**
+   * Whether to automatically join the room when the participant is assigned to a room.
+   */
+  isAutoJoinRoom?: boolean;
+  /**
+   * Whether to allow participants in the room to return to the main session.
+   */
+  isBackToMainSessionEnabled?: boolean;
+  /**
+   * Whether to set a timer for the breakout room.
+   */
+  isTimerEnabled?: boolean;
+  /**
+   * Duration of the timer.
+   */
+  timerDuration?: number;
+  /**
+   * Whether not notify me.
+   */
+  notNotifyMe?: boolean;
+  /**
+   * Whether Countdown after closing breakout room.
+   */
+  needCountDown?: boolean;
+  /**
+   * When the breakout room is closing, the buffer time to leave the room, 10 | 15 | 30 | 60 | 120.
+   */
+  waitSeconds?: number;
+}
+
+/**
+ * Interface for the result of the check feature support information on the user's platform.
+ * Features in the supportFeatures array are supported on the current platform.
+ * Features in the unSupportFeatures array are not supported on the current platform.
+ */
+export interface SupportFeatures {
+  /**
+   * @ignore
+   */
+  platform: string;
+  /**
+   * @ignore
+   */
+  supportFeatures: Array<string>;
+  /**
+   * @ignore
+   */
+  unSupportFeatures: Array<string>;
+}
 
 /**
  * ZoomMtg.i18n
  * 
  * Examples:
  * 
- * en-US https://source.zoom.us/2.9.0/lib/lang/en-US.json
+ * en-US https://source.zoom.us/{VERSION_NUMBER}/lib/lang/en-US.json
  * 
- * zh-CN https://source.zoom.us/2.9.0/lib/lang/zh-CN.json
+ * zh-CN https://source.zoom.us/{VERSION_NUMBER}/lib/lang/zh-CN.json
  * ```js
  * ZoomMtg.i18n.load('en-US');
   var userLangTemplate = ZoomMtg.i18n.getAll("en-US");
@@ -311,12 +421,12 @@ export enum BreakoutRoomStatus {
 export declare namespace ZoomMtgLang {
   /**
    * Loads translations.
-   * See for abbreviation descriptions: https://marketplace.zoom.us/docs/api-reference/other-references/abbreviation-lists/#languages
-   * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT'
+   * See for abbreviation descriptions: https://developers.zoom.us/docs/meeting-sdk/web/client-view/multi-language/
+   * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT', 'id-ID', 'nl-NL'
    * @param lang
    *
    */
-  function load(lang: 'de-DE'| 'es-ES'| 'en-US'| 'fr-FR'| 'jp-JP'| 'pt-PT'| 'ru-RU'| 'zh-CN'| 'zh-TW'| 'ko-KO'| 'vi-VN'| 'it-IT'): Promise<any>;
+  function load(lang: 'de-DE'| 'es-ES'| 'en-US'| 'fr-FR'| 'jp-JP'| 'pt-PT'| 'ru-RU'| 'zh-CN'| 'zh-TW'| 'ko-KO'| 'vi-VN'| 'it-IT'| 'id-ID'| 'nl-NL'): Promise<any>;
   /**
    * Loads translation URL. Use the URL provided by Zoom or your own resource object.
    * For the Zoom-provided JSON language use this syntax: https://source.zoom.us/{VERSION_NUMBER}/lib/lang/{LANG_CODE}.json. 
@@ -328,7 +438,7 @@ export declare namespace ZoomMtgLang {
   function load(url: string | object, lang: string): Promise<any>;
   /**
    * Changes UI language. Set a supported language when joining a meeting.
-   * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT' or you loaded lang
+   * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT', 'id-ID', 'nl-NL' or you loaded lang
    * @param lang
    *
    */
@@ -361,7 +471,7 @@ export declare namespace ZoomMtgLang {
   /**
    * Sets the support language array.
    * @param langArray Array of the languages that you want to support. 
-   * This will replace the default: ['de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT']
+   * This will replace the default: ['de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT', 'id-ID', 'nl-NL']
    */
   function setSupportLanguage(langArray: Array<string>): void;
 }
@@ -411,7 +521,7 @@ export function vbStatusDataFunc(data: {
 }): void;
 
 /**
- * Support for VB callback
+ * Support for virtual background (VB) callback
  * @param args 
  */
 export function vbSupportDataFunc(data: {
@@ -435,7 +545,7 @@ export function vbSupportDataFunc(data: {
 }): void;
 
 /**
- * This method will be called when the “screen share” is clicked, Support for get screen share sources callback. 
+ * This method will be called when the “screen share” is clicked. Support for get screen share sources callback. 
  */
 export function getShareSourcesFunc(): Promise<DesktopCapturerSource[]>;
 
@@ -451,18 +561,18 @@ export namespace ZoomMtg {
   /**
    * Generate each time you join a meeting or webinar through a server-side function where you can securely store SDK credentials.
    * See Generate the SDK JWT key for details: 
-   * https://marketplace.zoom.us/docs/sdk/native-sdks/auth/#generate-the-sdk-jwt
+   * https://developers.zoom.us/docs/meeting-sdk/auth/
    * See the Sample Signature app for an example:
    * https://github.com/zoom/meetingsdk-sample-signature-node.js
    * @category Join
    */
   function generateSDKSignature(args: {
     /**
-     * Required, your SDK JWT key
+     * Required, your Meeting SDK SDK key or client id
      */
     sdkKey: string;
     /**
-     * Required, your SDK JWT secret
+     * Required, your Meeting SDK SDK secret or client secret
      */
     sdkSecret: string;
     /**
@@ -498,7 +608,7 @@ export namespace ZoomMtg {
    * Note that Chrome origin trials (OT) provide many new features before Chrome releases. See the following links for details: 
    * https://developer.chrome.com/origintrials/#/trials/active and https://developer.chrome.com/blog/origin-trials/
    * The Meeting SDK for Web can use:
-   * 1. SharedArrayBuffer (SAB) OT for gallery view (Chrome 92 to 103). See: https://marketplace.zoom.us/docs/sdk/overview/websdk-gallery-view/
+   * 1. SharedArrayBuffer (SAB) OT for gallery view (Chrome 92 to 103). See: https://developers.zoom.us/docs/meeting-sdk/web/gallery-view/
    * 2. WebAssembly SIMD to improve video and sharing performance (Chrome91 release). See: https://chromestatus.com/feature/6533147810332672
    * 3. WebCodecs to address latency when starting video (Chrome94 release). See: https://chromestatus.com/feature/5669293909868544
    * @category Join
@@ -515,6 +625,7 @@ export namespace ZoomMtg {
    * Joins a meeting.
    * @param args 
    * @category Join
+   * @RateLimit 10s
    */
   function join(args: {
     /**
@@ -551,7 +662,7 @@ export namespace ZoomMtg {
      */
     sdkKey?: string;
     /**
-     * Required. The signature to start or join a meeting. See https://marketplace.zoom.us/docs/sdk/native-sdks/auth/ for details.
+     * Required. The signature to start or join a meeting. See https://developers.zoom.us/docs/meeting-sdk/auth/ for details.
      */
     signature: string;
     /**
@@ -610,16 +721,17 @@ export namespace ZoomMtg {
      */
     show: boolean }): void;
    /**
-    * Set customize polling url, only work when Enable Client SDK Customize Invite URL flag for your account
+    * Set customized polling URL. Only works when Enable Client SDK Customized Invite URL flag is enabled for your account.
     * @param args 
+    * @RateLimit 10s
     */ 
   function setCustomizedPollingUrl(args: { 
     /**
-     * customize create polling url or callback
+     * Customize create polling URL or callback.
      */
     create?: string | Function;
     /**
-     * customize edit polling url or callback
+     * Customize edit polling URL or callback.
      */
     edit?: string | Function;
     /**
@@ -703,7 +815,8 @@ export namespace ZoomMtg {
   }): void;
   /**
    * Invites yourself to join by phone.
-   * @param args 
+   * @param args
+   * @RateLimit 10s 
    */
   function callOut(args: { 
     /**
@@ -721,10 +834,11 @@ export namespace ZoomMtg {
   /**
    * Invites a participant to join by phone.
    * @param args 
+   * @RateLimit 10s
    */
   function inviteByPhone(args: {
     /**
-     * The phone number. Example: +1123456789
+     * The phone number. Example: +15553456789
      */
     phoneNumber: string; 
     /**
@@ -743,6 +857,7 @@ export namespace ZoomMtg {
   /**
    * Invites Zoom Cloud Room Connector (CRC) device.
    * @param args 
+   * @RateLimit 10s
    */
   function inviteCRCDevice(args: {
     /**
@@ -765,6 +880,7 @@ export namespace ZoomMtg {
   /**
    * Cancels Zoom Cloud Room Connector (CRC) device invitation.
    * @param args 
+   * @RateLimit 1s
    */
   function cancelInviteCRCDevice(args: {
     /**
@@ -779,6 +895,7 @@ export namespace ZoomMtg {
   /**
    * Mutes or unmutes a participant.
    * @param args 
+   * @RateLimit 1s
    */
   function mute(args: {
     /**
@@ -801,6 +918,7 @@ export namespace ZoomMtg {
   /**
    * Mutes or unmutes all attendees. Host or co-host only.
    * @param args 
+   * @RateLimit 5s
    */
   function muteAll(args: {
     /**
@@ -819,6 +937,7 @@ export namespace ZoomMtg {
   /**
    * Renames the participant. Host or co-host only. The userId and oldName must be correct for this operation to succeed.
    * @param args 
+   * @RateLimit 5s
    */
   function rename(args: {
     /**
@@ -830,7 +949,7 @@ export namespace ZoomMtg {
      */
     oldName: string;
     /**
-     * The new name for the participant.
+     * The participant's new name.
      */
     newName: string;
     /**
@@ -845,6 +964,7 @@ export namespace ZoomMtg {
   /**
    * Ejects a participant from the meeting. Host or co-host only.
    * @param args 
+   * @RateLimit 5s
    */
   function expel(args: {
     /**
@@ -863,6 +983,7 @@ export namespace ZoomMtg {
   /**
    * Stops or starts cloud recording. Host only.
    * @param args 
+   * @RateLimit 5s
    */
   function record(args: {
     /**
@@ -881,6 +1002,7 @@ export namespace ZoomMtg {
   /**
    * Locks or unlocks the meeting. Host or co-host only. If the meeting is locked, others can't join the meeting unless it is unlocked.
    * @param args 
+   * @RateLimit 5s
    */
   function lockMeeting(args: {
     /**
@@ -930,9 +1052,108 @@ export namespace ZoomMtg {
   * Callback function in the event of an error.
   */
  error?: Function }): void;
+/**
+   * Makes this user the host.
+   * @param args 
+   * @RateLimit 2s
+   */
+function makeHost(args: {
+  /**
+   * User ID.
+   */
+  userId: boolean;
+  /**
+   * Callback function on success.
+   */
+   success?: Function; 
+   /**
+    * Callback function in the event of an error.
+    */
+   error?: Function
+}): void;
+
+/**
+ * Makes co-host.
+ * @param args 
+ * @RateLimit 2s
+ */
+function makeCoHost(args: {
+ /**
+  * User ID.
+  */
+ userId: number;
+ /**
+  * Callback function on success.
+  */
+  success?: Function; 
+  /**
+   * Callback function in the event of an error.
+   */
+  error?: Function
+}): void;
+
+/**
+ * Removes co-host status.
+ * @param args 
+ * @RateLimit 2s
+ */
+function withdrawCoHost(args: {
+  /**
+   * User ID.
+   */
+  userId: number;
+  /**
+   * Callback function on success.
+   */
+   success?: Function; 
+   /**
+    * Callback function in the event of an error.
+    */
+   error?: Function
+ }): void;
+
+/**
+ * Reclaims the host status if the original host or a co-host.
+ * @param args 
+ * @RateLimit 2s
+ */
+function reclaimHost(args: {
+ /**
+  * Callback function on success.
+  */
+  success?: Function; 
+  /**
+   * Callback function in the event of an error.
+   */
+  error?: Function
+}): void;
+
+/**
+* Claims host with host key.
+* Use ZoomMtg.inMeetingServiceListener('onClaimStatus', function(e){}) to listen for the claim result.
+* Only successful in meetings with no host.
+* @param args 
+* @RateLimit 2s
+*/
+function claimHostWithHostKey(args: {
+ /**
+  * host key
+  */
+ hostKey: string;
+ /**
+  * Callback function on success.
+  */
+  success?: Function; 
+  /**
+   * Callback function in the event of an error.
+   */
+  error?: Function
+}): void;
+ 
   /**
    * Puts the participant in the waiting room or lets the participant join the meeting.
    * @param args 
+   * @RateLimit 1s
    */
   function putOnHold(args: {
     /**
@@ -966,10 +1187,14 @@ export namespace ZoomMtg {
   ZoomMtg.inMeetingServiceListener('onUserLeave', function (data) {
     console.log(data);
   });
+
+  ZoomMtg.inMeetingServiceListener('onUserUpdate', function (data) {
+    console.log(data);
+  });
   ```
   @category Listener
    */
-  function inMeetingServiceListener(event: 'onUserJoin' | 'onUserLeave' , callback: Function): void;
+  function inMeetingServiceListener(event: 'onUserJoin' | 'onUserLeave' | 'onUserUpdate' , callback: Function): void;
     /**
    * Listens for sharing channel readiness to receive.
    * @param event 
@@ -984,7 +1209,7 @@ export namespace ZoomMtg {
    */
   function inMeetingServiceListener(event: 'receiveSharingChannelReady' , callback: Function): void;
     /**
-   * Listens for waiting room and audio/video preview page status.
+   * Listens for waiting room and audio or video preview page status.
    * @param event 
    * @param callback 
    * Example:
@@ -1016,7 +1241,7 @@ export namespace ZoomMtg {
    */
   function inMeetingServiceListener(event: 'onMeetingStatus', callback: Function): void;
   /**
-   * Listens for transcriptions, only works when save closed captions is on.
+   * Listens for transcriptions. Only works when "save closed captions" is on.
    * @param event 
    * @param callback 
 
@@ -1047,10 +1272,92 @@ export namespace ZoomMtg {
   ZoomMtg.inMeetingServiceListener('onVideoQos', function (data) {
     console.log('onVideoQos', data);
   });
+
+  ZoomMtg.inMeetingServiceListener('onShareQos', function (data) {
+    console.log('onShareQos', data);
+  });
   ```
      * @category Listener
    */
-  function inMeetingServiceListener(event: 'onAudioQos' | 'onVideoQos', callback: Function): void;
+  function inMeetingServiceListener(event: 'onAudioQos' | 'onVideoQos' | 'onShareQos', callback: Function): void;
+  /**
+   * Listens for claim status after calling claimHost with host key.
+   * @param event 
+   * @param callback
+   * Example:
+   * ```js
+  ZoomMtg.inMeetingServiceListener('onClaimStatus', function (data) {
+    console.log(data);
+  });
+  ```
+  @category Listener
+   */
+  function inMeetingServiceListener(event: 'onClaimStatus', callback: Function): void;
+
+  /**
+   * Listens for user network quality change.
+   * @param event 
+   * @param callback 
+   * Example:
+  ```js
+  ZoomMtg.inMeetingServiceListener('onNetworkQualityChange', function (data) {
+    // {level: 0 || 1 || 2 || 3 || 4 || 5, userId, type: 'uplink' }
+    // 0,1 => bad; 2 => normal; 3,4,5 => good;
+    console.log(data);
+  });
+  ```
+  @category Listener
+   */
+  function inMeetingServiceListener(event: 'onNetworkQualityChange' , callback: Function): void;
+
+  /**
+   * Listens for media capture permission after calling request media capture permission.
+   * @param event 
+   * @param callback
+   * Example:
+   * ```js
+  ZoomMtg.inMeetingServiceListener('onMediaCapturePermissionChange', function (data) {
+    // {allow: true || false}
+    console.log(data);
+  });
+  ```
+  @category Listener
+   */
+  function inMeetingServiceListener(event: 'onMediaCapturePermissionChange', callback: Function): void;
+
+  /**
+   * Listens for media capture status change.
+   * @param event 
+   * @param callback
+   * Example:
+   * ```js
+  ZoomMtg.inMeetingServiceListener('onMediaCaptureStatusChange', function (data) {
+    // {status: 0|1|2, userId: number}
+    // 0=> not start, 1=> start, 2=> pause
+    console.log(data);
+  });
+  ```
+  @category Listener
+   */
+  function inMeetingServiceListener(event: 'onMediaCaptureStatusChange', callback: Function): void;
+
+  /**
+   * Listens for breakout room status change
+   * @param event 
+   * @param callback
+   * Example:
+   * ```js
+  ZoomMtg.inMeetingServiceListener('onRoomStatusChange', function (data) {
+    // {status: 2|3|4}
+    // 2=> InProgress, 3=> Closing, 4=> Closed
+    console.log(data);
+  });
+  ```
+  @category Listener
+   */
+  function inMeetingServiceListener(event: 'onRoomStatusChange', callback: Function): void;
+
+
   /**
    * Re-renders the UI, for example, after changing the UI language in a meeting.
    * @param args 
@@ -1093,6 +1400,10 @@ export namespace ZoomMtg {
      */
     video?: boolean,
     /**
+     * If true, subscribe to share QoS data.
+     */
+    share?: boolean,
+    /**
      * Callback function on success.
      */
      success?: Function; 
@@ -1115,6 +1426,10 @@ export namespace ZoomMtg {
      * If true, unsubscribe to video QoS data.
      */
     video?: boolean,
+     /**
+     * If true, unsubscribe to share QoS data.
+     */
+    share?: boolean,
     /**
      * Callback function on success.
      */
@@ -1124,7 +1439,7 @@ export namespace ZoomMtg {
       */
      error?: Function }): void;
   /**
-   * Checks if the browser supports virtual background (VB) and mask, needs "virtual background" enabled first.
+   * Checks if the browser supports virtual background (VB) and mask. Must enable "virtual background" to use this function.
    * @category VirtualBackground
    */
   function isSupportVirtualBackground(args: {
@@ -1138,7 +1453,7 @@ export namespace ZoomMtg {
      error?: Function;
   }): void;
   /**
-   * Get virtual background status
+   * Get virtual background status.
    * @category VirtualBackground
    */
   function getVirtualBackgroundStatus(args: {
@@ -1152,13 +1467,14 @@ export namespace ZoomMtg {
      error?: Function;
   }): void;
   /**
-   * update vb/mask background image list
+   * Update VB or mask background image list.
    * @param args 
    * @category VirtualBackground
+   * @RateLimit 1s
    */
   function updateVirtualBackgroundList(args: {
     /**
-     * vb list
+     * VB list.
      */
     vbList?: Array<VbImageInfoType>;
     /**
@@ -1171,11 +1487,12 @@ export namespace ZoomMtg {
      error?: Function
   }): void;
   /**
-   * Change virtual background (VB) from vbList if names match.
-   * If ID is empty, clear VB and mask.
-   * If id='blur', blur background instead
+   * Change virtual background (VB) to the specified string from the VB list if the names match.
+   * If id='blur', blur background instead.
+   * Note that you cannot remove the VB once a VB image or blur is set, but you can switch between different VBs.
    * @param args
    * @category VirtualBackground
+   * @RateLimit 1s
    */
   function setVirtualBackground(args: {
     /**
@@ -1196,6 +1513,7 @@ export namespace ZoomMtg {
    * Lock VB or mask to a specific image.
    * @param args
    * @category VirtualBackground
+   * @RateLimit 1s
    */
   function lockVirtualBackground(args: {
     /**
@@ -1213,12 +1531,12 @@ export namespace ZoomMtg {
   }):void;
 
   /**
-   * In the electron application, if this method is registered, getVideoSourcesCallBack will be called when "screen share" is clicked to obtain the application information returned by electron that can share the desktop. provide a callback function return desktopCapturer share sources in electron app.
+   * In the Electron application, if this method is registered, it calls getVideoSourcesCallBack when a user clicks "screen share" to obtain the application information returned by Electron that can share the desktop. Provide the callback function return desktopCapturer share sources in the Electron app.
    * @param args
    */
   function shareSource(args: {
     /**
-     * callback function need return electron share source;
+     * Callback function needed to return the source of the Electron share:
      */
     getVideoSourcesCallBack: typeof getShareSourcesFunc | Function; 
     /**
@@ -1230,4 +1548,426 @@ export namespace ZoomMtg {
      */
     error?: Function;
   }): void;
+
+   /**
+   * Get the supported or unsupported features on the current browser/platform.
+   *
+   * @returns A `SupportFeatures` object. The object has following properties:
+   * - `platform`: string, the browser version info or platform version info.
+   * - `supportFeatures`: Array<string>, contains all the support features on the current platform.
+   * - `unSupportFeatures`: Array<string>, contains all the unsupported features on the current platform.
+   */
+  function checkFeatureRequirements(): SupportFeatures;
+
+  /**
+   * Stop Incoming Audio
+   */
+  function stopIncomingAudio(args: {
+      /**
+       * stop = true, stop incoming audio
+       */
+      stop: boolean;
+      /**
+       * Callback function on success.
+       */
+      success?: Function; 
+      /**
+       * Callback function in the event of an error.
+       */
+      error?: Function;
+    }
+  ): void;
+
+  /**
+   * Media capture permission
+   * For current user to request media capture permission.
+   * Use ZoomMtg.inMeetingServiceListener('onMediaCapturePermissionChange', function({allow: boolean}){}) to listen for the request result.
+   */
+  function mediaCapturePermission(args: {
+      /**
+       * operate = 'request', request media capture permission
+       */
+      operate: string;
+      /**
+       * Callback function on success.
+       */
+      success?: Function; 
+      /**
+       * Callback function in the event of an error.
+       */
+      error?: Function;
+    }
+  ): void;
+
+  /**
+   * Start, pause, or stop media capture.
+   * Use ZoomMtg.inMeetingServiceListener('onMediaCaptureStatusChange', function({status: 0|1|2, userId}){}) to listen for the media capture status.
+   */
+  function mediaCapture(args: {
+      /**
+       * record = "start" | "pause" | "stop"
+       */
+      record: string;
+      /**
+       * Callback function on success.
+       */
+      success?: Function; 
+      /**
+       * Callback function in the event of an error.
+       */
+      error?: Function;
+    }
+  ): void;
+  /**
+   * Ask the host to join the breakout room to help. The host can decline or postpone the request for help.
+   * - Only a non-host or non-co-host can call this method.
+   * @param args 
+   * @category BreakoutRoom
+   */
+  function askForHelp(args: {
+    /**
+     * Callback function on success.
+     */
+     success?: Function; 
+    /**
+     * Callback function in the event of an error.
+     */
+     error?: Function
+  }): void;
+  /**
+   * Postpone the request for help.
+   * - Only the host can call this method.
+   * @category BreakoutRoom
+   */
+  function postponeHelping(args: {
+    /**
+     * User ID of the user who requested help.
+     */
+    userId: number;
+    /**
+     * Callback function on success.
+     */
+    success?: Function; 
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+  /**
+   * Host and co-host create breakout rooms.
+   * @category BreakoutRoom
+   *
+   */
+  function createBreakoutRoom(args: {
+    /**
+     * data: number | string | Array<string>. Three types of parameters:
+     *  - number : the number of rooms to create. The specified number of rooms will be created and the room will be automatically named.
+     *  - string : the name of the room. The specified name of room will be created.
+     *  - Array<string>: list of room names. The specified rooms will be created.
+     */
+    data: number | string | Array<string>,
+    /**
+     * pattern BreakoutRoomAllocationPattern; How to assign the participants to the rooms. Default is `Manually`
+      *  - `BreakoutRoomAllocationPattern.auto`: Distribute participants evenly to each room.
+      *  - `BreakoutRoomAllocationPattern.manually`: Assign participants manually later.
+      *  - `BreakoutRoomAllocationPattern.selfSelect`: Participants will choose the room to join.
+      *
+      *  - Room List: success
+      *  - Errors:
+      *    - INVALID_OPERATION (breakout room has started!)
+      *    - INVALID_PARAMETERS (exceed maximum size): maximum_size = 50; if support big rooms plan, up to 100
+      */
+    pattern?: BreakoutRoomAllocationPattern,
+    /**
+     * Callback function on success.
+     */
+    success?: Function; 
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+  /**
+   * 
+   * Open the created rooms (host or co-host only).
+   * @category BreakoutRoom
+   */
+  function openBreakoutRooms(args: {
+    /**
+     * Room options. Default options = {
+      isAutoJoinRoom: false,
+      isBackToMainSessionEnabled: true,
+      isTimerEnabled: false,
+      timerDuration: 1800,
+      notNotifyMe: false,
+      needCountDown: true,
+      waitSeconds: 60,
+     */
+    options?: RoomOption,
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): void;
+  /**
+   * 
+   * Close the room (host and co-host only).
+   * @category BreakoutRoom
+   */
+  function closeBreakoutRooms(args: {
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): void;
+  /**
+   * Host and cohost can broadcast content in the main session and all rooms.
+   * @category BreakoutRoom
+   */
+    function broadcast(args: {
+      /**
+        * Content of broadcast.
+        */
+      content: string
+      /**
+        * Callback function on success.
+        */
+      success?: Function; 
+      /**
+        * Callback function in the event of an error.
+        */
+      error?: Function;
+    }): void;
+  /**
+   * Assign an unassigned participant to a room (host and co-host only).
+   * @category BreakoutRoom
+   */
+    function assignUserToBreakoutRoom(args: {
+      /**
+        * userId user ID.
+        */
+      userId: number,
+      /**
+        * Target room ID. The getBreakoutRooms method returns the breakout room ID (boId).
+        */
+      targetRoomId: string,
+      /**
+        * Callback function on success.
+        */
+      success?: Function; 
+      /**
+        * Callback function in the event of an error.
+        */
+      error?: Function;
+    }): void;
+
+  /**
+   * Move a participant in room to the specified room (host and co-host only).
+   * @category BreakoutRoom
+   */
+  function moveUserToBreakoutRoom(args: {
+    /**
+      * User ID
+      */
+    userId: number,
+    /**
+      * Target room ID. The getBreakoutRooms method returns the breakout room ID (boId).
+      */
+    targetRoomId: string,
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): void;
+  /**
+    * Join a breakout room
+    *  - Join only after the room is open.
+    * @category BreakoutRoom
+    */
+  function joinBreakoutRoom(args: {
+    /**
+      * The room ID.
+      */
+    roomId: string
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): void;
+
+  /**
+   * Leave the room
+   * - If the participant is not allowed to leave a room, the participant cannot return to the main session.
+   * @category BreakoutRoom
+   */
+  function leaveBreakoutRoom(args: {
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): void;
+  /**
+   * Get the current breakout room.
+   * @category BreakoutRoom
+   */
+  function getCurrentBreakoutRoom(args: {
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): {
+    attendeeStatus: BreakoutRoomAttendeeStatus;
+    name: string;
+    roomId: string;
+  };
+  /**
+   * 
+   * Get breakout room options.
+   * @category BreakoutRoom
+   */
+  function getBreakoutRoomOptions(args: {
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): RoomOption;
+  /**
+   * 
+   * The status of the breakout room.
+   * @category BreakoutRoom
+   */
+  function getBreakoutRoomStatus(args: {
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): BreakoutRoomControlStatus;
+  /**
+   * The break room status of the attendee.
+   * @category BreakoutRoom
+   */
+  function getUserStatus(args: {
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): BreakoutRoomAttendeeStatus;
+  /**
+   * Gets the unassigned list of attendees.
+   * @category BreakoutRoom
+   */
+  function getUnassignedAttendeeList(args: {
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): void;
+  /**
+   * Pins the corresponding user.
+   */
+  function operatePin(args: {
+    /**
+      * operate 'add' | 'replace' | 'remove' spotlight.
+      */
+    operate: 'add' | 'replace' | 'remove';
+    /**
+      * userId A valid user ID in the current meeting.
+      */
+    userId: number;
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): void;
+  /**
+   * Gets the pinned userId list.
+   */
+  function getPinList(args: {
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): number[];
+  /**
+   * Operates Spotlight user (host and cohost only).
+   */
+  function operateSpotlight(args: {
+    /**
+      * operate 'add' | 'replace' | 'remove' spotlight.
+      */
+    operate: 'add' | 'replace' | 'remove';
+    /**
+      * A valid user ID in the current meeting.
+      */
+    userId: number;
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): void;
+  /**
+   * Gets the Spotlight userId list.
+   */
+  function getSpotlightList(args: {
+    /**
+      * Callback function on success.
+      */
+    success?: Function; 
+    /**
+      * Callback function in the event of an error.
+      */
+    error?: Function;
+  }): number[];
 }

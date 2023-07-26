@@ -1,4 +1,199 @@
 # CHANGELOG
+## version 2.14.0
+## General
+### Added
+1. APIs for Breakout Rooms.
+
+## Client view
+### Added
+1. Support to pin and spotlight a user programmatically.
+1. Settings for "background noise suppression", "sync buttons on headset", and "display your reactions above toolbar".
+
+### Enhanced
+1. Support for the `participant_jbh_waiting_left` webhook event.
+
+### Fixed
+1. Fixed the issue where re-entering the same room unexpectedly unmuted the camera when disabling preview.
+
+## Component view
+### Added
+1. Smart Summary support.
+
+### Enhanced
+1. Toolbar: added new buttons, rearranged layout, and expanded toolbar buttons when receiving screen share.
+
+## version 2.13.0
+## General
+### Fixed
+1. Removed "optimize for video clip" option in Firefox/Safari.
+
+## Client view
+### Added
+1. Support for Meetings Q&A.
+1. New API "mediaCapture" for recording permission and disclosure for bots.
+
+### Enhanced
+1. Waiting room: The chat style is now compatible with mobile devices and supports reply back.
+1. Support for stopping incoming audio on mobile.
+1. Webinar resource support for i18n (internationalization).
+
+### Fixed
+1. The issue of sending empty files in PMC meetings.
+1. The issue of strange pop-up windows appearing and disappearing due to browser version upgrade.
+1. The participant display style on iPad.
+1. The issue where members returning to the main session while the provider closes the breakout rooms couldn't see the captions.
+1. An issue where the chat receiver list would unintentionally show phone users.
+
+## Component view
+### Added
+1. Support for Meeting Reactions.
+
+### Enhanced
+1. Attendee attribute return object.
+1. Screen sharing to ensure constant video size when viewing a screen share.
+1. i18n API support.
+
+## version 2.12.2
+## General
+### Fixed 
+1. An issue where video captured and rendered from iOS Mobile Web Browsers (Safari and Chrome) were unintentionally stretched and skewed.
+
+## version 2.12.0
+## General
+### Added
+1. add sharing QOS api
+### Enhanced
+1. waiting room show meeting/webinar detail
+2. add customerKey to getAttendeeslist() and getCurrentUser()
+## Client view
+### Added
+1. host can disable live transcription
+2. support smart summary
+### Enhanced
+1. support flow host view mode in meeting when livestreaming
+2. support Watermark Location customization
+## Component view
+### Added
+1. Pin a user Programmatically
+2. share screen support "Optimize for Video Clip"
+### Fixed 
+1. defaultViewType doesn't work when set 'isResizable' to 'false'
+### Enhanced
+1. Screen share permission warning to user
+
+## version 2.11.5
+## General
+### Enhanced
+1. Video share with audio can unmute mic when chrome>=111
+## Client view
+### Fixed
+1. Video share A/V keep sync when enable "Optimize for Video Clip"
+
+## version 2.11.0
+## General
+### Added
+1. Screen sharing QOS statistics in the Settings panel.
+1. Indonesian (id-ID) and Netherlands (nl-NL) language and localization support.
+
+### Enhanced
+1. Audio decoder in the audio-worklet.
+
+## Client view
+### Added
+1. stopIncomingAudio API to stop incoming audio.
+1. checkFeatureRequirements API to check browser compatibility with supported features.
+1. Support to allow attendees to talk via phone in webinars.
+1. Watermark support for when video isn't playing.
+1. Support for moving participants to the waiting room if the host drops unexpectedly.
+
+### Enhanced
+1. Preview and waiting room with Zoom's new experience.
+1. Styling and UI on mobile.
+
+### Fixed
+1. User unable to change audio status when screen sharing with audio.
+1. i18n issues in transcription menu and report dialog.
+1. Consistency issues with persistentID with respect to other SDKs.
+
+## Component view
+### Added
+Pin and spotlight support in speaker view.
+
+### Fixed
+Inability to properly tap on the leave button to leave the meeting.
+
+## version 2.10.1
+## General
+### Fixed
+1. An issue where customers with special symbols in their email address could not join webinars
+
+## Component view
+### Fixed
+1. Vanity URL meeting links being truncated when dashes "-" are present
+
+## version 2.10.0
+## General
+### Added
+1. New option to the `init` function to set users’ default view (e.g. Gallery/Speaker), and hide the share audio option for Chrome tabs. See API reference for details
+
+## Client View
+### Added
+1. New network quality event: `onNetworkQualityChange`
+
+### Enhanced
+1. Mobile device styling
+
+### Fixed
+1. Regression that caused issues subscribing to videos in 720p
+1. Clarity of an error message for when the host has been disabled or removed
+
+## Component view
+### Added
+1. “Speaker View” as a new view option
+1. New network quality icon for participants when on speaker view
+1. Support for webinar practice mode and option to start live broadcasts
+1. Support for subscribing to “active-speaker” events
+
+### Fixed
+1. An issue where the ZAK token was unintentionally cached from a previous join
+1. Certain edge cases that caused participant tiles to not show properly after resizing the view container, or after a participant left the meeting
+1. Unintentional errors with subsequent calls to `init` after leaving a meeting, destroying the client, and recreating the client
+
+## version 2.9.7
+## General
+### Added
+1. APIs for host and co-host status management. See API reference for details.
+1. “Camera not connected” icon for when the user does not have a camera connected.
+1. Support for recording with Zoom IQ.
+
+## Client View
+### Added
+1. “Optimize for Video Clip” feature, which shares video with higher frames per second (fps).
+1. Network quality indication to active speaker view.
+
+### Fixed
+1. An issue where attendees could submit a poll without adding responses, resulting in a polling error.
+1. Participants not having “Collapse All“ and “Expand All” options when self-selecting a Breakout Room.
+1. Users not being taken correctly to the post-meeting survey URL.
+1. Inability to properly scroll up on the caption language-selection menu when the screen was too small.
+1. Video being displayed in unintentional ways when switching to focus mode.
+1. Participants’ view not reverting to their previous view mode when spotlight is removed.
+1. Webinar attendees being unable to hear audio on mobile browsers in certain cases.
+1. ‘disableJoinAudio’ argument in ‘init()’ function not being properly read.
+
+## Component view
+### Added
+1. API to destroy the Component View client to allow re-creation from scratch.
+1. Event listener API for listening to screen share-related events.
+1. Event listener API for listening to Participant-related events.
+
+### Enhanced
+1. Toolbar to show more icons when in Gallery View.
+1. Chat privilege dropdown menu with a clarifying header.
+
+### Fixed
+1. Incorrect “Email is Blocked by Administrator” errors when joining a meeting or webinar requiring registration in certain cases.
+
 ## version 2.9.5
 ## Client View
 ### Added
@@ -30,11 +225,12 @@
 1. Caption, transcription, and translation support.
 1. `caption-message`, `recording-change`, and `local-recording-change` events callbacks.
 
+
 ## version 2.9.0
 ## General
 ### Added
 1. API for managing virtual background.
-1. Free meeting end dialog.
+2. Free meeting end dialog.
 
 ## Client View
 ### Added
@@ -84,7 +280,6 @@ The following release notes apply to the Meeting SDK for Web client view.
 1. Interpretation feature to include host controls.
 1. API reference documentation.
 1. Support for sending 720p video on macOS devices using an M1 or M2 chip when gallery view enabled.
-1. “Copy invite link” support for Zoom Events.
 1. Dropdown menu options offered by chevron buttons on audio and video toolbar buttons.
 
 ### Fixed
@@ -93,7 +288,6 @@ The following release notes apply to the Meeting SDK for Web client view.
 1. Last frame afterimage when starting focus mode in certain cases.
 1. Inconsistent mic animation between toolbar and participant list.
 1. Active speaker not changing correctly in speaker view.
-1. “Is livestream enabled” flag not being set properly for Zoom Events.
 1. Incorrect active speaker when selecting “See myself as the active speaker” in certain cases.
 1. Breakout rooms not being numbered when created by co-hosts with the automatically-assign option.
 1. Incorrect text in the join-breakout-room pop-up window in certain cases.
@@ -114,10 +308,13 @@ The following release notes apply to the Meeting SDK for Web component view.
 ### Fixed
 1. Audio did not work on Safari for iPadOS.
 
+
+
+
 ## version 2.7.0
 ## General
 ### Removed
-1. API Key property. [Migrate to SDK Key for versions 2.7.0 and above](https://marketplace.zoom.us/docs/guides/build/jwt-app/jwt-app-migration/#jwt-app-type-to-sdk-app-type-migration)
+1. API Key property. [Migrate to SDK Key for versions 2.7.0 and above](https://developers.zoom.us/docs/platform/build/jwt-app/jwt-app-migration/)
 
 ## Client View
 ### Added
@@ -158,29 +355,33 @@ The following release notes apply to the Meeting SDK for Web component view.
 1. Attendee’s question being removed in “My Questions” tab when dismissed by host
 1. Host being able to chat when chat is disabled
 
+
 ## version 2.6.0
 ## General
+### Added
+
 ### Fixed
-1. Reverted audio-handling changes in v2.5.0 to support the Chrome 104 beta
 
 ## Client View
 ### Added
-1. In-session resource (sidecar) support; details forthcoming
-1. Waiting room customizability 
-1. Email watermark support
-1. Support for sending 720p videos on Macs using Intel/AMD chips
-1. Live Transcription and Translation support
+1. Support in-session resource
+2. Support customized waiting room
+3. Support watermark
+4. Support mac send 720P
+5. Support new LTT translation
 
 ### Fixed
-1. Waiting room showing incorrect time when the meeting or webinar had not started
-1. Incorrect string being shown when hovering the join button on the preview page
-1. 404 error when clicking “Learn More” on the screen share permission dialog
-1. Virtual background state not being preserved on page refresh
-1. Inconsistent audio/video settings for attendee promotion and demotion
+1. revert 2.5.0 audio change to support chrome 104 beta
+2. show wrong time in waiting page when meeting/webinar not start
+3. remove privew page join button error.
+4. fix click learn more redirect to 404 page because resource rename
+5. fix vb state not save when refresh page
+6. 
 
 ## Component View
+
 ### Added
-1. Webinar Q&A support
+1. Support webinar Q&A
 
 ## version 2.5.0
 ## Client View
@@ -237,10 +438,11 @@ The following release notes apply to the Meeting SDK for Web component view.
 1. Notifications of recordings in progress when toggled or restarted in webinars
 
 
+
 ## version 2.4.0
 ## General
 ### Added
-1. Support for audio on mobile [browsers](https://marketplace.zoom.us/docs/sdk/native-sdks/web/#browser-support) and desktop Safari
+1. Support for audio on mobile [browsers](https://developers.zoom.us/docs/meeting-sdk/web/#browser-support) and desktop Safari
 2. [Virtual background](https://support.zoom.us/hc/en-us/articles/210707503-Changing-your-Virtual-Background-image) support
 3. API to decorate and customize the meeting invite URL on the frontend
 4. Statistics for meeting audio/video data
@@ -261,13 +463,12 @@ The following release notes apply to the Meeting SDK for Web component view.
 
 ## Component View
 ### Added
-1. Support for [ZAK Token](https://marketplace.zoom.us/docs/sdk/native-sdks/auth/#get-a-user-zak-token) in the `client.join()` function. See [Meetings](https://marketplace.zoom.us/docs/sdk/native-sdks/web/component-view/meetings) for details
+1. Support for [ZAK Token](https://developers.zoom.us/docs/meeting-sdk/auth/#start-meetings-and-webinars-with-a-zoom-users-zak-token) in the `client.join()` function. See [Meetings](https://developers.zoom.us/docs/meeting-sdk/web/component-view/meetings) for details
 
 ### Fixed
 1. Issue where css with certain names would be overwritten
 2. Issue where global Material UI styles with certain names would be overwritten in <head>
-
-
+3. 
 ## version 2.3.5
 ## General
 ### Enhanced
@@ -311,7 +512,7 @@ Remove SharedArrayBuffer (SAB) notification for end users if SAB is not availabl
 
 ## Component View
 ### Added 
-1. Support for resizing. See [the documentation](https://marketplace.zoom.us/docs/sdk/native-sdks/web/component-view/positioning) for details.
+1. Support for resizing. See [the documentation](https://developers.zoom.us/docs/meeting-sdk/web/component-view/positioning) for details.
 2. Support for allowing the attendee to talk
 
 ### Enhanced
@@ -319,25 +520,23 @@ Remove SharedArrayBuffer (SAB) notification for end users if SAB is not availabl
 
 
 ## version 2.2.0
-## Client View
-### Added
-1. Additional languages to the Language Interpretation feature
+## General
+1. New footer bar style
 
 ### Enhanced
-1. Toolbar look-and-feel and style
+1. Add more language interpretation support, like Amharic/Italian etc...
 
 ## Component View
-### Added
-1. Closed caption and live transcription feature
-2. Settings dropdown menu to the participant panel
-3. Chat notifications
-4. Chat unread count and message indicator
+## General
+1. Add closed caption and live transcription feature.
+2. Add participant list add set options.
+3. Add chat notifications
+### Fixed
+1. video disorder bug
+2. Active speaker bump to top of Ribbon or Gallery View
+3. respect cloud recording setting in web portal
 
 ### Fixed
-1. Participant videos not being ordered as intended
-2. Active speaker not being bumped to the top of the Ribbon or Gallery View
-3. Issue where the cloud recording setting in the web portal was not respected
-
 
 ## version 2.1.1
 ## General
@@ -346,7 +545,7 @@ Remove SharedArrayBuffer (SAB) notification for end users if SAB is not availabl
 2. An issue that prevented video turning on without SharedArrayBuffer support in Chromium browsers
 
 ## Component View
-### Added
+### Added:
 1. `checkSystemRequirements` API
 2. `stopAudio` API
 
@@ -372,37 +571,40 @@ Remove SharedArrayBuffer (SAB) notification for end users if SAB is not availabl
 5. “join()” function not returning error codes when password is incorrect
 
 ## WebSDK Component View
-### Added
+### Added:
 1. “Tk” parameter to “join()” function to allow users to join Webinars with registration
 
-### Enhanced
+### Enhanced:
 1. Code architecture quality and robustness
 
 ### Fixed
 1. Issue where the Gallery View page-change buttons could be positioned incorrectly
 2. Not all hands being lowered properly when clicking “Lower Hand” button
 
+## version 2.0.1
+## WebSDK Client View
 
 ## version 2.0.1
 ## WebSDK Client View
 ## Added
 1. [Mask Background feature](https://support.zoom.us/hc/articles/214629443#h_01FGW73VTDNVJ3VDKP7YQGVQNZ)
-2. Setting to “Mirror my Video”
-3. [Meeting Reactions](https://support.zoom.us/hc/articles/115001286183-Nonverbal-feedback-during-meetings)
-4. Side-by-side layout support when screen sharing in Chrome
-5. Ability to customize recording disclaimer content
-6. Support for showing the user a notice when archiving and live streaming
-7. Dialog for attendees to first provide consent when being promoted to a panelist in webinars
-8. Privacy notices for various features
+Setting to “Mirror my Video”
+2. [Meeting Reactions](https://support.zoom.us/hc/articles/115001286183-Nonverbal-feedback-during-meetings)
+3. Side-by-side layout support when screen sharing in Chrome
+4. Ability to customize recording disclaimer content
+5. Support for showing the user a notice when archiving and live streaming
+6. dialog for attendees to first provide consent when being promoted to a panelist in webinars
+7. Getty Show legal notices
 
 ## Enhanced
 1. Waiting page when a meeting has not yet started
 
 ## Fixed
-1. The “TypeError: I.isMatchingType is not a function” bug from ~v1.9.5
+1. Receiving video in 720p from the native client (requirements include needing “Speaker” view, a video height >= 720p, and a high-performance PC)
+2. The “TypeError: I.isMatchingType is not a function” bug from ~v1.9.5
 
 ## WebSDK Component View
-## Added
+Added
 1. Joining, leaving, and ending meetings and webinars
 2. Reconnecting when connection state changes
 3. Privacy notices to various features such as chat and recording
@@ -429,7 +631,6 @@ Remove SharedArrayBuffer (SAB) notification for end users if SAB is not availabl
 24. Multiple languages (i18n)
 25. Adding custom buttons to the toolbar dropdown
 26. APIs to safely and programmatically interact with a meeting or webinar
-
 
 ## version 1.9.9
 ## Fixed
@@ -466,7 +667,6 @@ Note: This feature is dependent on a web release scheduled for June 16, 2021, an
 1. Removed the assistant Breakout Room button
 2. Support for attendees joining via new registration flow, where attendees are required to verify their email via correct tk
 
-
 ## version 1.9.5
 ## Added
 1. Support language interpretation for participants.
@@ -477,7 +677,7 @@ Note: This feature is dependent on a web release scheduled for June 16, 2021, an
 6. Support for automatically joining a webinar as a panelist.
 7. Support for joining manually-approved webinars.
 8. Support for reordering gallery and speaker view within webinars.
-9. Add helper.html to support Web SDK isolation for changes related to Chrome 92. See [announcement] for details.
+9. Add helper.html to support Web SDK isolation for changes related to Chrome 91. See [announcement] for details.
 10. Support Audio quality of service (QOS).
 11. setLogLevel API to print logs. To use this API, set debug to true and use setLogLevel('info').
 12. Support for pre-assigned breakout rooms.
