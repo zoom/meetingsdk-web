@@ -42,6 +42,7 @@
     "index.d.ts",
     "CHANGELOG.md",
     "LICENSE.md",
+    "oss_attribution.txt",
     "README.md"
   ]
 }
