@@ -666,6 +666,10 @@ export namespace ZoomMtg {
      */
     signature: string;
     /**
+     * Optional. Token to allow local recording. See [Get a meeting's join token for local recording](https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/meetingLocalRecordingJoinToken) for details.
+     */
+    recordingToken?: string;
+    /**
      * Callback function on success.
      */
     success: Function;
