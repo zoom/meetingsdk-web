@@ -63,7 +63,7 @@
   function i() {
     var n = c.vbPath;
     n &&
-      ((t = n + '/vbbuffer.bin'),
+      ((t = n + '/vbbuffer-dual.bin'),
       (r = n + '/tf.min.js'),
       o((e = n + '/vbPreloadWorker.js'))
         .then(function(n) {

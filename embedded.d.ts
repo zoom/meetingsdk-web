@@ -100,6 +100,34 @@ export const enum RecordingStatus {
 }
 export type RecordingStatusValue = 'Recording' | 'Paused' | 'Stopped';
 /**
+ * Media capture status.
+ */
+export const enum MediaCaptureStatus {
+  Stop = 0,
+  Start = 1,
+  Pause = 2
+}
+export type MediaCaptureStatusValue = 0 | 1 | 2;
+
+/**
+ * Media capture permission.
+ */
+export const enum MediaCapturePermission {
+  /**
+   * Host denies the media capture request.
+   */
+  Deny = 1,
+  /**
+   * Host allows the media capture request.
+   */
+  Allow = 2
+}
+export type MediaCapturePermissionValue = 0 | 1 | 2;
+/**
+ * Media capture operation values.
+ */
+export type MediaCaptureOperationValue = 'grant' | 'request' | 'revoke';
+/**
  * Participant interface.
  */
 export interface Participant {
@@ -680,6 +708,10 @@ export interface JoinOptions {
    */
   zak?: string;
   /**
+   * @param recordingToken Optional token to allow local recording. See [Get a meeting's join token for local recording](https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/meetingLocalRecordingJoinToken) for details.
+   */
+  recordingToken?: string;
+  /**
    * @param success Join success callback.
    */
   success?: Function;
@@ -908,49 +940,49 @@ export interface BoRoomAttendee {
    */
   avatar: string;
   /**
-   * Whether the user is in the breakout room.
+   * Whether the user is in the breakout room or not.
    */
   isInRoom: boolean;
   userGuid: string;
 }
 export interface Room {
   /**
-   * Room Id.
+   * Room ID.
    */
   roomId: string;
   /**
-   * Room Name.
+   * Room name.
    */
   name: string;
   /**
-   * attendees in room.
+   * Participants in the room.
    */
   attendeeList: Array<BoRoomAttendee>;
 }
 
 export interface RoomOption {
   /**
-   * whether to automatically join the room when the participant is assigned to a room.
+   * Whether to automatically join the room when the participant is assigned to a room or not.
    */
   isAutoJoinRoom?: boolean;
   /**
-   * whether to allow participants in the room to return to the main session.
+   * Whether or not to allow participants in the room to return to the main session.
    */
   isBackToMainSessionEnabled?: boolean;
   /**
-   * Whether to set a timer for the breakout room.
+   * Whether or not to set a timer for the breakout room.
    */
   isTimerEnabled?: boolean;
   /**
-   * duration of the timer.
+   * The duration of the timer.
    */
   timerDuration?: number;
   /**
-   * whether to automatically return to the main session when time up.
+   * Whether or not to automatically return to the main session when time is up.
    */
   isTimerAutoEnabled?: boolean;
   /**
-   * when the breakout room is closing, the buffer time to leave the room.
+   * When the breakout room is closing, the buffer time to give the user to leave the room.
    */
   waitSeconds?: number;
 }
@@ -965,7 +997,7 @@ export enum BreakoutRoomStatus {
    */
   InProgress = 2,
   /**
-   * Room is closing, there may be a closing countdown.
+   * Room is closing. There may be a closing countdown.
    */
   Closing = 3,
   /**
@@ -988,7 +1020,7 @@ export enum BreakoutRoomAttendeeStatus {
    */
   Joining = 'joining',
   /**
-   * In room.
+   * In the room.
    */
   InRoom = 'in room',
   /**
@@ -1204,6 +1236,24 @@ export declare namespace EmbeddedClient {
    */
   function record(record: 'start' | 'pause' | 'stop'): ExecutedResult;
   /**
+   * Starts, stops, or pauses the media capture.
+   * @param record
+   */
+  function mediaCapture(record: MediaCaptureStatus | MediaCaptureStatusValue): ExecutedResult;
+  /**
+   * Host can grant the media capture permission requested by mediaCapturePermission('request'). If the host doesn't respond to the request with 10 seconds after receiving it, it will be automatically denied.
+   * Host can revoke the granted media capture permission.
+   * Participants can request the media capture permission.
+   * @param operation Operation type. Values can be `grant`, `revoke`, and `request`.
+   * @param userId Grant or revoke the media capture permission to the user with `userId`. `userId` is only required for the `grant` and `revoke` operations.
+   * @param mediaCapturePermission Media capture permission. Only required for the `grant` operation.
+   */
+  function mediaCapturePermission(
+    operation: MediaCaptureOperationValue,
+    userId?: number,
+    mediaCapturePermission?: MediaCapturePermission | MediaCapturePermissionValue
+  ): ExecutedResult;
+  /**
    * Locks meeting.
    * @param lockMeeting True to lock, false to unlock.
    */
@@ -1246,9 +1296,9 @@ export declare namespace EmbeddedClient {
   /**
    * Sends private chat message to meeting participants. This API does not support sending chat messages in a webinar.
    * @param chatMessage the chat message to be sent, it cannot be undefined, null, or empty.
-   * @param userId the message receiver's userId.
+   * @param userId the message receiver's `userId`. If the `userId`'` is not provided, the message will be sent to everyone in the meeting.
    */
-  function sendChat(chatMessage: string, userId: number): Promise<ChatMessage | Error>;
+  function sendChat(chatMessage: string, userId?: number): Promise<ChatMessage | Error>;
   /**
    * Gets the current status of the virtual background setting.
    * @category VirtualBackground
@@ -1358,61 +1408,61 @@ export declare namespace EmbeddedClient {
    */
   function updateVideoOptions(videoOptions: VideoOptions): void;
   /**
-   * Host assign an unassigned participant to a room.
-   * @param userId user id
-   * @param targetRoomId room id
+   * Host assigns an unassigned participant to a room.
+   * @param userId User ID
+   * @param targetRoomId Room ID
    */
   function assignUserToRoom(userId: number, targetRoomId: string): ExecutedResult;
   /**
    * Host can broadcast content in the main session and all rooms.
-   * @param content content of broadcast
+   * @param content Content of the broadcast.
    */
   function broadcast(content: string): ExecutedResult;
   /**
-   * Host close the room.
+   * Host closes the room.
    */
   function closeAllBreakoutRooms(): ExecutedResult;
   /**
-   * Get the current room.
+   * Gets the current room.
    */
   function getCurrentBreakoutRoom(): {};
   /**
-   * If you are the host, will get all the rooms
-   * If you are the participant, will get the assigned room
+   * If you are the host, gets all the rooms.
+   * If you are the participant, gets the assigned room.
    */
   function getBreakoutRoomList(): Room[];
   /**
-   * Get room options
+   * Gets room options.
    */
   function getBreakoutRoomOptions(): RoomOption;
   /**
-   * The status of room
+   * Gets the status of the room.
    */
   function getBreakoutRoomStatus(): BreakoutRoomStatus;
   /**
-   * The room status of attendee
+   * Gets the room status of the attendee.
    */
   function getUserStatus(): BreakoutRoomAttendeeStatus;
   /**
-   * Join a breakout room
-   *  - Join only after the room is open
-   * @param roomId id a room
+   * Joins a breakout room if there is no `roomId` added.
+   *  - Join only after the room is open, if there is a `roomId`
+   * @param roomId The ID of the room to join, when open.
    */
   function joinBreakoutRoom(roomId: string): ExecutedResult;
   /**
-   * Leave the room
-   * - If the room is not allowed to leave, can not return to main session.
+   * Leaves the room
+   * - If the participant is not allowed to leave the room, they cannot return to the main session.
    */
   function leaveBreakoutRoom(): ExecutedResult;
   /**
-   * Host move an participant in room to the specified room
-   * @param userId user id
-   * @param targetRoomId room id
+   * Host moves a participant in the room to the specified room.
+   * @param userId The user ID
+   * @param targetRoomId The room ID to move them to.
    */
   function moveUserToBreakoutRoom(userId: number, targetRoomId: string): ExecutedResult;
   /**
-   * Open the created rooms
-   * @param rooms Room list Required; Need to include roomId and roomName, room name can be renamed.
+   * Opens the created rooms
+   * @param rooms Room list Required; Must include `roomId` and `roomName`. Room name can be renamed.
    * @param options Room option; Default options = {
       isAutoJoinRoom: false,
       isBackToMainSessionEnabled: true,
@@ -1451,6 +1501,14 @@ export declare namespace EmbeddedClient {
   function on(event: 'room-state-change', callback: typeof event_room_state_change): void;
   function on(event: 'main-session-user-updated', callback: (payload: {}) => void): void;
   function on(event: 'broadcast-message', callback: (payload: { message: string }) => void): void;
+  function on(
+    event: 'media-capture-status-change',
+    callback: (payload: { userId: number; bLocalRecord: boolean }) => void
+  ): void;
+  function on(
+    event: 'media-capture-permission-change',
+    callback: (payload: { type: string; value: string; canRecord?: boolean }) => void
+  ): void;
   /**
    * Removes the event handler. Must be used with on() in pairs.
    * @param event event name. Same as 'on' event name list.
