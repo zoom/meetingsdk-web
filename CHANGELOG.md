@@ -498,7 +498,7 @@ The following release notes apply to the Meeting SDK for Web component view.
 ## version 2.3.5
 ## General
 ### Enhanced
-1. Increased "customerKey” max length to 36 characters
+1. Increased "customerKey" max length to 35 characters
 
 ### Fixed
 1. Missing participant poll button in the sample app
