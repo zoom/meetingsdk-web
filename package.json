@@ -1,6 +1,6 @@
 {
   "name": "@zoomus/websdk",
-  "version": "2.15.0",
+  "version": "2.15.2",
   "description": "Zoom Web SDK",
   "main": "index.js",
   "types": "index.d.ts",

@@ -1157,7 +1157,7 @@ function claimHostWithHostKey(args: {
   /**
    * Puts the participant in the waiting room or lets the participant join the meeting.
    * @param args 
-   * @RateLimit 1s
+   * @RateLimit 0.1s
    */
   function putOnHold(args: {
     /**
@@ -1177,6 +1177,41 @@ function claimHostWithHostKey(args: {
       */
      error?: Function
   }): void;
+  /**
+   * lets the all in waiting room participant join the meeting.
+   * @param args 
+   * @RateLimit 1s
+   */
+  function admitAll(args: {
+    /**
+     * Callback function on success.
+     */
+     success?: Function; 
+     /**
+      * Callback function in the event of an error.
+      */
+     error?: Function
+  }): void;
+  /**
+   * Change leaveUrl after joined meeting.
+   * @param args 
+   * @RateLimit 1s
+   */
+  function changRedirectUrl(args: {
+    /**
+     * The leave url.
+     */
+    leaveUrl: number;
+    /**
+     * Callback function on success.
+     */
+     success?: Function; 
+     /**
+      * Callback function in the event of an error.
+      */
+     error?: Function
+  }): void;
+  
   /**
    * Listens for user join or leave events and handles them.
    * @param event 
