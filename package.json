@@ -19,12 +19,14 @@
     "url": "https://github.com/zoom/websdk/issues"
   },
   "dependencies": {
-    "react": ">16.13.1",
-    "react-dom": ">16.13.1",
     "redux": "^3.7.2",
     "react-redux": "^7.2.9",
     "lodash": "^4.17.21",
     "redux-thunk": "^2.4.2"
+  },
+  "peerDependencies": {
+    "react": ">16.13.1",
+    "react-dom": ">16.13.1"
   },
   "files": [
     "dist/*",
