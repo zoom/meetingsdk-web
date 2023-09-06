@@ -1193,11 +1193,31 @@ function claimHostWithHostKey(args: {
      error?: Function
   }): void;
   /**
-   * Change leaveUrl after joined meeting.
+   * please use changeRedirectUrl
+   * @deprecated
    * @param args 
    * @RateLimit 1s
    */
   function changRedirectUrl(args: {
+    /**
+     * The leave url.
+     */
+    leaveUrl: number;
+    /**
+     * Callback function on success.
+     */
+     success?: Function; 
+     /**
+      * Callback function in the event of an error.
+      */
+     error?: Function
+  }): void;
+  /**
+   * Change leaveUrl after joined meeting.
+   * @param args 
+   * @RateLimit 1s
+   */
+  function changeRedirectUrl(args: {
     /**
      * The leave url.
      */
