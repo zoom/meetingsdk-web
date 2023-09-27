@@ -1168,6 +1168,29 @@ export declare function event_user_updated(payload: ParticipantPropertiesPayload
 export declare function event_peer_share_state_change(payload: { userId: number; action: string }): void;
 export declare function event_audio_active_speaker(payload: Array<ActiveSpeaker>): void;
 export declare function event_room_state_change(payload: { status: BreakoutRoomStatus }): void;
+/**
+ * Occurs when network quality changes.
+ * The network quality reflects the video quality. The data will broadcast to all users only when the user starts video.
+ */
+export declare function event_network_quality_change(payload: {
+  /**
+   * Network quality level.
+   * Values can be integers from 0 to 5.
+   * Poor: 0, 1
+   * Normal: 2
+   * Good: 3, 4, 5
+   */
+  level: number;
+  /**
+   * Whether the network level is for uplink or downlink.
+   * Values can only be 'uplink' or 'downlink'.
+   */
+  type: string;
+  /**
+   * User ID.
+   */
+  userId: number;
+}): void;
 export declare namespace EmbeddedClient {
   /**
    * Initializes the Meeting SDK for web component view client.
@@ -1501,6 +1524,7 @@ export declare namespace EmbeddedClient {
   function on(event: 'room-state-change', callback: typeof event_room_state_change): void;
   function on(event: 'main-session-user-updated', callback: (payload: {}) => void): void;
   function on(event: 'broadcast-message', callback: (payload: { message: string }) => void): void;
+  function on(event: 'network-quality-change', callback: typeof event_network_quality_change): void;
   function on(
     event: 'media-capture-status-change',
     callback: (payload: { userId: number; bLocalRecord: boolean }) => void

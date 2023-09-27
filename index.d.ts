@@ -748,6 +748,29 @@ export namespace ZoomMtg {
      error?: Function
   }): void;
   /**
+    * Set customized waiting room title and description.
+    * @param args 
+    * @RateLimit 10s
+    */ 
+  function setCustomizeWaitingRoom(args: { 
+    /**
+     * Customize waiting room title.
+     */
+    title: string;
+    /**
+     * Customize waiting room desc.
+     */
+    desc?: string;
+    /**
+     * Callback function on success.
+     */
+    success?: Function; 
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function
+  }): void;
+  /**
    * Shows or hides border around shared content.
    * @param args 
    */
@@ -1533,7 +1556,7 @@ function claimHostWithHostKey(args: {
    */
   function updateVirtualBackgroundList(args: {
     /**
-     * VB list.
+     * VB list. if vbList=[] will disable VB.
      */
     vbList?: Array<VbImageInfoType>;
     /**
