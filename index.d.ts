@@ -1088,7 +1088,7 @@ function makeHost(args: {
   /**
    * User ID.
    */
-  userId: boolean;
+  userId: number;
   /**
    * Callback function on success.
    */
