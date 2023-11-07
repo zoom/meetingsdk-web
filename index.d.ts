@@ -7,6 +7,10 @@ declare let initArgs: {
    */
   debug?: boolean; //optional
   /**
+   * patchJsMedia: Optional. Default: false. Set to true to automatically apply the latest media dependency fix for the current Web Meeting SDK version. Note that you will still need to manually upgrade to major and minor version releases.
+   */
+  patchJsMedia? : boolean; //optional
+  /**
    * leaveUrl: Required. The URL to post after the user leaves the meeting. Example: “http://www.zoom.us”
    */
   leaveUrl: string; //required
@@ -363,15 +367,15 @@ export interface RoomOption {
    */
   timerDuration?: number;
   /**
-   * Whether not notify me.
+   * Whether to notify the user when the time is up. True: Do not notify. False: Notify.
    */
   notNotifyMe?: boolean;
   /**
-   * Whether Countdown after closing breakout room.
+   * Whether to offer a countdown after closing the breakout room.
    */
   needCountDown?: boolean;
   /**
-   * When the breakout room is closing, the buffer time to leave the room, 10 | 15 | 30 | 60 | 120.
+   * When the breakout room is closing, the buffer time (in seconds) to leave the room. Values: 10 | 15 | 30 | 60 | 120.
    */
   waitSeconds?: number;
 }
@@ -758,7 +762,7 @@ export namespace ZoomMtg {
      */
     title: string;
     /**
-     * Customize waiting room desc.
+     * Customize waiting room description.
      */
     desc?: string;
     /**
@@ -1201,7 +1205,7 @@ function claimHostWithHostKey(args: {
      error?: Function
   }): void;
   /**
-   * lets the all in waiting room participant join the meeting.
+   * Lets all participants in the waiting room join the meeting.
    * @param args 
    * @RateLimit 1s
    */
@@ -1216,14 +1220,14 @@ function claimHostWithHostKey(args: {
      error?: Function
   }): void;
   /**
-   * please use changeRedirectUrl
+   * Use changeRedirectUrl instead.
    * @deprecated
    * @param args 
    * @RateLimit 1s
    */
   function changRedirectUrl(args: {
     /**
-     * The leave url.
+     * (Deprecated, use changeRedirectUrl). The URL to redirect participants who leave the meeting.
      */
     leaveUrl: number;
     /**
@@ -1236,13 +1240,13 @@ function claimHostWithHostKey(args: {
      error?: Function
   }): void;
   /**
-   * Change leaveUrl after joined meeting.
+   * Change leaveUrl after participants join the meeting.
    * @param args 
    * @RateLimit 1s
    */
   function changeRedirectUrl(args: {
     /**
-     * The leave url.
+     * The URL to redirect participants who leave the meeting.
      */
     leaveUrl: number;
     /**
@@ -1556,7 +1560,7 @@ function claimHostWithHostKey(args: {
    */
   function updateVirtualBackgroundList(args: {
     /**
-     * VB list. if vbList=[] will disable VB.
+     * Virtual background (VB) list. To disable VB, use vbList=[].
      */
     vbList?: Array<VbImageInfoType>;
     /**

@@ -924,6 +924,12 @@ export interface InitOptions {
    * Maximum participants displayed per screen in gallery view, up to 25.
    */
   maximumVideosInGalleryView?: number;
+  /**
+   * patchJsMedia: Optional. Default: false.
+   * Set to true to automatically apply the latest media dependency fix for the current Web Meeting SDK version.
+   * Note that you will still need to manually upgrade to major and minor version releases.
+   */
+  patchJsMedia?: boolean;
 }
 
 export interface BoRoomAttendee {
