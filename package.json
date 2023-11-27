@@ -1,6 +1,6 @@
 {
   "name": "@zoomus/websdk",
-  "version": "2.14.0",
+  "version": "2.18.0",
   "description": "Zoom Web SDK",
   "main": "index.js",
   "types": "index.d.ts",
@@ -19,20 +19,20 @@
     "url": "https://github.com/zoom/websdk/issues"
   },
   "dependencies": {
-    "react": "16.13.0",
-    "react-dom": "16.13.0",
-    "redux": "3.7.2",
-    "react-redux": "7.2.4",
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
+    "redux": "4.2.1",
+    "react-redux": "7.2.9",
     "lodash": "^4.17.21",
-    "redux-thunk": "2.3.0"
+    "redux-thunk": "2.4.2"
   },
   "peerDependencies": {
-    "react": "16.13.0",
-    "react-dom": "16.13.0",
-    "redux": "3.7.2",
-    "react-redux": "7.2.4",
+    "react": "16.14.0",
+    "react-dom": "16.14.0",
+    "redux": "4.2.1",
+    "react-redux": "7.2.9",
     "lodash": "^4.17.21",
-    "redux-thunk": "2.3.0"
+    "redux-thunk": "2.4.2"
   },
   "files": [
     "dist/*",
@@ -42,6 +42,7 @@
     "index.d.ts",
     "CHANGELOG.md",
     "LICENSE.md",
+    "oss_attribution.txt",
     "README.md"
   ]
 }

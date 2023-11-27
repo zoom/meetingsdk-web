@@ -7,6 +7,10 @@ declare let initArgs: {
    */
   debug?: boolean; //optional
   /**
+   * patchJsMedia: Optional. Default: false. Set to true to automatically apply the latest media dependency fix for the current Web Meeting SDK version. Note that you will still need to manually upgrade to major and minor version releases.
+   */
+  patchJsMedia? : boolean; //optional
+  /**
    * leaveUrl: Required. The URL to post after the user leaves the meeting. Example: “http://www.zoom.us”
    */
   leaveUrl: string; //required
@@ -363,15 +367,15 @@ export interface RoomOption {
    */
   timerDuration?: number;
   /**
-   * Whether not notify me.
+   * Whether to notify the user when the time is up. True: Do not notify. False: Notify.
    */
   notNotifyMe?: boolean;
   /**
-   * Whether Countdown after closing breakout room.
+   * Whether to offer a countdown after closing the breakout room.
    */
   needCountDown?: boolean;
   /**
-   * When the breakout room is closing, the buffer time to leave the room, 10 | 15 | 30 | 60 | 120.
+   * When the breakout room is closing, the buffer time (in seconds) to leave the room. Values: 10 | 15 | 30 | 60 | 120.
    */
   waitSeconds?: number;
 }
@@ -666,6 +670,10 @@ export namespace ZoomMtg {
      */
     signature: string;
     /**
+     * Optional. Token to allow local recording. See [Get a meeting's join token for local recording](https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/meetingLocalRecordingJoinToken) for details.
+     */
+    recordingToken?: string;
+    /**
      * Callback function on success.
      */
     success: Function;
@@ -742,6 +750,29 @@ export namespace ZoomMtg {
       * Callback function in the event of an error.
       */
      error?: Function
+  }): void;
+  /**
+    * Set customized waiting room title and description.
+    * @param args 
+    * @RateLimit 10s
+    */ 
+  function setCustomizeWaitingRoom(args: { 
+    /**
+     * Customize waiting room title.
+     */
+    title: string;
+    /**
+     * Customize waiting room description.
+     */
+    desc?: string;
+    /**
+     * Callback function on success.
+     */
+    success?: Function; 
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function
   }): void;
   /**
    * Shows or hides border around shared content.
@@ -1153,7 +1184,7 @@ function claimHostWithHostKey(args: {
   /**
    * Puts the participant in the waiting room or lets the participant join the meeting.
    * @param args 
-   * @RateLimit 1s
+   * @RateLimit 0.1s
    */
   function putOnHold(args: {
     /**
@@ -1173,6 +1204,61 @@ function claimHostWithHostKey(args: {
       */
      error?: Function
   }): void;
+  /**
+   * Lets all participants in the waiting room join the meeting.
+   * @param args 
+   * @RateLimit 1s
+   */
+  function admitAll(args: {
+    /**
+     * Callback function on success.
+     */
+     success?: Function; 
+     /**
+      * Callback function in the event of an error.
+      */
+     error?: Function
+  }): void;
+  /**
+   * Use changeRedirectUrl instead.
+   * @deprecated
+   * @param args 
+   * @RateLimit 1s
+   */
+  function changRedirectUrl(args: {
+    /**
+     * (Deprecated, use changeRedirectUrl). The URL to redirect participants who leave the meeting.
+     */
+    leaveUrl: number;
+    /**
+     * Callback function on success.
+     */
+     success?: Function; 
+     /**
+      * Callback function in the event of an error.
+      */
+     error?: Function
+  }): void;
+  /**
+   * Change leaveUrl after participants join the meeting.
+   * @param args 
+   * @RateLimit 1s
+   */
+  function changeRedirectUrl(args: {
+    /**
+     * The URL to redirect participants who leave the meeting.
+     */
+    leaveUrl: number;
+    /**
+     * Callback function on success.
+     */
+     success?: Function; 
+     /**
+      * Callback function in the event of an error.
+      */
+     error?: Function
+  }): void;
+  
   /**
    * Listens for user join or leave events and handles them.
    * @param event 
@@ -1474,7 +1560,7 @@ function claimHostWithHostKey(args: {
    */
   function updateVirtualBackgroundList(args: {
     /**
-     * VB list.
+     * Virtual background (VB) list. To disable VB, use vbList=[].
      */
     vbList?: Array<VbImageInfoType>;
     /**
