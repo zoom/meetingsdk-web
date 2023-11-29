@@ -5,13 +5,13 @@
  */
 
 /*! normalize.css v3.0.0 | MIT License | git.io/normalize */
-html {
+#zmmtg-root html {
   font-family: sans-serif;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
 }
 
-body {
+#zmmtg-root {
   margin: 0;
 }
 
@@ -327,13 +327,14 @@ th {
   box-sizing: border-box;
 }
 
-html {
+#zmmtg-root html {
   font-size: 62.5%;
 
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-body {
+#zmmtg-root {
+
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.42857143;
