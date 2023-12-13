@@ -1,7 +1,7 @@
 {
-  "name": "@zoomus/websdk",
-  "version": "2.18.2",
-  "description": "Zoom Web SDK",
+  "name": "@zoom/meetingsdk",
+  "version": "3.0.0",
+  "description": "Zoom MeetingSDK-Web Client",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zoom/websdk.git"
+    "url": "git+https://github.com/zoom/meetingsdk-web"
   },
-  "keywords": ["zoom", "web", "sdk"],
+  "keywords": ["zoom", "meetingsdk", "websdk", "web"],
   "author": "Zoom Video Communications, Inc.",
   "license": "SEE LICENSE IN LICENSE.md",
-  "homepage": "https://github.com/zoom/websdk#readme",
+  "homepage": "https://github.com/zoom/meetingsdk-web#readme",
   "bugs": {
-    "url": "https://github.com/zoom/websdk/issues"
+    "url": "https://github.com/zoom/meetingsdk-web/issues"
   },
   "dependencies": {
     "react": "16.14.0",

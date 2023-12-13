@@ -140,7 +140,7 @@ export interface Participant {
    */
   userName: string;
   /**
-   * @deprecated in v3.0.0, use `userName`
+   * @deprecated in v4.0.0, use `userName`
    */
   displayName: string;
   /**
@@ -184,7 +184,7 @@ export interface Participant {
    */
   isHold: boolean;
   /**
-   * @deprecated in v3.0.0, use `isHold`
+   * @deprecated in v4.0.0, use `isHold`
    */
   bHold: boolean;
   /**
@@ -192,7 +192,7 @@ export interface Participant {
    */
   video: boolean;
   /**
-   * @deprecated in v3.0.0, use `video`
+   * @deprecated in v4.0.0, use `video`
    */
   bVideoOn: boolean;
   /**
@@ -214,12 +214,12 @@ export interface Participant {
   sharePause: boolean;
   isAssistant?: boolean;
   /**
-   * * @deprecated in v3.0.0, use `isAssistant`
+   * * @deprecated in v4.0.0, use `isAssistant`
    */
   astAdmin?: boolean;
   isAdmin?: boolean;
   /**
-   * @deprecated in v3.0.0, use `isAdmin`
+   * @deprecated in v4.0.0, use `isAdmin`
    */
   rmcAdmin?: boolean;
   /**
@@ -235,7 +235,7 @@ export interface Participant {
    */
   pronoun?: string;
   /**
-   * @deprecated in v3.0.0, use `pronoun`
+   * @deprecated in v4.0.0, use `pronoun`
    */
   strPronoun?: string;
   /**
@@ -247,7 +247,7 @@ export interface Participant {
    */
   audioStatus?: number;
   /**
-   * @deprecated in v3.0.0, use `audioStatus`
+   * @deprecated in v4.0.0, use `audioStatus`
    */
   audioConnectionStatus?: number;
   /**
@@ -255,7 +255,7 @@ export interface Participant {
    */
   isVideoConnect?: boolean;
   /**
-   * @deprecated in v3.0.0, use `isVideoConnect`
+   * @deprecated in v4.0.0, use `isVideoConnect`
    */
   bVideoConnect?: boolean;
   /**
@@ -263,7 +263,7 @@ export interface Participant {
    */
   participantUUID?: string;
   /**
-   * @deprecated in v3.0.0, use `participantUUID`
+   * @deprecated in v4.0.0, use `participantUUID`
    */
   userGuid?: string;
 }
