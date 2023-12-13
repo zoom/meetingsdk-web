@@ -427,6 +427,7 @@ export declare namespace ZoomMtgLang {
    * Loads translations.
    * See for abbreviation descriptions: https://developers.zoom.us/docs/meeting-sdk/web/client-view/multi-language/
    * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT', 'id-ID', 'nl-NL'
+   * Make sure call it before call init.
    * @param lang
    *
    */
@@ -436,14 +437,14 @@ export declare namespace ZoomMtgLang {
    * For the Zoom-provided JSON language use this syntax: https://source.zoom.us/{VERSION_NUMBER}/lib/lang/{LANG_CODE}.json. 
    * For example, to use the English resource from Zoom for v2.7.0 of the SDK, use: https://source.zoom.us/2.7.0/lib/lang/en-US.json
    * Or create your own JSON resource object.
+   * Make sure call it before call init.
    * @param url JSON Language resource URL or resource object
    * @param lang Your assigned language name for the resource.
    */
   function load(url: string | object, lang: string): Promise<any>;
   /**
-   * Changes UI language. Set a supported language when joining a meeting.
-   * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT', 'id-ID', 'nl-NL' or you loaded lang
-   * @param lang
+   * you can remove it >= 3.0.0
+   @deprecated
    *
    */
   function reload(lang: string): void;
@@ -473,9 +474,8 @@ export declare namespace ZoomMtgLang {
    */
   function getSupportLanguage(): Array<string>;
   /**
-   * Sets the support language array.
-   * @param langArray Array of the languages that you want to support. 
-   * This will replace the default: ['de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT', 'id-ID', 'nl-NL']
+   * you can remove it >= 3.0.0
+   * @deprecated
    */
   function setSupportLanguage(langArray: Array<string>): void;
 }
@@ -682,6 +682,48 @@ export namespace ZoomMtg {
      */
     error: Function;
   }): void;
+    /**
+   * Join an test meeting. signature only support role=0
+   * @param args 
+   * @category Join
+   * @RateLimit 10s
+   */
+    function joinTest(args: {
+      /**
+       * Required, the Zoom meeting or webinar number.
+       */
+      meetingNumber: string | number;
+      /**
+       * Required. The name of the user starting or joining the meeting or webinar.
+       */
+      userName: string;
+      /**
+       * Required for webinar. Required for meeting if registration is required; optional if not. 
+       * The email of the user starting or joining the meeting or webinar.
+       */
+      userEmail?: string;
+      /**
+       * Required. The meeting’s password. Leave as an empty string if the meeting or webinar only requires the waiting room.
+       */
+      passWord?: string;
+      /**
+       * Optional. An identifier for the user that you can get back from the Meeting API.
+       */
+      customerKey?: string;
+      /**
+       * Required. Only sdkKey is supported for joining meetings on version 2.7.0 and higher.
+       */
+      sdkKey?: string;
+      /**
+       * Required. The signature to start or join a meeting. See https://developers.zoom.us/docs/meeting-sdk/auth/ for details.
+       */
+      signature: string;
+      success: Function;
+      /**
+       * Callback function in the event of an error.
+       */
+      error: Function;
+    }): void;
   /**
    * Shows or hides the invite button.
    * @param args 
@@ -1445,8 +1487,8 @@ function claimHostWithHostKey(args: {
 
 
   /**
-   * Re-renders the UI, for example, after changing the UI language in a meeting.
-   * @param args 
+   * you can remove it >= 3.0.0
+   * @deprecated
    */
   function reRender(args: { 
     /**
