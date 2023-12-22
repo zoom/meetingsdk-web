@@ -222,7 +222,7 @@ export type VbImageInfoType = {
 /**
  * In meeting event listeners.
  */
-export type InMeetingEvent = 'onUserJoin' | 'onUserLeave' | 'onUserUpdate' | 'onUserIsInWaitingRoom' | 'onMeetingStatus' | 'onPreviewPannel|  receiveSharingChannelReady' | 'onReceiveTranscriptionMsg' | 'onReceiveTranslateMsg' | 'onAudioQos' | 'onVideoQos' | 'onShareQos' |'onClaimStatus' | 'onNetworkQualityChange' | 'onMediaCapturePermissionChange' | 'onMediaCaptureStatusChange' | 'onRoomStatusChange'
+export type InMeetingEvent = 'onUserJoin' | 'onUserLeave' | 'onUserUpdate' | 'onUserIsInWaitingRoom' | 'onMeetingStatus' | 'onPreviewPannel|  receiveSharingChannelReady' | 'onReceiveTranscriptionMsg' | 'onReceiveTranslateMsg' | 'onAudioQos' | 'onVideoQos' | 'onShareQos' |'onClaimStatus' | 'onNetworkQualityChange' | 'onMediaCapturePermissionChange' | 'onMediaCaptureStatusChange' | 'onRoomStatusChange' | 'onFocusModeStatusChange'
 
 /**
  *  For the APIs that take images, the value of the image type returned by the getVideoSourcesCallBack method, passed in the shareSource API.
@@ -1072,6 +1072,41 @@ export namespace ZoomMtg {
       */
      error?: Function
   }): void;
+  
+  /**
+   * Get Focus mode status.
+   * @param args 
+   */
+  function getFocusModeStatus(args: {
+    /**
+     * Callback function on success.
+     */
+     success?: Function; 
+     /**
+      * Callback function in the event of an error.
+      */
+     error?: Function
+  }): void;
+
+  /**
+   * Stops or starts focus mode. Host/co-host only.
+   * @param args 
+   * @RateLimit 5s
+   */
+    function focusMode(args: {
+      /**
+       * True to start or false to stop focus mode.
+       */
+      enable: boolean;
+      /**
+       * Callback function on success.
+       */
+       success?: Function; 
+       /**
+        * Callback function in the event of an error.
+        */
+       error?: Function
+    }): void;
   /**
    * Locks or unlocks the meeting. Host or co-host only. If the meeting is locked, others can't join the meeting unless it is unlocked.
    * @param args 
@@ -1252,26 +1287,6 @@ function claimHostWithHostKey(args: {
    * @RateLimit 1s
    */
   function admitAll(args: {
-    /**
-     * Callback function on success.
-     */
-     success?: Function; 
-     /**
-      * Callback function in the event of an error.
-      */
-     error?: Function
-  }): void;
-  /**
-   * Use changeRedirectUrl instead.
-   * @deprecated
-   * @param args 
-   * @RateLimit 1s
-   */
-  function changRedirectUrl(args: {
-    /**
-     * (Deprecated, use changeRedirectUrl). The URL to redirect participants who leave the meeting.
-     */
-    leaveUrl: number;
     /**
      * Callback function on success.
      */
@@ -1485,7 +1500,22 @@ function claimHostWithHostKey(args: {
    */
   function inMeetingServiceListener(event: 'onRoomStatusChange', callback: Function): void;
 
+    /**
+   * Listens for focus mode status change
+   * @param event 
+   * @param callback
+   * Example:
+   * ```js
+  ZoomMtg.inMeetingServiceListener('onFocusModeStatusChange', function (data) {
+    // {status: boole}
+    console.log(data);
+  });
+  ```
+  @category Listener
+   */
+  function inMeetingServiceListener(event: 'onFocusModeStatusChange', callback: Function): void;
 
+  
   /**
    * you can remove it >= 3.0.0
    * @deprecated
