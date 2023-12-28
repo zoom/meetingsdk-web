@@ -113,7 +113,7 @@ Add the following styles to the HTML page you want the Meeting SDK to live on, o
 </head>
 ```
 
-> Replace `{VERSION_NUMBER}` in the code above with the [latest version number](https://devsupport.zoom.us/hc/en-us/sections/9220917097869-web).
+> Replace `{VERSION_NUMBER}` in the code above with the [latest version number](https://developers.zoom.us/changelog/meeting-sdk/web/).
 
 Back in the component file we will init and start or join the meeting or webinar. Here are the required properties for the `ZoomMtg.init()` function.
 
