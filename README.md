@@ -179,3 +179,5 @@ For the full list of features and event listeners, as well as additional guides,
 ## Need help?
 
 If you're looking for help, try [Developer Support](https://devsupport.zoom.us) or our [Developer Forum](https://devforum.zoom.us). Priority support is also available with [Premier Developer Support](https://zoom.us/docs/en-us/developer-support-plans.html) plans.
+
+[Open Source Software attribution](https://github.com/zoom/meetingsdk-web/blob/master/oss_attribution.txt)
