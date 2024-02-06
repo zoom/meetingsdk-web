@@ -1,16 +1,14 @@
 # Zoom Meeting SDK for Web
 
-### Breaking change
-
-Change [@zoomus/websdk](https://www.npmjs.com/package/@zoomus/websdk) to [@zoom/meetingsdk](https://www.npmjs.com/package/@zoom/meetingsdk)
-### Client view
-```javascript
-	import { ZoomMtg } from "@zoom/meetingsdk";
-```
-### Component view
-```javascript
-	import ZoomMtgEmbedded from "@zoom/meetingsdk/embedded";
-```
+> This is the new, official pacakge location for the Zoom Meeting SDK. Make sure to update your package.json and import statement from the [old location](https://www.npmjs.com/package/@zoomus/websdk) `@zoomus/websdk` to the [new location](https://www.npmjs.com/package/@zoom/meetingsdk) `@zoom/meetingsdk`.
+>
+> Client view:
+> 
+> `import { ZoomMtg } from "@zoom/meetingsdk"`
+>
+> Component view:
+>
+> `import ZoomMtgEmbedded from "@zoom/meetingsdk/embedded"`
 
 Use of this SDK is subject to our [Terms of Use](https://zoom.us/docs/en-us/zoom_api_license_and_tou.html)
 
@@ -32,12 +30,14 @@ There are two views to choose from, [Component View](#usage-component-view), and
 
 > The Component View provides the option to display the Meeting SDK in components on your page. This allows for a more flexible design.
 
-In the component file where you want to use the Meeting SDK, import `ZoomMtgEmbedded` and create the client.
+In the component file where you want to use the Meeting SDK, import `ZoomMtgEmbedded`, create the client, and define the HTML element where you want to render the Meeting SDK.
 
 ```js
 import ZoomMtgEmbedded from "@zoom/meetingsdk/embedded"
 
 const client = ZoomMtgEmbedded.createClient()
+
+let meetingSDKElement = document.getElementById('meetingSDKElement')
 ```
 
 In the HTML file, set an id attribute on the HTML element where you want to render the Meeting SDK. It will be hidden until you start or join a meeting or webinar.
@@ -46,14 +46,6 @@ In the HTML file, set an id attribute on the HTML element where you want to rend
 <div id="meetingSDKElement">
    <!-- Zoom Meeting SDK Rendered Here -->
 </div>
-```
-
-Back in the component file, init the Meeting SDK with the HTML element above:
-
-```js
-let meetingSDKElement = document.getElementById('meetingSDKElement')
-
-client.init({ zoomAppRoot: meetingSDKElement, language: 'en-US' })
 ```
 
 Now we will start or join the meeting or webinar. Here are the required properties for the `client.join()` function. You can get the Meeting or Webinar number and passcode from the [Zoom APIs](https://developers.zoom.us/docs/meeting-sdk/web/component-view/).
@@ -69,15 +61,27 @@ Now we will start or join the meeting or webinar. Here are the required properti
 | `tk`  | Required if your Meeting or Webinar requires [registration](https://support.zoom.us/hc/en-us/articles/360054446052-Managing-meeting-and-webinar-registration). The registrant's token. |
 | `zak`  | Required if you are starting a Meeting or Webinar. The host's [Zoom Access Key (ZAK)](https://developers.zoom.us/docs/meeting-sdk/auth/#start-meetings-and-webinars-with-a-zoom-users-zak-token).  |
 
-Then, start or join the meeting or webinar.
+Then, init, and start or join the meeting or webinar.
 
 ```js
-client.join({
-   sdkKey: sdkKey,
-   signature: signature,
-   meetingNumber: meetingNumber,
-   password: password,
-   userName: userName
+client.init({
+  zoomAppRoot: meetingSDKElement,
+  language: 'en-US',
+  patchJsMedia: true
+}).then(() => {
+  client.join({
+    sdkKey: sdkKey,
+    signature: signature,
+    meetingNumber: meetingNumber,
+    password: password,
+    userName: userName
+  }).then(() => {
+    console.log('joined successfully')
+  }).catch((error) => {
+    console.log(error)
+  })
+}).catch((error) => {
+  console.log(error)
 })
 ```
 
@@ -89,31 +93,16 @@ For the full list of features and event listeners, as well as additional guides,
 
 > The Client View provides the option to display the Meeting SDK as a full page. This allows for a familiar Zoom Meeting experience because the Client View is the same as the [Zoom Web Client](https://support.zoom.us/hc/en-us/articles/214629443-Zoom-Web-Client), except it lives inside your own web page.
 
-In the component file where you want to use the Meeting SDK, import `ZoomMtg` and call the `preLoadWasm()`, `prepareWebSDK()`, and `setZoomJSLib()` functions.
+In the component file where you want to use the Meeting SDK, import `ZoomMtg` and call the `preLoadWasm()`, and `prepareWebSDK()` functions.
 
 ```js
 import { ZoomMtg } from '@zoom/meetingsdk'
 
 ZoomMtg.preLoadWasm()
 ZoomMtg.prepareWebSDK()
-
-// loads language files, also passes any error messages to the ui
-ZoomMtg.i18n.load('en-US')
 ```
 
 > When imported, the Meeting SDK adds new elements to the DOM to handle client overlays and accessibility elements. To manage or manipulate this DOM element within your app [see this guide](https://developers.zoom.us/docs/meeting-sdk/web/client-view/import/#appended-dom-elements).
-
-Add the following styles to the HTML page you want the Meeting SDK to live on, or `index.html` if you are using a single page app framework.
-
-```html
-<head>
-  <!-- For Client View -->
-  <link type="text/css" rel="stylesheet" href="https://source.zoom.us/{VERSION_NUMBER}/css/bootstrap.css" />
-  <link type="text/css" rel="stylesheet" href="https://source.zoom.us/{VERSION_NUMBER}/css/react-select.css" />
-</head>
-```
-
-> Replace `{VERSION_NUMBER}` in the code above with the [latest version number](https://developers.zoom.us/changelog/meeting-sdk/web/).
 
 Back in the component file we will init and start or join the meeting or webinar. Here are the required properties for the `ZoomMtg.init()` function.
 
@@ -139,9 +128,9 @@ Then, init, and start or join the meeting or webinar.
 ```js
 ZoomMtg.init({
   leaveUrl: leaveUrl,
+  patchJsMedia: true,
   success: (success) => {
     console.log(success)
-
     ZoomMtg.join({
       signature: signature,
       meetingNumber: meetingNumber,
@@ -156,7 +145,6 @@ ZoomMtg.init({
         console.log(error)
       }
     })
-
   },
   error: (error) => {
     console.log(error)

@@ -11,7 +11,12 @@ declare let initArgs: {
    */
   patchJsMedia? : boolean; //optional
   /**
-   * leaveUrl: Required. The URL to post after the user leaves the meeting. Example: “http://www.zoom.us”
+   * leaveUrl: Required. The URL to post after the user leaves the meeting. Example
+   * default not set leaveUrl, -> window.location.origin
+   * http://127.0.0.1 -> http://127.0.0.1
+   * https://127.0.0.1 -> https://127.0.0.1
+   * /meeting -> window.location.origin/meeting
+   * zoom.us -> https://zoom.us
    */
   leaveUrl: string; //required
   /**
@@ -1304,6 +1309,11 @@ function claimHostWithHostKey(args: {
   function changeRedirectUrl(args: {
     /**
      * The URL to redirect participants who leave the meeting.
+     * default not set leaveUrl, -> window.location.origin
+     * http://127.0.0.1 -> http://127.0.0.1
+     * https://127.0.0.1 -> https://127.0.0.1
+     * /meeting -> window.location.origin/meeting
+     * zoom.us -> https://zoom.us
      */
     leaveUrl: number;
     /**
