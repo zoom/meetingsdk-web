@@ -1,6 +1,6 @@
 # Zoom Meeting SDK for Web
 # Break change 
-## Since 3.5.1 zoom upgrade to use [React 18.2](https://react.dev/blog/2022/03/08/react-18-upgrade-guide). Not compatible with React 16, you can still use old version work with React 16.
+## Zoom Meeting SDK 3.5.1 has been updated to support [React 18+](https://react.dev/blog/2022/03/08/react-18-upgrade-guide), which is not compatible with React 16. To continue using React 16, you may use a Meeting SDK version below 3.5.1 
 
 
 > Client view:
