@@ -1,7 +1,9 @@
 # Zoom Meeting SDK for Web
 
-> This is the new, official pacakge location for the Zoom Meeting SDK. Make sure to update your package.json and import statement from the [old location](https://www.npmjs.com/package/@zoomus/websdk) `@zoomus/websdk` to the [new location](https://www.npmjs.com/package/@zoom/meetingsdk) `@zoom/meetingsdk`.
->
+# React Breaking Change
+## Zoom Meeting SDK 3.5.1 has been updated to support [React 18+](https://react.dev/blog/2022/03/08/react-18-upgrade-guide), which is not compatible with React 16. To continue using React 16, you may use a Meeting SDK version below 3.5.1 
+
+
 > Client view:
 > 
 > `import { ZoomMtg } from "@zoom/meetingsdk"`
