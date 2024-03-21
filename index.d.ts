@@ -1362,11 +1362,6 @@ export namespace ZoomMtg {
   function changeRedirectUrl(args: {
     /**
      * The URL to redirect participants who leave the meeting.
-     * default not set leaveUrl, -> window.location.origin
-     * http://127.0.0.1 -> http://127.0.0.1
-     * https://127.0.0.1 -> https://127.0.0.1
-     * /meeting -> window.location.origin/meeting
-     * zoom.us -> https://zoom.us
      */
     leaveUrl: number;
     /**
