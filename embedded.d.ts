@@ -926,10 +926,16 @@ export interface InitOptions {
   maximumVideosInGalleryView?: number;
   /**
    * patchJsMedia: Optional. Default: false.
-   * Set to true to automatically apply the latest media dependency fix for the current Web Meeting SDK version.
+   * Set to true to automatically apply the latest media dependency fix for the current Meeting SDK for web version.
    * Note that you will still need to manually upgrade to major and minor version releases.
    */
   patchJsMedia?: boolean;
+  /**
+   * Immediately leave the meeting when refreshing or closing the page, instead of experiencing a delay in leaving the meeting (failover).
+   * Caveat for the scenario:
+   * - Breakout room: in rooms users need to be assigned again instead of being assigned and auto join the room.
+   */
+  leaveOnPageUnload?: boolean;
 }
 
 export interface BoRoomAttendee {
@@ -1196,6 +1202,25 @@ export declare function event_network_quality_change(payload: {
    * User ID.
    */
   userId: number;
+}): void;
+/**
+ * Occurs when users join a meeting or waiting room or start audio or video.
+ */
+export declare function event_join_speed(payload: {
+  eventType: string;
+  tagId: number;
+  /**
+   * Detailed description for the event.
+   */
+  desc: string;
+  /**
+   * A number representing the timestamp, in milliseconds, for the current time.
+   */
+  time: number;
+  /**
+   * A string representing the given date in the date time string format.
+   */
+  timeStr: string;
 }): void;
 export declare namespace EmbeddedClient {
   /**
@@ -1539,6 +1564,7 @@ export declare namespace EmbeddedClient {
     event: 'media-capture-permission-change',
     callback: (payload: { type: string; value: string; canRecord?: boolean }) => void
   ): void;
+  function on(event: 'join-speed', callback: typeof event_join_speed): void;
   /**
    * Removes the event handler. Must be used with on() in pairs.
    * @param event event name. Same as 'on' event name list.

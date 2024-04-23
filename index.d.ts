@@ -185,6 +185,47 @@ declare let initArgs: {
    */
   hideShareAudioOption?: boolean;
   /**
+   * disablePictureInPicture: default: false, optional. Enables or disables the Picture in Picture feature.
+   */
+  disablePictureInPicture?: boolean;
+  /**
+   * onInviteSearchZoomPhoneCallback, callback when user use Invite->Zoom Phone-> search number.
+   * isSameAccount = true, support direct call internal ext number.
+   * Example:
+  ```js
+      onInviteSearchZoomPhoneCallback: function (e) {
+        const searchResult =[
+          {
+            "firstName": "firstName1",
+            "lastName": "lastName1",
+            "displayName": "firstName1 lastName1",
+            "snsEmail": "xxxxxx1@gmail.com",
+            "pbx": {dn: ['+1xxxxxxxxxx'], ext: 800},
+            isSameAccount: true
+        },
+        {
+          "firstName": "firstName2",
+          "lastName": "lastName2",
+          "displayName": "firstName2 lastName2",
+          "snsEmail": "xxxx2@zoom.us",
+          "pbx": {dn: ['+2xxxxxxxxxx'], ext: 800},
+          isSameAccount: false
+      }];
+      return Promise.resolve(searchResult); 
+   *```
+   */
+  onInviteSearchZoomPhoneCallback?: Function;
+  /**
+   * disableZoomPhone: default: false, optional. Enables or disables the Invite->Zoom Phone feature.
+   */
+  disableZoomPhone?: boolean;
+  /**
+   * Quickly leave the meeting when refreshing or closing the page, instead of experiencing meeting failover. Caveat for two scenarios:
+   * PSTN: Phone user who is bound to the current user. The phone will hang up instead of staying connected.
+   * Breakout room: Users in a Breakout room need to be assigned again instead of having been assigned and auto-joining the room.
+   */
+  leaveOnPageUnload?: boolean;
+  /**
    * success: optional, callback function on success.
    */
   success?: Function;
@@ -251,7 +292,9 @@ export type InMeetingEvent =
   | 'onMediaCaptureStatusChange'
   | 'onRoomStatusChange'
   | 'onActiveSpeaker'
-  | 'onFocusModeStatusChange';
+  | 'onPictureInPicture'
+  | 'onFocusModeStatusChange'
+  | 'onJoinSpeed';
 
 /**
  *  For the APIs that take images, the value of the image type returned by the getVideoSourcesCallBack method, passed in the shareSource API.
@@ -662,7 +705,11 @@ export namespace ZoomMtg {
    * 3. WebCodecs to address latency when starting video (Chrome94 release). See: https://chromestatus.com/feature/5669293909868544
    * @category Join
    */
-  function prepareWebSDK(origintrials?: Array<string>): void;
+  function prepareWebSDK(
+    origintrials?: Array<string>,
+    webim?: string,
+    jsmedia?: string,
+  ): void;
   /**
    * Initializes a Zoom Meeting. You must initialize a Zoom meeting in order to start or join it.
    * This method only requires the leaveUrl parameter.
@@ -1416,15 +1463,29 @@ export namespace ZoomMtg {
     callback: Function,
   ): void;
   /**
-   * Listens for waiting room and audio or video preview page status.
+   * Listens for waiting room page status. >= 3.6.0 yourself/host/co-host can get this event
    * @param event 
    * @param callback 
    * Example:
    * ```js
 
   ZoomMtg.inMeetingServiceListener('onUserIsInWaitingRoom', function (data) {
-    console.log(data);
+    console.log('onUserIsInWaitingRoom', data);
   });
+
+  ```
+  @category Listener
+   */
+  function inMeetingServiceListener(
+    event: 'onUserIsInWaitingRoom',
+    callback: Function,
+  ): void;
+  /**
+   * Listens for video preview page status.
+   * @param event 
+   * @param callback 
+   * Example:
+   * ```js
   
   ZoomMtg.inMeetingServiceListener('onPreviewPannel', function (data) {
     console.log('onPreviewPannel', data);
@@ -1433,7 +1494,265 @@ export namespace ZoomMtg {
   @category Listener
    */
   function inMeetingServiceListener(
-    event: 'onUserIsInWaitingRoom' | 'onPreviewPannel',
+    event: 'onPreviewPannel',
+    callback: Function,
+  ): void;
+  /**
+   * Listens for join time status
+   * @param event 
+   * @param callback 
+   * The following is an example that returns the join speed after specific events, useful for building a dashboard or troubleshooting.
+   * ```js
+  var testTool = {
+    joinSpeedTag: {
+    sdkCallInit: 0, // not recorded, you can record in init success callback.
+    sdkCallJoin: 1,
+    userInPreviewPage: 2,
+    userClickJoinPreview: 3,
+    userInWaitingForHost: 4,
+    userOutWaitingForHost: 5,
+    userInWaitingRoom: 6,
+    userOutWaitingRoom: 7,
+    userJoinRWGSuccess: 8,
+    userAudioDecodeSuccess: 9,
+    userVideoDecodeSuccess: 10,
+    userAudioEncodeSuccess: 11,
+    userVideoEncodeSuccess: 12,
+    userStartJoinAudio: 13,
+    userJoinAudioSuccess: 14,
+    userStartJoinVideo: 15,
+    userJoinVideoSuccess: 16,
+    userAudioVideoSuccess: 17, // not recorded, when all steps from 8 - 16 are true.
+  },
+  joinSpeed: [
+  {
+    tag: 'JOIN_SPEED',
+    level: 0,
+    text: 'sdk init',
+    time: 0,
+    timeStr: '',
+  },
+  {
+    tag: 'JOIN_SPEED',
+    level: 1,
+    text: 'sdk call join',
+    time: 0,
+    timeStr: '',
+  },
+  {
+    tag: 'JOIN_SPEED',
+    level: 2,
+    text: 'user in preview page',
+    time: 0,
+    timeStr: '',
+  },
+  {
+    tag: 'JOIN_SPEED',
+    level: 3, 
+    text: 'user clicks join from preview',
+    time: 0,
+    timeStr: '',
+  },
+  {
+    tag: 'JOIN_SPEED',
+    level: 4,
+    text: 'user waiting for host',
+    time: 0,
+    timeStr: '',
+  },
+  {
+    tag: 'JOIN_SPEED',
+    level: 5,
+    text: 'user poll meeting started, start join',
+    time: 0,
+    timeStr: '',
+  },
+  {
+    tag: 'JOIN_SPEED',
+    level: 6,
+    text: 'user in waiting room',
+    time: 0,
+    timeStr: '',
+  },
+  {
+    tag: 'JOIN_SPEED',
+    level: 7,
+    text: 'user exits waiting room',
+    time: 0,
+    timeStr: '',
+  },
+  {
+    tag: 'JOIN_SPEED',
+    level: 8,
+    text: 'user join success',
+    time: 0,
+    timeStr: '',
+  },
+  {
+    tag: 'JOIN_SPEED',
+    level: 9,
+    text: 'user join success with audio decode init success',
+    time: 0,
+    timeStr: '',
+  },
+  {
+    tag: 'JOIN_SPEED',
+    level: 10,
+    text: 'user join success with video decode init success',
+    time: 0,
+    timeStr: '',
+  },
+  {
+    tag: 'JOIN_SPEED',
+    level: 11,
+    text: 'user join success with audio encode init success',
+    time: 0,
+    timeStr: '',
+  },
+  {
+    tag: 'JOIN_SPEED',
+    level: 12,
+    text: 'user join success with video encode init success',
+    time: 0,
+    timeStr: '',
+  },
+  {
+    tag: 'JOIN_SPEED',
+    level: 13,
+    text: 'user start join audio',
+    time: 0,
+    timeStr: '',
+  },
+  {
+    tag: 'JOIN_SPEED',
+    level: 14,
+    text: 'user join audio success',
+    time: 0,
+    timeStr: '',
+  },
+  {
+    tag: 'JOIN_SPEED',
+    level: 15,
+    text: 'user start join video',
+    time: 0,
+    timeStr: '',
+  },
+  {
+    tag: 'JOIN_SPEED',
+    level: 16,
+    text: 'user join video success',
+    time: 0,
+    timeStr: '',
+  },
+  {
+    tag: 'JOIN_SPEED',
+    level: 17,
+    text: 'user audio and video on (join finish)',
+    time: 0,
+    timeStr: '',
+  },
+  ],
+  setJoinTime: function(joinTimeObj) {
+    if (typeof joinTimeObj === 'object') {
+      var tmpIndex = joinTimeObj.level;
+      this.joinSpeed[tmpIndex] = Object.assign({}, joinTimeObj);
+      return true;
+    }
+    return false;
+  },
+  setJoinTimeLevel: function(level, tmpTime) {
+    var currentTimestamp = Date.now();
+    if (tmpTime) {
+      currentTimestamp = tmpTime;
+    }
+    var tmpIndex = this.joinSpeed.findIndex((item) => item.level === level);
+    if (tmpIndex !== -1) {
+      this.joinSpeed[tmpIndex] = Object.assign({}, this.joinSpeed[tmpIndex], {
+        time: currentTimestamp,
+        timeStr: new Date(currentTimestamp).toISOString(),
+      });
+      return true; // Indicates that item was replaced successfully
+    }
+    return false; // Indicates that item was not found
+  },
+  printObjectsAsTable: function(objectsArray) {
+    // Extract keys (properties) from the first object to use as table headers
+    var tmpHeaders = Object.keys(objectsArray[0]);
+  
+    // Find the maximum length of each column
+    const maxLengths = tmpHeaders.map((header) =>
+      Math.max(...objectsArray.map((obj) => String(obj[header]).length)),
+    );
+  
+    // Print table tmpHeaders
+    var headerRow = '';
+    tmpHeaders.forEach((header, index) => {
+      headerRow += header.padEnd(maxLengths[index] + 2);
+    });
+    console.log(headerRow);
+    
+      // Print table rows
+      objectsArray.forEach((obj) => {
+        var row = '';
+        tmpHeaders.forEach((header, index) => {
+          row += String(obj[header]).padEnd(maxLengths[index] + 2);
+        });
+        console.log(row);
+      });
+    },
+    printJoinTime: function() {
+      console.log('%c===============JOIN SPEED ================', 'color: red')
+      if (!this.joinSpeed[this.joinSpeedTag.userOutWaitingRoom].time && this.joinSpeed[this.joinSpeedTag.userOutWaitingForHost].time) {
+        console.warn('You join time begin from out waiting for host', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.userOutWaitingRoom].time, 'ms');
+      } 
+      if (this.joinSpeed[this.joinSpeedTag.userOutWaitingRoom].time) {
+        console.warn('You join time begin from out waiting room', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.userOutWaitingRoom].time, 'ms');
+      } else if (this.joinSpeed[this.joinSpeedTag.userClickJoinPreview].time) {
+        console.warn('You join time begin from click join button from preview', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.userClickJoinPreview].time, 'ms');
+      } else {
+        console.warn('You join time begin from call sdk join', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.sdkCallJoin].time, 'ms')
+      }
+      this.printObjectsAsTable(this.joinSpeed);
+    }
+ }
+  
+ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
+    console.log('inMeetingServiceListener onJoinSpeed', data);
+    testTool.setJoinTime(data);
+
+    var tmpCheckJoin = true;
+    [testTool.joinSpeedTag.userAudioDecodeSuccess,
+      testTool.joinSpeedTag.userVideoDecodeSuccess,
+      testTool.joinSpeedTag.userAudioEncodeSuccess,
+      testTool.joinSpeedTag.userVideoEncodeSuccess,
+      testTool.joinSpeedTag.userStartJoinAudio,
+      testTool.joinSpeedTag.userJoinAudioSuccess,
+      testTool.joinSpeedTag.userStartJoinVideo,
+      testTool.joinSpeedTag.userJoinVideoSuccess,
+    ].forEach(item=>{
+      if (!testTool.joinSpeed[item].time) {
+        tmpCheckJoin = tmpCheckJoin & false;
+      }
+
+    });
+    if (tmpCheckJoin) {
+      if (!testTool.joinSpeed[testTool.joinSpeedTag.userAudioVideoSuccess].time) {
+        testTool.setJoinTimeLevel(testTool.joinSpeedTag.userAudioVideoSuccess)
+        //user audio and video on(join finish)
+        testTool.printJoinTime();
+      }
+    }
+  });
+
+  
+
+  ```
+  
+  @category Listener
+  @title EventName onJoinSpeed
+   */
+  function inMeetingServiceListener(
+    event: 'onJoinSpeed',
     callback: Function,
   ): void;
   /**
@@ -1628,6 +1947,24 @@ export namespace ZoomMtg {
   ): void;
 
   /**
+   * Listens for Picture In Picture status
+   * @param event 
+   * @param callback
+   * Example:
+   * ```js
+  ZoomMtg.inMeetingServiceListener('onPictureInPicture', function (data) {
+    // { pip: boolean },
+    console.log(data);
+  });
+  ```
+  @category Listener
+   */
+  function inMeetingServiceListener(
+    event: 'onPictureInPicture',
+    callback: Function,
+  ): void;
+
+  /**
    * This is deprecated in versions >= 3.0.0, so you can remove it.
    * @deprecated
    */
@@ -1803,9 +2140,22 @@ export namespace ZoomMtg {
   }): void;
 
   /**
-   * In the Electron application, if this method is registered, it calls getVideoSourcesCallBack when a user clicks "screen share" to obtain the application information returned by Electron that can share the desktop. Provide the callback function return desktopCapturer share sources in the Electron app.
+   * When you use the Meeting SDK for web in an Electron application, if this method is registered, it calls `getVideoSourcesCallBack` when a user clicks "screen share" to obtain the application information returned by Electron that can share the desktop. Provide the callback function return `desktopCapturer` to share sources in the Electron app.
    * @param args
-   */
+   * Example:
+   * ```js
+    const getVideoSources = async () => {
+      const result = await window.electron.getSources();
+      return result;
+    }
+    ZoomMtg.shareSource({
+      getVideoSourcesCallBack: getVideoSources,
+      success: function () {},
+      error: function () {}
+    });
+    ```
+  */
+
   function shareSource(args: {
     /**
      * Callback function needed to return the source of the Electron share:
