@@ -211,8 +211,9 @@ declare let initArgs: {
           "pbx": {dn: ['+2xxxxxxxxxx'], ext: 800},
           isSameAccount: false
       }];
-      return Promise.resolve(searchResult); 
-   *```
+      return Promise.resolve(searchResult);
+    }
+    ```
    */
   onInviteSearchZoomPhoneCallback?: Function;
   /**
