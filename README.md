@@ -3,11 +3,11 @@
 ## Zoom Meeting SDK 3.6.0 support Zoom 6.0 UI
 
 ## React Breaking Change
-## Zoom Meeting SDK 3.5.1 has been updated to support [React 18+](https://react.dev/blog/2022/03/08/react-18-upgrade-guide), which is not compatible with React 16. To continue using React 16, you may use a Meeting SDK version below 3.5.1 
+## Zoom Meeting SDK 3.5.1 has been updated to support [React 18+](https://react.dev/blog/2022/03/08/react-18-upgrade-guide), which is not compatible with React 16. To continue using React 16, you may use a Meeting SDK version below 3.5.1
 
 
 > Client view:
-> 
+>
 > `import { ZoomMtg } from "@zoom/meetingsdk"`
 >
 > Component view:
@@ -30,7 +30,7 @@ There are two views to choose from, [Component View](#usage-component-view), and
 
 ## Usage - Component View
 
-![Zoom Meeting SDK Component View](https://zoom.github.io/meetingsdk-web-sample/img/msdk-web-component-view.gif)
+![Zoom Meeting SDK Component View](https://zoom.github.io/meetingsdk-web-sample/images/6.0/ComponentView/meetingsdk-web-component-view.gif)
 
 > The Component View provides the option to display the Meeting SDK in components on your page. This allows for a more flexible design.
 
@@ -93,7 +93,7 @@ For the full list of features and event listeners, as well as additional guides,
 
 ## Usage - Client View
 
-![Zoom Meeting SDK Client View](https://zoom.github.io/meetingsdk-web-sample/img/msdk-web-client-view.gif)
+![Zoom Meeting SDK Client View](https://zoom.github.io/meetingsdk-web-sample/images/6.0/ClientView/meetingsdk-web-client-view.gif)
 
 > The Client View provides the option to display the Meeting SDK as a full page. This allows for a familiar Zoom Meeting experience because the Client View is the same as the [Zoom Web Client](https://support.zoom.us/hc/en-us/articles/214629443-Zoom-Web-Client), except it lives inside your own web page.
 
