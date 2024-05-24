@@ -221,6 +221,11 @@ declare let initArgs: {
    */
   disableZoomPhone?: boolean;
   /**
+   * disableZoomLogo: default: false, optional. if true will remove zoom workplace logo.
+   * Disabling the Zoom logo will not be available in the future. For a custom experience, build with the https://developers.zoom.us/docs/video-sdk/.
+   */
+  disableZoomLogo?: boolean;
+  /**
    * Quickly leave the meeting when refreshing or closing the page, instead of experiencing meeting failover. Caveat for two scenarios:
    * PSTN: Phone user who is bound to the current user. The phone will hang up instead of staying connected.
    * Breakout room: Users in a Breakout room need to be assigned again instead of having been assigned and auto-joining the room.
