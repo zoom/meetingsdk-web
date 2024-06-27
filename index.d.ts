@@ -14,7 +14,8 @@ declare let initArgs: {
   patchJsMedia?: boolean; //optional
   /**
    * leaveUrl: Required. The URL to post after the user leaves the meeting. Example: “http://www.zoom.us”
-   * default not set leaveUrl, -> window.location.origin
+   * If you do not set a leaveURL, the default will be -> window.location.origin
+   * Other substitutions include the following.
    *
    * http://127.0.0.1 -> http://127.0.0.1
    *
@@ -147,6 +148,10 @@ declare let initArgs: {
    */
   disablePreview?: boolean; // optional
   /**
+   * enableWaitingRoomPreview: default: true, optional. Enables or disables the audio and video preview in the waiting room or when the participant is waiting for the host to start the meeting.
+   */
+  enableWaitingRoomPreview?: boolean; // optional
+  /**
    * disableCORP: default: false, optional. Enables or disables web isolation mode (developer environment feature).
    */
   disableCORP?: boolean; // optional
@@ -189,7 +194,7 @@ declare let initArgs: {
    */
   disablePictureInPicture?: boolean;
   /**
-   * onInviteSearchZoomPhoneCallback, callback when user use Invite->Zoom Phone-> search number.
+   * onInviteSearchZoomPhoneCallback, callback when the user uses Invite->Zoom Phone-> search number.
    * isSameAccount = true, support direct call internal ext number.
    * Example:
   ```js
@@ -221,8 +226,8 @@ declare let initArgs: {
    */
   disableZoomPhone?: boolean;
   /**
-   * disableZoomLogo: default: false, optional. if true will remove zoom workplace logo.
-   * Disabling the Zoom logo will not be available in the future. For a custom experience, build with the https://developers.zoom.us/docs/video-sdk/.
+   * disableZoomLogo: default: false, optional. If true, removes the Zoom workplace logo.
+   * Disabling the Zoom logo will not be available in the future. For a custom experience, build with the [Zoom Video SDK](https://developers.zoom.us/docs/video-sdk/).
    */
   disableZoomLogo?: boolean;
   /**
@@ -504,7 +509,7 @@ export declare namespace ZoomMtgLang {
   /**
    * Loads translations.
    * See for abbreviation descriptions: https://developers.zoom.us/docs/meeting-sdk/web/client-view/multi-language/
-   * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT', 'id-ID', 'nl-NL'
+   * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT', 'id-ID', 'nl-NL', 'sv-SE'
    * Be sure to call it before calling `init`.
    * @param lang
    *
@@ -524,7 +529,8 @@ export declare namespace ZoomMtgLang {
       | 'vi-VN'
       | 'it-IT'
       | 'id-ID'
-      | 'nl-NL',
+      | 'nl-NL'
+      | 'sv-SE',
   ): Promise<any>;
   /**
    * Loads translation URL. Use the URL provided by Zoom or your own resource object.
@@ -1392,6 +1398,58 @@ export namespace ZoomMtg {
      */
     error?: Function;
   }): void;
+
+  /**
+   * Raise the current user's hand.
+   * @param args
+   * @RateLimit 1s
+   */
+  function raiseHand(args: {
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+
+  /**
+   * Lower the user's hand.
+   * @param args
+   * @RateLimit 1s
+   */
+  function lowerHand(args: {
+    /**
+     * The participant's user ID. if no userId, will lower the current user's hand.
+     */
+    userId?: number;
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+
+  /**
+   * Enables the host to lower all user's hands.
+   * @param args
+   * @RateLimit 1s
+   */
+  function lowerAllHands(args: {
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
   /**
    * Lets all participants in the waiting room join the meeting.
    * @param args
@@ -1440,6 +1498,8 @@ export namespace ZoomMtg {
 
   ZoomMtg.inMeetingServiceListener('onUserLeave', function (data) {
     console.log(data);
+    {reasonCode: 0|1|2|3|4};
+    reasonCode return reason the current user left. For example other: 0, host ended meeting: 1, self left from in meeting: 2, self left from waiting room: 3, self left from waiting for host start: 4, The meeting is transferred to another end to open: 5;
   });
 
   ZoomMtg.inMeetingServiceListener('onUserUpdate', function (data) {

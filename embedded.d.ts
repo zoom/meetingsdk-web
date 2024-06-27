@@ -778,7 +778,8 @@ export type LanguageOptionType =
   | 'pl-PL'
   | 'tr-TR'
   | 'id-ID'
-  | 'nl-NL';
+  | 'nl-NL'
+  | 'sv-SE';
 /**
  * Options to customize video.
  * @param popper Options for the underlying popper element.
@@ -823,6 +824,7 @@ export interface InitOptions {
    * @property pl-PL - Polish Polska
    * @property pt-PT - Portuguese Português
    * @property ru-RU - Russian Русский
+   * @property sv-SE - Swedish Svenska
    * @property tr-TR - Turkish Türkçe
    * @property zh-CN - Chinese 简体中文
    * @property zh-TW - Chinese 繁体中文
@@ -845,7 +847,8 @@ export interface InitOptions {
     | 'pl-PL'
     | 'tr-TR'
     | 'id-ID'
-    | 'nl-NL';
+    | 'nl-NL'
+    | 'sv-SE';
   /**
    * @param customize Optional customization options for the embedded client.
    */
