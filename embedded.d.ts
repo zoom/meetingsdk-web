@@ -44,6 +44,117 @@ export interface MediaCompatiblity {
  * - ExecutedFailure: Failure. Use `.catch(error=>{})` or `try{ *your code* }catch(error){}` to handle the errors.
  */
 export type ExecutedResult = Promise<string | ExecutedFailure>;
+
+/**
+ * Enumeration of camera control cmd
+ * @enum
+ */
+export enum CameraControlCmd {
+  /**
+   * Zoom in
+   */
+  ZoomIn = 2,
+  /**
+   * Zoom out
+   */
+  ZoomOut = 3,
+  /**
+   * Turn left
+   */
+  Left = 4,
+  /**
+   * Turn right
+   */
+  Right = 5,
+  /**
+   * Turn up
+   */
+  Up = 6,
+  /**
+   * Turn down
+   */
+  Down = 7,
+  /**
+   * Switch camera
+   */
+  SwitchCamera = 8
+}
+
+/**
+ * Capability of camera
+ */
+export interface PTZCameraCapability {
+  /**
+   * Pan
+   */
+  pan: boolean;
+  /**
+   * Tilt
+   */
+  tilt: boolean;
+  /**
+   * Zoom
+   */
+  zoom: boolean;
+}
+
+/**
+ * Reasons for refusal to control far-end camera
+ */
+export enum FarEndCameraControlDeclinedReason {
+  /**
+   * Normal
+   */
+  None = 0,
+  /**
+   * Approved another user
+   */
+  ApproveAnother = 3,
+  /**
+   * User withdrew control
+   */
+  Stop = 5
+}
+
+/**
+ * Local camera control command
+ */
+type LocalCameraControlCmd = Exclude<CameraControlCmd, CameraControlCmd.SwitchCamera>;
+/**
+ * Interface of local camera control option
+ */
+export interface CameraControlOption {
+  /**
+   * Control command
+   */
+  cmd: LocalCameraControlCmd;
+  /**
+   * The range of this operation. Total range is 100.
+   */
+  range: number;
+  /**
+   * Is reset
+   */
+  reset?: boolean;
+}
+/**
+ * Far end camera control command
+ */
+export interface FarEndCameraControlOption {
+  /**
+   * Control command
+   */
+  cmd: CameraControlCmd;
+  /**
+   * Controlled user ID
+   */
+  userId: number;
+  /**
+   * The range of this operation
+   */
+  range?: number;
+}
+
 /**
  * Chat message interface.
  */
@@ -1183,6 +1294,82 @@ export declare function event_user_updated(payload: ParticipantPropertiesPayload
 export declare function event_peer_share_state_change(payload: { userId: number; action: string }): void;
 export declare function event_audio_active_speaker(payload: Array<ActiveSpeaker>): void;
 export declare function event_room_state_change(payload: { status: BreakoutRoomStatus }): void;
+
+/**
+ * Occurs when far end camera request is received
+ * @param payload the event detail
+ *
+ * @event
+ */
+export declare function event_far_end_camera_request(payload: {
+  /**
+   * The user ID for who requested control.
+   */
+  userId: number;
+  /**
+   * The display name for who requested control.
+   */
+  displayName: string;
+  /**
+   * The user ID for who is controlling the camera.
+   */
+  currentControllingUserId?: number;
+  /**
+   * The display name for who is controlling the camera.
+   */
+  currentControllingDisplayName?: string;
+}): void;
+/**
+ * Occurs when far end camera response is received.
+ * @param payload the event detail
+ *
+ * @event
+ */
+export declare function event_far_end_camera_response(payload: {
+  /**
+   * Is approved
+   */
+  isApproved: boolean;
+  /**
+   * user ID
+   */
+  userId: number;
+  /**
+   * User display name
+   */
+  displayName: string;
+  /**
+   * reason for refusal
+   */
+  reason?: FarEndCameraControlDeclinedReason;
+}): void;
+/**
+ * Occurs when the status changes for the camera in control.
+ * @param payload the event detail
+ *
+ * @event
+ */
+export declare function event_far_end_camera_in_control_change(payload: {
+  /**
+   * Is controlled by other user.
+   */
+  isControlled: boolean;
+  /**
+   * The ID of the user in control.
+   */
+  userId?: number;
+}): void;
+
+export declare function event_far_end_camera_capability_change(payload: {
+  /**
+   * User ID
+   */
+  userId: number;
+  /**
+   * Capability of PTZ.
+   */
+  ptz: PTZCameraCapability;
+}): void;
 /**
  * Occurs when network quality changes.
  * The network quality reflects the video quality. The data will broadcast to all users only when the user starts video.
@@ -1531,6 +1718,123 @@ export declare namespace EmbeddedClient {
    */
   function openBreakoutRooms(rooms: Room[], options?: RoomOption): ExecutedResult;
   /**
+   * Request control an far-end PTZ camera
+   *
+   * ```javascript
+   * // UserA
+   * // Request control of UserB's camera.
+   * client.requestFarEndCameraControl(userBId);
+   *
+   * // UserB
+   * client.on("far-end-camera-request-control", (payload) => {
+   *   const { userId, displayName } = payload;
+   *  // popup a confirm window, approve or decline the request
+   *  client.approveFarEndCameraControl(userId);
+   * });
+   *
+   * // UserA
+   * let isFarEndCameraApproved = false;
+   * let capability = undefined;
+   * client.on("far-end-camera-response-control", (payload) => {
+   *   const { isApproved, userId, displayName } = payload;
+   *   isFarEndCameraApproved = isApproved;
+   * });
+   *
+   * client.on("far-end-camera-capability-change", (payload) => {
+   *   const { userId, ptz } = payload;
+   *   capability = ptz;
+   *   if (capability.pan) {
+   *     // Turn the camera to the left.
+   *     client.controlFarEndCamera({
+   *       userId,
+   *       cmd: CameraControlCmd.Left,
+   *       range: 10,
+   *     });
+   *   }
+   * });
+   * ```
+   *
+   * @param userId The controlled user ID.
+   * @returns
+   * - `''`: Success
+   * - `Error`: Failure. Details in {@link ErrorTypes}.
+   *
+   * @category Camera
+   */
+  function requestFarEndCameraControl(userId: number): ExecutedResult;
+  /**
+   * Approve the control request
+   *
+   * @param userId The requesting user ID.
+   * @returns
+   * - `''`: Success
+   * - `Error`: Failure. Details in {@link ErrorTypes}.
+   *
+   * @category Camera
+   */
+  function approveFarEndCameraControl(userId: number): ExecutedResult;
+  /**
+   * Decline the control request
+   *
+   * @param userId The requesting user ID.
+   * @returns
+   * - `''`: Success
+   * - `Error`: Failure. Details in {@link ErrorTypes}.
+   *
+   * @category Camera
+   */
+  function declineFarEndCameraControl(userId: number): ExecutedResult;
+  /**
+   * Give up the control of far end camera
+   * @param userId The controlled user ID.
+   * @returns
+   * - `''`: Success
+   * - `Error`: Failure. Details in {@link ErrorTypes}.
+   *
+   * @category Camera
+   */
+  function giveUpFarEndCameraControl(userId: number): ExecutedResult;
+  /**
+   * Control the local camera
+   * @param option The command option.
+   * @returns
+   * - `''`: Success
+   * - `Error`: Failure. Details in {@link ErrorTypes}.
+   *
+   * @category Camera
+   */
+  function controlCamera(option: CameraControlOption): ExecutedResult;
+  /**
+   * Control the far-end camera
+   * @param option The command option.
+   *
+   *  @returns
+   * - `''`: Success
+   * - `Error`: Failure. Details in {@link ErrorTypes}.
+   *
+   * @category Camera
+   */
+  function controlFarEndCamera(option: FarEndCameraControlOption): ExecutedResult;
+  /**
+   * Get the capability of the far-end camera.
+   * @param userId The user ID.
+   *
+   * @category Camera
+   */
+  function getFarEndCameraPTZCapability(userId: number): PTZCameraCapability;
+  /**
+   * Get the capability of the camera for the current device.
+   * @param cameraId Default is the active camera ID.
+   * @category Camera
+   */
+  function getCameraPTZCapability(cameraId?: string): PTZCameraCapability;
+  /**
+   * Whether the current browser supports PTZ.
+   * @category Camera
+   */
+  function isBrowserSupportPTZ(): boolean;
+
+  /**
    * Listens for the events and handles them.
    * For example:
    * ```javascript
@@ -1568,6 +1872,10 @@ export declare namespace EmbeddedClient {
     callback: (payload: { type: string; value: string; canRecord?: boolean }) => void
   ): void;
   function on(event: 'join-speed', callback: typeof event_join_speed): void;
+  function on(event: 'far-end-camera-request-control', listener: typeof event_far_end_camera_request): void;
+  function on(event: 'far-end-camera-response-control', listener: typeof event_far_end_camera_response): void;
+  function on(event: 'far-end-camera-in-control-change', listener: typeof event_far_end_camera_in_control_change): void;
+  function on(event: 'far-end-camera-capability-change', listener: typeof event_far_end_camera_capability_change): void;
   /**
    * Removes the event handler. Must be used with on() in pairs.
    * @param event event name. Same as 'on' event name list.
