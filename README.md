@@ -168,6 +168,28 @@ For the full list of features and event listeners, as well as additional guides,
 - [Meeting SDK Auth Sample (Node.js)](https://github.com/zoom/meetingsdk-sample-signature-node.js)
 - [Webhook Sample (Node.js)](https://github.com/zoom/webhook-sample-node.js)
 
+## Use ZFG(Zoom For Government). You need apply new sdk key for [ZFG](https://marketplace.zoomgov.com/).
+### option1 change package.json and use zfg specific version
+```
+"@zoom/meetingsdk": "3.7.0-zfg"
+```
+
+### option2 change webEndpoint use ZFG [Client View](https://marketplacefront.zoom.us/sdk/meeting/web/functions/ZoomMtg.init.html) [Component View](https://marketplacefront.zoom.us/sdk/meeting/web/components/interfaces/InitOptions.html#webEndpoint) 
+```
+#Client view
+ZoomMtg.setZoomJSLib("https://source.zoomgov.com/{VERSION}/lib", "/av");
+ZoomMtg.init({
+   webEndpoint: "www.zoomgov.com",
+});
+
+#Component view
+const client = ZoomMtgEmbedded.createClient();
+client.init({
+ assetPath: 'https://source.zoomgov.com/{VERSION}/lib/av',
+ webEndpoint: "www.zoomgov.com"});
+
+```
+
 ## Need help?
 
 If you're looking for help, try [Developer Support](https://devsupport.zoom.us) or our [Developer Forum](https://devforum.zoom.us). Priority support is also available with [Premier Developer Support](https://zoom.us/docs/en-us/developer-support-plans.html) plans.

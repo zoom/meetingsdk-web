@@ -17,9 +17,9 @@ declare let initArgs: {
    * If you do not set a leaveURL, the default will be -> window.location.origin
    * Other substitutions include the following.
    *
-   * http://127.0.0.1 -> http://127.0.0.1
+   * http://127.0.0.1 -> http://127.0.0.1 (no change)
    *
-   * https://127.0.0.1 -> https://127.0.0.1
+   * https://127.0.0.1 -> https://127.0.0.1 (no change)
    *
    * /meeting -> window.location.origin/meeting
    *
@@ -281,6 +281,38 @@ export type VbImageInfoType = {
    */
   url: string;
 };
+
+/**
+ * Call out option interface.
+ */
+export interface CallOutOption {
+  /**
+   * Determines whether to require a greeting before being connected.
+   */
+  greeting?: boolean;
+  /**
+   * Determines whether to require pressing 1 before being connected.
+   */
+  pressingOne?: boolean;
+}
+
+/**
+ * Invite phone option
+ */
+export interface InvitePhoneOption {
+  /**
+   * Is call me, phone audio, bound to current user?
+   */
+  callMe?: boolean;
+  /**
+   * Is a greeting required before being connected?
+   */
+  greeting?: boolean;
+  /**
+   * Is the user required to press 1 before being connected?
+   */
+  pressingOne?: boolean;
+}
 
 /**
  * In meeting event listeners.
@@ -754,7 +786,7 @@ export namespace ZoomMtg {
      */
     passWord?: string;
     /**
-     * Optional. An identifier for the user that you can get back from the Meeting API.
+     * Optional. An identifier for the user that you can get back from the Meeting API. Max length 36 char.
      */
     customerKey?: string;
     /**
@@ -777,6 +809,10 @@ export namespace ZoomMtg {
      * Optional. Token to allow local recording. See [Get a meeting's join token for local recording](https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/meetingLocalRecordingJoinToken) for details.
      */
     recordingToken?: string;
+    /**
+     * Optional. childToken.
+     */
+    childToken?: string;
     /**
      * Callback function on success.
      */
@@ -811,7 +847,7 @@ export namespace ZoomMtg {
      */
     passWord?: string;
     /**
-     * Optional. An identifier for the user that you can get back from the Meeting API.
+     * Optional. An identifier for the user that you can get back from the Meeting API. Max length 36 char.
      */
     customerKey?: string;
     /**
@@ -1011,6 +1047,10 @@ export namespace ZoomMtg {
      */
     phoneNumber: string;
     /**
+     * CallOutOption
+     */
+    options?: CallOutOption;
+    /**
      * Callback function on success.
      */
     success?: Function;
@@ -1033,6 +1073,10 @@ export namespace ZoomMtg {
      * Required. The name of the user starting or joining the meeting or webinar.
      */
     userName: string;
+    /**
+     * InvitePhoneOption
+     */
+    options?: InvitePhoneOption;
     /**
      * Callback function on success.
      */
@@ -1466,6 +1510,68 @@ export namespace ZoomMtg {
     error?: Function;
   }): void;
   /**
+   * Start screen share.
+   * - Check the share privilege before starting screen share.
+   * - If you start screen share, you will stop receiving others' shared content.
+   * @param args
+   * @RateLimit 1s
+   */
+  function startScreenShare(args: {
+    /**
+     * Whether the sharing is broadcast to breakout rooms. Only host or co-host have this privilege.
+     */
+    broadcastToBreakoutRoom?: boolean;
+    /**
+     * Option to show (default, false) or hide (true) the "Share Audio" checkbox when sharing a Chrome tab.
+     */
+    hideShareAudioOption?: boolean;
+    /**
+     * optimized for video share
+     * If sharing a video file that is stored locally on the computer, we recommend using the video share feature, which will provide better quality due to decreased CPU usage.
+     */
+    optimizedForSharedVideo?: boolean;
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  });
+
+  /**
+   * Sends private chat message to meeting participants. This API does not support sending chat messages in a webinar.
+   * @param args
+   * @RateLimit 1s
+   */
+  function sendChat(args: {
+    /**
+     * The message receiver's userId. If the userId is not provided, the message will be sent to everyone in the meeting.
+     *
+     * Determines if the user in the waiting room can send message only to the host or co-host or everyone in the waiting room.
+     *
+     * 0: send to all
+     *
+     * 4: send to waiting room
+     *
+     */
+    userId?: number | 0 | 4;
+    /**
+     * The chat message to send. It cannot be undefined, null, or empty.
+     */
+    message: string;
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+
+  /**
    * Change leaveUrl after participants join the meeting.
    * @param args
    * @RateLimit 1s
@@ -1498,8 +1604,18 @@ export namespace ZoomMtg {
 
   ZoomMtg.inMeetingServiceListener('onUserLeave', function (data) {
     console.log(data);
-    {reasonCode: 0|1|2|3|4};
-    reasonCode return reason the current user left. For example other: 0, host ended meeting: 1, self left from in meeting: 2, self left from waiting room: 3, self left from waiting for host start: 4, The meeting is transferred to another end to open: 5;
+    // reasonCode Return the reason the current user left.
+    const reasonCode = {
+      OTHER: 0, // Other reason.
+      HOST_ENDED_MEETING: 1, // Host ended the meeting.
+      SELF_LEAVE_FROM_IN_MEETING: 2, // User (self) left from being in the meeting.
+      SELF_LEAVE_FROM_WAITING_ROOM: 3, // User (self) left from the waiting room.
+      SELF_LEAVE_FROM_WAITING_FOR_HOST_START: 4, // User (self) left from waiting for host to start the meeting.
+      MEETING_TRANSFER: 5, // The meeting was transferred to another end to open.
+      KICK_OUT_FROM_MEETING: 6, // Removed from meeting by host or co-host.
+      KICK_OUT_FROM_WAITING_ROOM: 7, // Removed from waiting room by host or co-host.
+    };
+    
   });
 
   ZoomMtg.inMeetingServiceListener('onUserUpdate', function (data) {
@@ -2655,4 +2771,41 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      */
     error?: Function;
   }): number[];
+  /**
+   * Gets the getChildTokens, maximum count 20.
+   * Times exceeds will return get token error.
+   * Cannot be used for child node applications.
+   * @RateLimit 1s
+   */
+  function getChildTokens(args: {
+    count: number;
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): number[];
+  /**
+   * Set active speaker.
+   * Only the parent node can set active speakers.
+   * The parent node needs to have joined audio and unmute, the child node needs leave audio.
+   * @RateLimit 1s
+   */
+  function setActiveSpeaker(args: {
+    /**
+     * userId A valid user ID in the current meeting.
+     */
+    userId: number;
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  });
 }
