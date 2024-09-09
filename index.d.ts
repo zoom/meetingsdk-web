@@ -1883,16 +1883,19 @@ export namespace ZoomMtg {
       });
     },
     printJoinTime: function() {
-      console.log('%c===============JOIN SPEED ================', 'color: red')
+      console.log('%c===============JOIN SPEED ================', 'color: red');
+
       if (!this.joinSpeed[this.joinSpeedTag.userOutWaitingRoom].time && this.joinSpeed[this.joinSpeedTag.userOutWaitingForHost].time) {
-        console.warn('You join time begin from out waiting for host', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.userOutWaitingRoom].time, 'ms');
-      } 
+        //console.log(this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time, this.joinSpeed[this.joinSpeedTag.userOutWaitingForHost].time);
+        console.warn('Your join time started from "out waiting for host":', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.userOutWaitingForHost].time, 'ms');
+      }
+
       if (this.joinSpeed[this.joinSpeedTag.userOutWaitingRoom].time) {
-        console.warn('You join time begin from out waiting room', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.userOutWaitingRoom].time, 'ms');
+        console.warn('Your join time started from "out waiting room":', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.userOutWaitingRoom].time, 'ms');
       } else if (this.joinSpeed[this.joinSpeedTag.userClickJoinPreview].time) {
-        console.warn('You join time begin from click join button from preview', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.userClickJoinPreview].time, 'ms');
+        console.warn('Your join time started from clicking the join button in preview:', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.userClickJoinPreview].time, 'ms');
       } else {
-        console.warn('You join time begin from call sdk join', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.sdkCallJoin].time, 'ms')
+        console.warn('Your join time started from calling SDK join:', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.sdkCallJoin].time, 'ms');
       }
       this.printObjectsAsTable(this.joinSpeed);
     }
