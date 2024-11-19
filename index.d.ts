@@ -21,9 +21,12 @@ declare let initArgs: {
    *
    * https://127.0.0.1 -> https://127.0.0.1 (no change)
    *
+   * about:blank -> about:blank
+   *
    * /meeting -> window.location.origin/meeting
    *
    * zoom.us -> https://zoom.us
+   *
    */
   leaveUrl: string; //required
   /**
@@ -1613,7 +1616,9 @@ export namespace ZoomMtg {
       SELF_LEAVE_FROM_WAITING_FOR_HOST_START: 4, // User (self) left from waiting for host to start the meeting.
       MEETING_TRANSFER: 5, // The meeting was transferred to another end to open.
       KICK_OUT_FROM_MEETING: 6, // Removed from meeting by host or co-host.
-      KICK_OUT_FROM_WAITING_ROOM: 7, // Removed from waiting room by host or co-host.
+      KICK_OUT_FROM_WAITING_ROOM: 7, // Removed from waiting room by host or 
+        co-host.
+      LEAVE_FROM_DISCLAIMER: 8, // User click cancel in disclaimer dialog 
     };
     
   });
@@ -2802,6 +2807,25 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * userId A valid user ID in the current meeting.
      */
     userId: number;
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  });
+  /**
+   * Mirrors current video.
+   * Requires SAB to be enabled.
+   * Preview and Waiting room not support.
+   */
+  function mirrorVideo(args: {
+    /**
+     * Mirrors current video.
+     */
+    mirrored: boolean;
     /**
      * Callback function on success.
      */
