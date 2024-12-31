@@ -2746,6 +2746,15 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
     error?: Function;
   }): number[];
   /**
+   * Allows multiple users to be pinned.
+   */
+  function allowMultiPin(args: {
+    /**
+     * userId A valid user ID in the current meeting.
+     */
+    userId: number;
+  }): void;
+  /**
    * Operates Spotlight user (host and cohost only).
    */
   function operateSpotlight(args: {

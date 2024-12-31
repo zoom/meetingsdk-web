@@ -1,6 +1,6 @@
 {
   "name": "@zoom/meetingsdk",
-  "version": "3.10.0",
+  "version": "3.11.0",
   "description": "Zoom MeetingSDK-Web Client",
   "main": "index.js",
   "types": "index.d.ts",
@@ -17,7 +17,7 @@
     "websdk",
     "web"
   ],
-  "author": "Zoom Video Communications, Inc.",
+  "author": "Zoom Communications, Inc.",
   "license": "SEE LICENSE IN LICENSE.md",
   "homepage": "https://github.com/zoom/meetingsdk-web#readme",
   "bugs": {
