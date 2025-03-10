@@ -20,7 +20,7 @@ In your frontend project, install the Meeting SDK:
 $ npm install @zoom/meetingsdk --save
 ```
 
-There are two views to choose from, [Client View](#usage-client-view) and [Component View](#usage-component-view).
+There are two views to choose from, [Client View](#usage---client-view) and [Component View](#usage---component-view).
 
 ## Usage - Client View
 
