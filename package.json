@@ -1,6 +1,6 @@
 {
   "name": "@zoom/meetingsdk",
-  "version": "3.11.2",
+  "version": "3.12.0",
   "description": "Zoom MeetingSDK-Web Client",
   "main": "index.js",
   "types": "index.d.ts",
@@ -17,8 +17,8 @@
     "websdk",
     "web"
   ],
-  "author": "Zoom Communications, Inc.",
-  "license": "SEE LICENSE IN LICENSE.md",
+  "author": "Jack Yang",
+  "license": "MIT",
   "homepage": "https://github.com/zoom/meetingsdk-web#readme",
   "bugs": {
     "url": "https://github.com/zoom/meetingsdk-web/issues"
@@ -46,8 +46,8 @@
     "embedded.d.ts",
     "index.d.ts",
     "CHANGELOG.md",
-    "LICENSE.md",
-    "oss_attribution.txt",
-    "README.md"
+    "LICENSE.pdf",
+    "README.md",
+    "oss_attribution.txt"
   ]
 }
