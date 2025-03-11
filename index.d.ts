@@ -185,9 +185,19 @@ declare let initArgs: {
    */
   externalLinkPage?: string; // optional
   /**
-   * defaultView: 'gallery' or 'speaker'. Optional. Sets the default video layout to gallery view (if supported) or 'speaker' (default value).
+   * Sets the default video layout for the session. Optional.
+   * 
+   * @property {string} defaultView - Supported values:
+   *   - 'gallery': Shows multiple participants in a grid layout (if supported)
+   *   - 'speaker': Shows active speaker in large view (default)
+   *   - 'multiSpeaker': Shows multiple featured speakers (if supported)
+   * 
+   * @remarks
+   * Mobile device limitations:
+   *   - 'multiSpeaker' is not supported and will automatically switch to 'speaker' view
+   *   - When participant count is less than 3, 'gallery' view will automatically switch to 'speaker' view
    */
-  defaultView?: string; // optional
+  defaultView?: 'gallery' | 'speaker' | 'multiSpeaker'; // optional
   /**
    * Shows (false, default value) or hides (true) the "Share tab audio" checkbox when sharing a Chrome tab.
    */
@@ -264,23 +274,23 @@ export type MeetingInfoType =
   | 'enctype'
   | 'report';
 /**
- * Virtual background (VB) or mask image information.
+ * Virtual background (VB) image information.
  */
 export type VbImageInfoType = {
   /**
-   * VB or mask ID, must be unique
+   * virtual background ID, must be unique
    */
   id: string;
   /**
-   * Name to display for VB or mask.
+   * Name to display for virtual background.
    */
   displayName: string;
   /**
-   * Virtual background or mask file name.
+   * Virtual background file name.
    */
   fileName: string;
   /**
-   * VB or mask image resource URL.
+   * Virtual background image resource URL.
    */
   url: string;
 };
@@ -340,7 +350,10 @@ export type InMeetingEvent =
   | 'onActiveSpeaker'
   | 'onPictureInPicture'
   | 'onFocusModeStatusChange'
-  | 'onJoinSpeed';
+  | 'onJoinSpeed'
+  | 'onVideoOrder'
+  | 'onReceiveChatMsg'
+  | 'onVbStatusChange';
 
 /**
  *  For the APIs that take images, the value of the image type returned by the getVideoSourcesCallBack method, passed in the shareSource API.
@@ -544,7 +557,7 @@ export declare namespace ZoomMtgLang {
   /**
    * Loads translations.
    * See for abbreviation descriptions: https://developers.zoom.us/docs/meeting-sdk/web/client-view/multi-language/
-   * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT', 'id-ID', 'nl-NL', 'sv-SE'
+   * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT', 'id-ID', 'nl-NL', 'sv-SE', 'pl-PL', 'tr-TR'
    * Be sure to call it before calling `init`.
    * @param lang
    *
@@ -557,6 +570,8 @@ export declare namespace ZoomMtgLang {
       | 'fr-FR'
       | 'jp-JP'
       | 'pt-PT'
+      | 'pl-PL'
+      | 'tr-TR'
       | 'ru-RU'
       | 'zh-CN'
       | 'zh-TW'
@@ -637,7 +652,7 @@ export function vbStatusDataFunc(data: {
      */
     blur: boolean;
     /**
-     * If true, the user can enable VB, mask, or blur through the UI
+     * If true, the user can enable VB or blur through the UI
      * and the developer can't call the following APIs to control it:
      * updateVirtualBackgroundList
      * setVirtualBackground
@@ -649,7 +664,8 @@ export function vbStatusDataFunc(data: {
      */
     vb: boolean;
     /**
-     * True if the user selected mask, false if not.
+     * always false, remove mask feature since 3.11.0
+     * @deprecated
      */
     mask: boolean;
     /**
@@ -673,7 +689,8 @@ export function vbSupportDataFunc(data: {
      */
     vb: boolean;
     /**
-     * True if the user can support mask, false if not.
+     * always false, remove mask feature since 3.11.0
+     * @deprecated
      */
     mask: boolean;
     /**
@@ -698,39 +715,20 @@ export namespace ZoomMtg {
    */
   const i18n: typeof ZoomMtgLang;
   /**
+   * This api been removed in versions >= 3.12.0, please use other way generate signature.
+   *
    * Generate each time you join a meeting or webinar through a server-side function where you can securely store SDK credentials.
+   *
    * See Generate the SDK JWT key for details:
+   *
    * https://developers.zoom.us/docs/meeting-sdk/auth/
+   *
    * See the Sample Signature app for an example:
+   *
    * https://github.com/zoom/meetingsdk-sample-signature-node.js
-   * @category Join
+   * @deprecated
    */
-  function generateSDKSignature(args: {
-    /**
-     * Required, your Meeting SDK SDK key or client id
-     */
-    sdkKey: string;
-    /**
-     * Required, your Meeting SDK SDK secret or client secret
-     */
-    sdkSecret: string;
-    /**
-     * Required, the Zoom meeting or webinar number.
-     */
-    meetingNumber: string;
-    /**
-     * Required, 0 to specify participant, 1 to specify host.
-     */
-    role: string;
-    /**
-     * Callback function on success.
-     */
-    success?: Function;
-    /**
-     * Callback function in the event of an error.
-     */
-    error?: Function;
-  }): string;
+  function generateSDKSignature(): string;
   /**
    * Changes the Zoom default library resource requirements.
    * Default is ZoomMtg.setZoomJSLib('https://source.zoom.us/{VERSION_NUMBER}/lib', '/av')
@@ -1534,6 +1532,10 @@ export namespace ZoomMtg {
      */
     optimizedForSharedVideo?: boolean;
     /**
+     * sourceId: the sourceId of the shared content.
+     */
+    sourceId?: string;
+    /**
      * Callback function on success.
      */
     success?: Function;
@@ -2008,6 +2010,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
     event: 'onAudioQos' | 'onVideoQos' | 'onShareQos',
     callback: Function,
   ): void;
+
   /**
    * Listens for claim status after calling claimHost with host key.
    * @param event 
@@ -2041,6 +2044,68 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
    */
   function inMeetingServiceListener(
     event: 'onNetworkQualityChange',
+    callback: Function,
+  ): void;
+
+  /**
+   * Listens for the currently displayed user and the user's video order changes.
+   * (mobile does not support.)
+   * @param event 
+   * @param callback 
+   * Example:
+  ```js
+  ZoomMtg.inMeetingServiceListener('onVideoOrder', function (data) {
+    // {
+    //   view: 'speak-view' | 'gallery-view' | 'multi-speaker-view' | 'single-view',
+    //   speakerBarCurrent: [],
+    //   speakerActiveCurrent: [],
+    //   multiSpeakerActiveCurrent: [],
+    //   multiSpeakerMainCurrent: [],
+    //   galleryMainCurrent: [],
+    //   suspensionAllCurrent: [],
+    //   singleActiveCurrent: [],
+    // };
+    console.log(data);
+  });
+  ```
+  @category Listener
+   */
+  function inMeetingServiceListener(
+    event: 'onVideoOrder',
+    callback: Function,
+  ): void;
+
+  /**
+   * Listens for chat message.
+   * @param event 
+   * @param callback
+   * Example:
+   * ```js
+  ZoomMtg.inMeetingServiceListener('onReceiveChatMsg', function (data) {
+    console.log(data);
+  });
+  ```
+    @category Listener
+   */
+  function inMeetingServiceListener(
+    event: 'onReceiveChatMsg',
+    callback: Function,
+  ): void;
+
+  /**
+   * Listens for virtual background (VB) status change.
+   * @param event 
+   * @param callback
+   * Example:
+   * ```js
+    ZoomMtg.inMeetingServiceListener('onVbStatusChange', function (data) {
+      console.log(data);
+    });
+    ```
+      @category Listener
+   */
+  function inMeetingServiceListener(
+    event: 'onVbStatusChange',
     callback: Function,
   ): void;
 
@@ -2238,7 +2303,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
     error?: Function;
   }): void;
   /**
-   * Checks if the browser supports virtual background (VB) and mask. Must enable "virtual background" to use this function.
+   * Checks if the browser supports virtual background. Must enable "virtual background" to use this function.
    * @category VirtualBackground
    */
   function isSupportVirtualBackground(args: {
@@ -2266,7 +2331,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
     error?: Function;
   }): void;
   /**
-   * Update VB or mask background image list.
+   * Update virtual background image list.
    * @param args
    * @category VirtualBackground
    * @RateLimit 1s
@@ -2295,7 +2360,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
    */
   function setVirtualBackground(args: {
     /**
-     * VB or mask background ID
+     * virtual background ID
      */
     id?: string;
     /**
@@ -2309,14 +2374,14 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
   }): void;
   /**
    *
-   * Lock VB or mask to a specific image.
+   * Lock virtual background to a specific image.
    * @param args
    * @category VirtualBackground
    * @RateLimit 1s
    */
   function lockVirtualBackground(args: {
     /**
-     * Lock or unlock VB or mask.
+     * Lock or unlock virtual background.
      */
     isLock: boolean;
     /**
