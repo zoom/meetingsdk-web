@@ -186,12 +186,12 @@ declare let initArgs: {
   externalLinkPage?: string; // optional
   /**
    * Sets the default video layout for the session. Optional.
-   * 
+   *
    * @property {string} defaultView - Supported values:
    *   - 'gallery': Shows multiple participants in a grid layout (if supported)
    *   - 'speaker': Shows active speaker in large view (default)
    *   - 'multiSpeaker': Shows multiple featured speakers (if supported)
-   * 
+   *
    * @remarks
    * Mobile device limitations:
    *   - 'multiSpeaker' is not supported and will automatically switch to 'speaker' view
@@ -353,7 +353,8 @@ export type InMeetingEvent =
   | 'onJoinSpeed'
   | 'onVideoOrder'
   | 'onReceiveChatMsg'
-  | 'onVbStatusChange';
+  | 'onVbStatusChange'
+  | 'onFeedBackData';
 
 /**
  *  For the APIs that take images, the value of the image type returned by the getVideoSourcesCallBack method, passed in the shareSource API.
@@ -2072,6 +2073,40 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
    */
   function inMeetingServiceListener(
     event: 'onVideoOrder',
+    callback: Function,
+  ): void;
+
+  /**
+   * Listens for `onFeedBackData` event.
+   * @param event 
+   * @param callback
+   *  * The callback receives an object containing feedback configuration data of the meeting/webinar.
+   * 
+   * The `data` object passed to the callback contains the following fields:
+   * - `enableFeedback` (number): Web-configured feedback setting. Possible values:
+   *   - `1`: Feedback displayed randomly in meetings.
+   *   - `2`: Feedback displayed in every meeting.
+   * - `enableFeedbackTextField` (boolean): Indicates whether the text field for user feedback is enabled.
+   * - `feedbackCustMessage` (string): Custom message displayed to users, as configured on the web.
+   * - `survey` (string | boolean): The survey URL if a survey is set up for the meeting; otherwise, `false`.
+   * - `nodeId` (number): The unique identifier of the user.
+   * - `meetingDetails` (string): Binary representation of conference features.
+   * - `deviceType` (string): The type of device used to join the meeting (e.g., "Mobile" or "Desktop").
+   * - `meetingNumber` (number): The unique meeting number.
+   * - `meetingId` (string): The unique meeting identifier.
+   * - `trackingId` (string): A tracking identifier for logs.
+   * - `confId` (string): The in-meeting service link identifier.
+   * 
+   * Example:
+   * ```js
+  ZoomMtg.inMeetingServiceListener('onFeedBackData', function (data) {
+    console.log(data);
+  });
+  ```
+    @category Listener
+   */
+  function inMeetingServiceListener(
+    event: 'onFeedBackData',
     callback: Function,
   ): void;
 
