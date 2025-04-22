@@ -1,13 +1,5 @@
 # Zoom Meeting SDK for Web
 
-> Client view:
->
-> `import { ZoomMtg } from "@zoom/meetingsdk"`
->
-> Component view:
->
-> `import ZoomMtgEmbedded from "@zoom/meetingsdk/embedded"`
-
 Use of this SDK is subject to our [Terms of Use](https://zoom.us/docs/en-us/zoom_api_license_and_tou.html)
 
 The [Zoom Meeting SDK](https://developers.zoom.us/docs/meeting-sdk/web/) embeds the Zoom Meeting and Webinar experience in a website through a highly optimized WebAssembly module.
