@@ -2080,7 +2080,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
    * Listens for `onFeedBackData` event.
    * @param event 
    * @param callback
-   *  * The callback receives an object containing feedback configuration data of the meeting/webinar.
+   *  * The callback receives an object containing feedback data.
    * 
    * The `data` object passed to the callback contains the following fields:
    * - `enableFeedback` (number): Web-configured feedback setting. Possible values:

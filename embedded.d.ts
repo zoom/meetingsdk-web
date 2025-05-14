@@ -993,6 +993,13 @@ export interface InitOptions {
       popper?: PopperStyle;
     };
     /**
+     * Customization options for the invite panel.
+     * @param popper Options for the underlying popper element.
+     */
+    invite?: {
+      popper?: PopperStyle;
+    };
+    /**
      * Customization options for chat notifications and panel.
      * @param notificationCls Options for chat notifications.
      * @param popper Options for the underlying popper element.
