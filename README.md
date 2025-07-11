@@ -209,7 +209,7 @@ client.init({
 ## 📚 Sample Applications
 
 ### Framework-Specific Examples
-- **[Web Sample](https://github.com/zoom/meetingsdk-web-sample)** - Vanilla JavaScript implementation
+- **[Web Sample](https://github.com/zoom/meetingsdk-web-sample)** - CDN and React examples for both Client and Component views
 - **[React Sample](https://github.com/zoom/meetingsdk-react-sample)** - React integration examples
 - **[Angular Sample](https://github.com/zoom/meetingsdk-angular-sample)** - Angular integration examples  
 - **[Vue.js Sample](https://github.com/zoom/meetingsdk-vuejs-sample)** - Vue.js integration examples
