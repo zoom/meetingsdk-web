@@ -926,7 +926,7 @@ export interface InitOptions {
    */
   webEndpoint?: string;
   /**
-   * @param language Default 'en-US'.
+   * @param language Default 'en-US'. jp-JP/ko-KO deprecated in v4.0.0, please use new ja-JP/ko-KO, will not accept jp-JP/ko-KO in 6.0.0
    * @property de-DE - German Deutsch
    * @property es-ES - Spanish Español
    * @property fr-FR - French Français

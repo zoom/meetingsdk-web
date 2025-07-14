@@ -562,9 +562,14 @@ export interface SupportFeatures {
 export declare namespace ZoomMtgLang {
   /**
    * Loads translations.
+   *
    * See for abbreviation descriptions: https://developers.zoom.us/docs/meeting-sdk/web/client-view/multi-language/
+   *
    * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'ja-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KR', 'vi-VN', 'it-IT', 'id-ID', 'nl-NL', 'sv-SE', 'pl-PL', 'tr-TR'
+   *
    * Be sure to call it before calling `init`.
+   *
+   * jp-JP/ko-KO deprecated in v4.0.0, please use new ja-JP/ko-KO, will not accept jp-JP/ko-KO in 6.0.0
    * @param lang
    *
    */
@@ -593,7 +598,7 @@ export declare namespace ZoomMtgLang {
   /**
    * Loads translation URL. Use the URL provided by Zoom or your own resource object.
    * For the Zoom-provided JSON language use this syntax: https://source.zoom.us/{VERSION_NUMBER}/lib/lang/{LANG_CODE}.json.
-   * For example, to use the English resource from Zoom for v2.7.0 of the SDK, use: https://source.zoom.us/2.7.0/lib/lang/en-US.json
+   * For example, to use the English resource from Zoom for v4.0.0 of the SDK, use: https://source.zoom.us/4.0.0/lib/lang/en-US.json
    * Or create your own JSON resource object.
    * Be sure to call it before calling `init`.
    * @param url JSON Language resource URL or resource object
