@@ -16,7 +16,7 @@ npm install @zoom/meetingsdk --save
 
 ### Integration Options
 
-There are two views to choose from, [Client View](#usage---client-view) and [Component View](#usage---component-view).
+There are two views to choose from, [Client View](#-usage---client-view) and [Component View](#-usage---component-view).
 
 - **Client View**: Full-page meeting experience identical to Zoom Web Client
 - **Component View**: Flexible, embeddable meeting components for custom UI/UX
