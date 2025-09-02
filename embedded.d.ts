@@ -1308,6 +1308,68 @@ export declare function event_caption_message(payload: {
   done?: boolean;
 }): void;
 
+/**
+ * Interface for file information in chat messages.
+ */
+export interface FileInfo {
+  /**
+   * Name of the file.
+   */
+  name: string;
+  /**
+   * Type of the file.
+   */
+  type: string;
+}
+
+/**
+ * Interface for chat message records.
+ */
+export interface ChatRecord {
+  /**
+   * Message content, can be a single string or array of strings.
+   */
+  message?: string | string[];
+  /**
+   * Unique identifier for the message.
+   */
+  id?: string;
+  /**
+   * File information if the message contains a file.
+   */
+  file?: FileInfo;
+  /**
+   * Information about the message sender.
+   */
+  sender: {
+    /**
+     * Sender's display name.
+     */
+    name: string;
+    /**
+     * Sender's user ID.
+     */
+    userId: number;
+  };
+  /**
+   * Information about the message receiver.
+   */
+  receiver: {
+    /**
+     * Receiver's display name.
+     */
+    name: string;
+    /**
+     * Receiver's user ID.
+     */
+    userId: number;
+  };
+  /**
+   * Timestamp when the message was sent.
+   */
+  timestamp: number;
+}
+
 export declare function event_recording_change(payload: RecordingStatus | RecordingStatusValue): void;
 
 export declare function event_local_recording_change(payload: { userId: number; bLocalRecord: boolean }): void;
@@ -1321,6 +1383,7 @@ export declare function event_user_updated(payload: ParticipantPropertiesPayload
 export declare function event_peer_share_state_change(payload: { userId: number; action: string }): void;
 export declare function event_audio_active_speaker(payload: Array<ActiveSpeaker>): void;
 export declare function event_room_state_change(payload: { status: BreakoutRoomStatus }): void;
+export declare function event_chat_on_message(payload: ChatRecord | ChatMessage): void;
 
 /**
  * Occurs when far end camera request is received
@@ -1898,6 +1961,7 @@ export declare namespace EmbeddedClient {
     event: 'media-capture-status-change',
     callback: (payload: { userId: number; bLocalRecord: boolean }) => void
   ): void;
+  function on(event: 'chat-on-message', callback: typeof event_chat_on_message): void;
   function on(
     event: 'media-capture-permission-change',
     callback: (payload: { type: string; value: string; canRecord?: boolean }) => void
