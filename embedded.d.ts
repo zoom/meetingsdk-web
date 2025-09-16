@@ -119,7 +119,7 @@ export enum FarEndCameraControlDeclinedReason {
 /**
  * Local camera control command
  */
-type LocalCameraControlCmd = Exclude<CameraControlCmd, CameraControlCmd.SwitchCamera>;
+export type LocalCameraControlCmd = Exclude<CameraControlCmd, CameraControlCmd.SwitchCamera>;
 /**
  * Interface of local camera control option
  */
@@ -926,7 +926,7 @@ export interface InitOptions {
    */
   webEndpoint?: string;
   /**
-   * @param language Default 'en-US'. jp-JP/ko-KO deprecated in v4.0.0, please use new ja-JP/ko-KO, will not accept jp-JP/ko-KO in 6.0.0
+   * @param language Default 'en-US'. jp-JP/ko-KO deprecated in v4.0.0, please use new ja-JP/ko-KR, will not accept jp-JP/ko-KO in 6.0.0
    * @property de-DE - German Deutsch
    * @property es-ES - Spanish Español
    * @property fr-FR - French Français
@@ -1668,7 +1668,7 @@ export declare namespace EmbeddedClient {
    * You cannot remove the VB if a VB image has been selected by a user using the UI or if it has been already set by this API.
    * You cannot set a new VB image if the VB image is locked.
    * The image with vbImageId must exist in the current VB image list.
-   * @param vbImageId: the ID of the in the image list for the target VB image, '' for no VB and 'blur' for the blur VB.
+   * @param vbImageId the ID of the in the image list for the target VB image, '' for no VB and 'blur' for the blur VB.
    * @category VirtualBackground
    */
   function setVirtualBackground(vbImageId: string): ExecutedResult;
