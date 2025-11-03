@@ -178,7 +178,7 @@ Update your `package.json` to use the ZFG version:
 ```json
 {
   "dependencies": {
-    "@zoom/meetingsdk": "3.11.2-zfg"
+    "@zoom/meetingsdk": "3.13.2-zfg"
   }
 }
 ```
