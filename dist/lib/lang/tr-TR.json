@@ -423,6 +423,7 @@
   "apac.errorcodes_not_host": "Toplantı ev sahibi değilsin.",
   "apac.errorcodes_not_init": "Toplantı başlatılmadı.",
   "apac.errorcodes_not_start": "Toplantı başlamadı",
+  "apac.errorcodes_obf": "Token error: obfToken and zak cannot be used simultaneously",
   "apac.errorcodes_offline": "Hizmet geçici olarak çevrimdışı.",
   "apac.errorcodes_pac_api_disabled": "Hesaplar API anahtarı devre dışı bırakıldı.",
   "apac.errorcodes_pac_api_wrong": "Hesaplar API anahtarı geçerli değil.",

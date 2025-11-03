@@ -423,6 +423,7 @@
   "apac.errorcodes_not_host": "你是不是會議主持人。",
   "apac.errorcodes_not_init": "會議未初始化。",
   "apac.errorcodes_not_start": "會議還沒有開始",
+  "apac.errorcodes_obf": "Token error: obfToken and zak cannot be used simultaneously",
   "apac.errorcodes_offline": "該服務暫時處於離線狀態。",
   "apac.errorcodes_pac_api_disabled": "該賬戶的API密鑰時處於關閉狀態。",
   "apac.errorcodes_pac_api_wrong": "該賬戶API密鑰無效。",

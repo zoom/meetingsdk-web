@@ -423,6 +423,7 @@
   "apac.errorcodes_not_host": "Sie sind nicht der Meeting-Gastgeber.",
   "apac.errorcodes_not_init": "Treffen nicht initialisiert.",
   "apac.errorcodes_not_start": "Treffen hat noch nicht begonnen",
+  "apac.errorcodes_obf": "Token error: obfToken and zak cannot be used simultaneously",
   "apac.errorcodes_offline": "Der Service ist vorübergehend offline.",
   "apac.errorcodes_pac_api_disabled": "Die Konten API-Schlüssel deaktiviert ist.",
   "apac.errorcodes_pac_api_wrong": "Die Konten API Key nicht gültig ist.",
