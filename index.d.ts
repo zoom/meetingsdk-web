@@ -14,15 +14,19 @@ declare let initArgs: {
   patchJsMedia?: boolean; //optional
   /**
    * leaveUrl: Required. The URL to post after the user leaves the meeting. Example: “http://www.zoom.us”
-   * default not set leaveUrl, -> window.location.origin
+   * If you do not set a leaveURL, the default will be -> window.location.origin
+   * Other substitutions include the following.
    *
-   * http://127.0.0.1 -> http://127.0.0.1
+   * http://127.0.0.1 -> http://127.0.0.1 (no change)
    *
-   * https://127.0.0.1 -> https://127.0.0.1
+   * https://127.0.0.1 -> https://127.0.0.1 (no change)
+   *
+   * about:blank -> about:blank
    *
    * /meeting -> window.location.origin/meeting
    *
    * zoom.us -> https://zoom.us
+   *
    */
   leaveUrl: string; //required
   /**
@@ -147,6 +151,10 @@ declare let initArgs: {
    */
   disablePreview?: boolean; // optional
   /**
+   * enableWaitingRoomPreview: default: true, optional. Enables or disables the audio and video preview in the waiting room or when the participant is waiting for the host to start the meeting.
+   */
+  enableWaitingRoomPreview?: boolean; // optional
+  /**
    * disableCORP: default: false, optional. Enables or disables web isolation mode (developer environment feature).
    */
   disableCORP?: boolean; // optional
@@ -177,9 +185,19 @@ declare let initArgs: {
    */
   externalLinkPage?: string; // optional
   /**
-   * defaultView: 'gallery' or 'speaker'. Optional. Sets the default video layout to gallery view (if supported) or 'speaker' (default value).
+   * Sets the default video layout for the session. Optional.
+   *
+   * @property {string} defaultView - Supported values:
+   *   - 'gallery': Shows multiple participants in a grid layout (if supported)
+   *   - 'speaker': Shows active speaker in large view (default)
+   *   - 'multiSpeaker': Shows multiple featured speakers (if supported)
+   *
+   * @remarks
+   * Mobile device limitations:
+   *   - 'multiSpeaker' is not supported and will automatically switch to 'speaker' view
+   *   - When participant count is less than 3, 'gallery' view will automatically switch to 'speaker' view
    */
-  defaultView?: string; // optional
+  defaultView?: 'gallery' | 'speaker' | 'multiSpeaker'; // optional
   /**
    * Shows (false, default value) or hides (true) the "Share tab audio" checkbox when sharing a Chrome tab.
    */
@@ -189,7 +207,7 @@ declare let initArgs: {
    */
   disablePictureInPicture?: boolean;
   /**
-   * onInviteSearchZoomPhoneCallback, callback when user use Invite->Zoom Phone-> search number.
+   * onInviteSearchZoomPhoneCallback, callback when the user uses Invite->Zoom Phone-> search number.
    * isSameAccount = true, support direct call internal ext number.
    * Example:
   ```js
@@ -221,8 +239,8 @@ declare let initArgs: {
    */
   disableZoomPhone?: boolean;
   /**
-   * disableZoomLogo: default: false, optional. if true will remove zoom workplace logo.
-   * Disabling the Zoom logo will not be available in the future. For a custom experience, build with the https://developers.zoom.us/docs/video-sdk/.
+   * disableZoomLogo: default: false, optional. If true, removes the Zoom workplace logo.
+   * Disabling the Zoom logo will not be available in the future. For a custom experience, build with the [Zoom Video SDK](https://developers.zoom.us/docs/video-sdk/).
    */
   disableZoomLogo?: boolean;
   /**
@@ -256,26 +274,58 @@ export type MeetingInfoType =
   | 'enctype'
   | 'report';
 /**
- * Virtual background (VB) or mask image information.
+ * Virtual background (VB) image information.
  */
 export type VbImageInfoType = {
   /**
-   * VB or mask ID, must be unique
+   * virtual background ID, must be unique
    */
   id: string;
   /**
-   * Name to display for VB or mask.
+   * Name to display for virtual background.
    */
   displayName: string;
   /**
-   * Virtual background or mask file name.
+   * Virtual background file name.
    */
   fileName: string;
   /**
-   * VB or mask image resource URL.
+   * Virtual background image resource URL.
    */
   url: string;
 };
+
+/**
+ * Call out option interface.
+ */
+export interface CallOutOption {
+  /**
+   * Determines whether to require a greeting before being connected.
+   */
+  greeting?: boolean;
+  /**
+   * Determines whether to require pressing 1 before being connected.
+   */
+  pressingOne?: boolean;
+}
+
+/**
+ * Invite phone option
+ */
+export interface InvitePhoneOption {
+  /**
+   * Is call me, phone audio, bound to current user?
+   */
+  callMe?: boolean;
+  /**
+   * Is a greeting required before being connected?
+   */
+  greeting?: boolean;
+  /**
+   * Is the user required to press 1 before being connected?
+   */
+  pressingOne?: boolean;
+}
 
 /**
  * In meeting event listeners.
@@ -300,7 +350,11 @@ export type InMeetingEvent =
   | 'onActiveSpeaker'
   | 'onPictureInPicture'
   | 'onFocusModeStatusChange'
-  | 'onJoinSpeed';
+  | 'onJoinSpeed'
+  | 'onVideoOrder'
+  | 'onReceiveChatMsg'
+  | 'onVbStatusChange'
+  | 'onFeedBackData';
 
 /**
  *  For the APIs that take images, the value of the image type returned by the getVideoSourcesCallBack method, passed in the shareSource API.
@@ -483,9 +537,9 @@ export interface SupportFeatures {
  * 
  * Examples:
  * 
- * en-US https://source.zoom.us/{VERSION_NUMBER}/lib/lang/en-US.json
+ * en-US https://source.zoomgov.com/{VERSION_NUMBER}/lib/lang/en-US.json
  * 
- * zh-CN https://source.zoom.us/{VERSION_NUMBER}/lib/lang/zh-CN.json
+ * zh-CN https://source.zoomgov.com/{VERSION_NUMBER}/lib/lang/zh-CN.json
  * ```js
  * ZoomMtg.i18n.load('en-US');
   var userLangTemplate = ZoomMtg.i18n.getAll("en-US");
@@ -504,7 +558,7 @@ export declare namespace ZoomMtgLang {
   /**
    * Loads translations.
    * See for abbreviation descriptions: https://developers.zoom.us/docs/meeting-sdk/web/client-view/multi-language/
-   * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT', 'id-ID', 'nl-NL'
+   * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT', 'id-ID', 'nl-NL', 'sv-SE', 'pl-PL', 'tr-TR'
    * Be sure to call it before calling `init`.
    * @param lang
    *
@@ -517,6 +571,8 @@ export declare namespace ZoomMtgLang {
       | 'fr-FR'
       | 'jp-JP'
       | 'pt-PT'
+      | 'pl-PL'
+      | 'tr-TR'
       | 'ru-RU'
       | 'zh-CN'
       | 'zh-TW'
@@ -524,12 +580,13 @@ export declare namespace ZoomMtgLang {
       | 'vi-VN'
       | 'it-IT'
       | 'id-ID'
-      | 'nl-NL',
+      | 'nl-NL'
+      | 'sv-SE',
   ): Promise<any>;
   /**
    * Loads translation URL. Use the URL provided by Zoom or your own resource object.
-   * For the Zoom-provided JSON language use this syntax: https://source.zoom.us/{VERSION_NUMBER}/lib/lang/{LANG_CODE}.json.
-   * For example, to use the English resource from Zoom for v2.7.0 of the SDK, use: https://source.zoom.us/2.7.0/lib/lang/en-US.json
+   * For the Zoom-provided JSON language use this syntax: https://source.zoomgov.com/{VERSION_NUMBER}/lib/lang/{LANG_CODE}.json.
+   * For example, to use the English resource from Zoom for v2.7.0 of the SDK, use: https://source.zoomgov.com/2.7.0/lib/lang/en-US.json
    * Or create your own JSON resource object.
    * Be sure to call it before calling `init`.
    * @param url JSON Language resource URL or resource object
@@ -596,7 +653,7 @@ export function vbStatusDataFunc(data: {
      */
     blur: boolean;
     /**
-     * If true, the user can enable VB, mask, or blur through the UI
+     * If true, the user can enable VB or blur through the UI
      * and the developer can't call the following APIs to control it:
      * updateVirtualBackgroundList
      * setVirtualBackground
@@ -608,7 +665,8 @@ export function vbStatusDataFunc(data: {
      */
     vb: boolean;
     /**
-     * True if the user selected mask, false if not.
+     * always false, remove mask feature since 3.11.0
+     * @deprecated
      */
     mask: boolean;
     /**
@@ -632,7 +690,8 @@ export function vbSupportDataFunc(data: {
      */
     vb: boolean;
     /**
-     * True if the user can support mask, false if not.
+     * always false, remove mask feature since 3.11.0
+     * @deprecated
      */
     mask: boolean;
     /**
@@ -657,42 +716,23 @@ export namespace ZoomMtg {
    */
   const i18n: typeof ZoomMtgLang;
   /**
+   * This api been removed in versions >= 3.12.0, please use other way generate signature.
+   *
    * Generate each time you join a meeting or webinar through a server-side function where you can securely store SDK credentials.
+   *
    * See Generate the SDK JWT key for details:
+   *
    * https://developers.zoom.us/docs/meeting-sdk/auth/
+   *
    * See the Sample Signature app for an example:
+   *
    * https://github.com/zoom/meetingsdk-sample-signature-node.js
-   * @category Join
+   * @deprecated
    */
-  function generateSDKSignature(args: {
-    /**
-     * Required, your Meeting SDK SDK key or client id
-     */
-    sdkKey: string;
-    /**
-     * Required, your Meeting SDK SDK secret or client secret
-     */
-    sdkSecret: string;
-    /**
-     * Required, the Zoom meeting or webinar number.
-     */
-    meetingNumber: string;
-    /**
-     * Required, 0 to specify participant, 1 to specify host.
-     */
-    role: string;
-    /**
-     * Callback function on success.
-     */
-    success?: Function;
-    /**
-     * Callback function in the event of an error.
-     */
-    error?: Function;
-  }): string;
+  function generateSDKSignature(): string;
   /**
    * Changes the Zoom default library resource requirements.
-   * Default is ZoomMtg.setZoomJSLib('https://source.zoom.us/{VERSION_NUMBER}/lib', '/av')
+   * Default is ZoomMtg.setZoomJSLib('https://source.zoomgov.com/{VERSION_NUMBER}/lib', '/av')
    * @category Join
    */
   function setZoomJSLib(path?: string, dir?: string): void;
@@ -748,7 +788,7 @@ export namespace ZoomMtg {
      */
     passWord?: string;
     /**
-     * Optional. An identifier for the user that you can get back from the Meeting API.
+     * Optional. An identifier for the user that you can get back from the Meeting API. Max length 36 char.
      */
     customerKey?: string;
     /**
@@ -771,6 +811,10 @@ export namespace ZoomMtg {
      * Optional. Token to allow local recording. See [Get a meeting's join token for local recording](https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/meetingLocalRecordingJoinToken) for details.
      */
     recordingToken?: string;
+    /**
+     * Optional. childToken.
+     */
+    childToken?: string;
     /**
      * Callback function on success.
      */
@@ -805,7 +849,7 @@ export namespace ZoomMtg {
      */
     passWord?: string;
     /**
-     * Optional. An identifier for the user that you can get back from the Meeting API.
+     * Optional. An identifier for the user that you can get back from the Meeting API. Max length 36 char.
      */
     customerKey?: string;
     /**
@@ -1005,6 +1049,10 @@ export namespace ZoomMtg {
      */
     phoneNumber: string;
     /**
+     * CallOutOption
+     */
+    options?: CallOutOption;
+    /**
      * Callback function on success.
      */
     success?: Function;
@@ -1027,6 +1075,10 @@ export namespace ZoomMtg {
      * Required. The name of the user starting or joining the meeting or webinar.
      */
     userName: string;
+    /**
+     * InvitePhoneOption
+     */
+    options?: InvitePhoneOption;
     /**
      * Callback function on success.
      */
@@ -1392,6 +1444,58 @@ export namespace ZoomMtg {
      */
     error?: Function;
   }): void;
+
+  /**
+   * Raise the current user's hand.
+   * @param args
+   * @RateLimit 1s
+   */
+  function raiseHand(args: {
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+
+  /**
+   * Lower the user's hand.
+   * @param args
+   * @RateLimit 1s
+   */
+  function lowerHand(args: {
+    /**
+     * The participant's user ID. if no userId, will lower the current user's hand.
+     */
+    userId?: number;
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+
+  /**
+   * Enables the host to lower all user's hands.
+   * @param args
+   * @RateLimit 1s
+   */
+  function lowerAllHands(args: {
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
   /**
    * Lets all participants in the waiting room join the meeting.
    * @param args
@@ -1407,6 +1511,72 @@ export namespace ZoomMtg {
      */
     error?: Function;
   }): void;
+  /**
+   * Start screen share.
+   * - Check the share privilege before starting screen share.
+   * - If you start screen share, you will stop receiving others' shared content.
+   * @param args
+   * @RateLimit 1s
+   */
+  function startScreenShare(args: {
+    /**
+     * Whether the sharing is broadcast to breakout rooms. Only host or co-host have this privilege.
+     */
+    broadcastToBreakoutRoom?: boolean;
+    /**
+     * Option to show (default, false) or hide (true) the "Share Audio" checkbox when sharing a Chrome tab.
+     */
+    hideShareAudioOption?: boolean;
+    /**
+     * optimized for video share
+     * If sharing a video file that is stored locally on the computer, we recommend using the video share feature, which will provide better quality due to decreased CPU usage.
+     */
+    optimizedForSharedVideo?: boolean;
+    /**
+     * sourceId: the sourceId of the shared content.
+     */
+    sourceId?: string;
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  });
+
+  /**
+   * Sends private chat message to meeting participants. This API does not support sending chat messages in a webinar.
+   * @param args
+   * @RateLimit 1s
+   */
+  function sendChat(args: {
+    /**
+     * The message receiver's userId. If the userId is not provided, the message will be sent to everyone in the meeting.
+     *
+     * Determines if the user in the waiting room can send message only to the host or co-host or everyone in the waiting room.
+     *
+     * 0: send to all
+     *
+     * 4: send to waiting room
+     *
+     */
+    userId?: number | 0 | 4;
+    /**
+     * The chat message to send. It cannot be undefined, null, or empty.
+     */
+    message: string;
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+
   /**
    * Change leaveUrl after participants join the meeting.
    * @param args
@@ -1440,6 +1610,20 @@ export namespace ZoomMtg {
 
   ZoomMtg.inMeetingServiceListener('onUserLeave', function (data) {
     console.log(data);
+    // reasonCode Return the reason the current user left.
+    const reasonCode = {
+      OTHER: 0, // Other reason.
+      HOST_ENDED_MEETING: 1, // Host ended the meeting.
+      SELF_LEAVE_FROM_IN_MEETING: 2, // User (self) left from being in the meeting.
+      SELF_LEAVE_FROM_WAITING_ROOM: 3, // User (self) left from the waiting room.
+      SELF_LEAVE_FROM_WAITING_FOR_HOST_START: 4, // User (self) left from waiting for host to start the meeting.
+      MEETING_TRANSFER: 5, // The meeting was transferred to another end to open.
+      KICK_OUT_FROM_MEETING: 6, // Removed from meeting by host or co-host.
+      KICK_OUT_FROM_WAITING_ROOM: 7, // Removed from waiting room by host or 
+        co-host.
+      LEAVE_FROM_DISCLAIMER: 8, // User click cancel in disclaimer dialog 
+    };
+    
   });
 
   ZoomMtg.inMeetingServiceListener('onUserUpdate', function (data) {
@@ -1707,16 +1891,19 @@ export namespace ZoomMtg {
       });
     },
     printJoinTime: function() {
-      console.log('%c===============JOIN SPEED ================', 'color: red')
+      console.log('%c===============JOIN SPEED ================', 'color: red');
+
       if (!this.joinSpeed[this.joinSpeedTag.userOutWaitingRoom].time && this.joinSpeed[this.joinSpeedTag.userOutWaitingForHost].time) {
-        console.warn('You join time begin from out waiting for host', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.userOutWaitingRoom].time, 'ms');
-      } 
+        //console.log(this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time, this.joinSpeed[this.joinSpeedTag.userOutWaitingForHost].time);
+        console.warn('Your join time started from "out waiting for host":', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.userOutWaitingForHost].time, 'ms');
+      }
+
       if (this.joinSpeed[this.joinSpeedTag.userOutWaitingRoom].time) {
-        console.warn('You join time begin from out waiting room', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.userOutWaitingRoom].time, 'ms');
+        console.warn('Your join time started from "out waiting room":', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.userOutWaitingRoom].time, 'ms');
       } else if (this.joinSpeed[this.joinSpeedTag.userClickJoinPreview].time) {
-        console.warn('You join time begin from click join button from preview', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.userClickJoinPreview].time, 'ms');
+        console.warn('Your join time started from clicking the join button in preview:', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.userClickJoinPreview].time, 'ms');
       } else {
-        console.warn('You join time begin from call sdk join', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.sdkCallJoin].time, 'ms')
+        console.warn('Your join time started from calling SDK join:', this.joinSpeed[this.joinSpeedTag.userAudioVideoSuccess].time - this.joinSpeed[this.joinSpeedTag.sdkCallJoin].time, 'ms');
       }
       this.printObjectsAsTable(this.joinSpeed);
     }
@@ -1824,6 +2011,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
     event: 'onAudioQos' | 'onVideoQos' | 'onShareQos',
     callback: Function,
   ): void;
+
   /**
    * Listens for claim status after calling claimHost with host key.
    * @param event 
@@ -1857,6 +2045,102 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
    */
   function inMeetingServiceListener(
     event: 'onNetworkQualityChange',
+    callback: Function,
+  ): void;
+
+  /**
+   * Listens for the currently displayed user and the user's video order changes.
+   * (mobile does not support.)
+   * @param event 
+   * @param callback 
+   * Example:
+  ```js
+  ZoomMtg.inMeetingServiceListener('onVideoOrder', function (data) {
+    // {
+    //   view: 'speak-view' | 'gallery-view' | 'multi-speaker-view' | 'single-view',
+    //   speakerBarCurrent: [],
+    //   speakerActiveCurrent: [],
+    //   multiSpeakerActiveCurrent: [],
+    //   multiSpeakerMainCurrent: [],
+    //   galleryMainCurrent: [],
+    //   suspensionAllCurrent: [],
+    //   singleActiveCurrent: [],
+    // };
+    console.log(data);
+  });
+  ```
+  @category Listener
+   */
+  function inMeetingServiceListener(
+    event: 'onVideoOrder',
+    callback: Function,
+  ): void;
+
+  /**
+   * Listens for `onFeedBackData` event.
+   * @param event 
+   * @param callback
+   *  * The callback receives an object containing feedback data.
+   * 
+   * The `data` object passed to the callback contains the following fields:
+   * - `enableFeedback` (number): Web-configured feedback setting. Possible values:
+   *   - `1`: Feedback displayed randomly in meetings.
+   *   - `2`: Feedback displayed in every meeting.
+   * - `enableFeedbackTextField` (boolean): Indicates whether the text field for user feedback is enabled.
+   * - `feedbackCustMessage` (string): Custom message displayed to users, as configured on the web.
+   * - `survey` (string | boolean): The survey URL if a survey is set up for the meeting; otherwise, `false`.
+   * - `nodeId` (number): The unique identifier of the user.
+   * - `meetingDetails` (string): Binary representation of conference features.
+   * - `deviceType` (string): The type of device used to join the meeting (e.g., "Mobile" or "Desktop").
+   * - `meetingNumber` (number): The unique meeting number.
+   * - `meetingId` (string): The unique meeting identifier.
+   * - `trackingId` (string): A tracking identifier for logs.
+   * - `confId` (string): The in-meeting service link identifier.
+   * 
+   * Example:
+   * ```js
+  ZoomMtg.inMeetingServiceListener('onFeedBackData', function (data) {
+    console.log(data);
+  });
+  ```
+    @category Listener
+   */
+  function inMeetingServiceListener(
+    event: 'onFeedBackData',
+    callback: Function,
+  ): void;
+
+  /**
+   * Listens for chat message.
+   * @param event 
+   * @param callback
+   * Example:
+   * ```js
+  ZoomMtg.inMeetingServiceListener('onReceiveChatMsg', function (data) {
+    console.log(data);
+  });
+  ```
+    @category Listener
+   */
+  function inMeetingServiceListener(
+    event: 'onReceiveChatMsg',
+    callback: Function,
+  ): void;
+
+  /**
+   * Listens for virtual background (VB) status change.
+   * @param event 
+   * @param callback
+   * Example:
+   * ```js
+    ZoomMtg.inMeetingServiceListener('onVbStatusChange', function (data) {
+      console.log(data);
+    });
+    ```
+      @category Listener
+   */
+  function inMeetingServiceListener(
+    event: 'onVbStatusChange',
     callback: Function,
   ): void;
 
@@ -2054,7 +2338,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
     error?: Function;
   }): void;
   /**
-   * Checks if the browser supports virtual background (VB) and mask. Must enable "virtual background" to use this function.
+   * Checks if the browser supports virtual background. Must enable "virtual background" to use this function.
    * @category VirtualBackground
    */
   function isSupportVirtualBackground(args: {
@@ -2082,7 +2366,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
     error?: Function;
   }): void;
   /**
-   * Update VB or mask background image list.
+   * Update virtual background image list.
    * @param args
    * @category VirtualBackground
    * @RateLimit 1s
@@ -2111,7 +2395,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
    */
   function setVirtualBackground(args: {
     /**
-     * VB or mask background ID
+     * virtual background ID
      */
     id?: string;
     /**
@@ -2125,14 +2409,14 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
   }): void;
   /**
    *
-   * Lock VB or mask to a specific image.
+   * Lock virtual background to a specific image.
    * @param args
    * @category VirtualBackground
    * @RateLimit 1s
    */
   function lockVirtualBackground(args: {
     /**
-     * Lock or unlock VB or mask.
+     * Lock or unlock virtual background.
      */
     isLock: boolean;
     /**
@@ -2562,6 +2846,15 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
     error?: Function;
   }): number[];
   /**
+   * Allows multiple users to be pinned.
+   */
+  function allowMultiPin(args: {
+    /**
+     * userId A valid user ID in the current meeting.
+     */
+    userId: number;
+  }): void;
+  /**
    * Operates Spotlight user (host and cohost only).
    */
   function operateSpotlight(args: {
@@ -2595,4 +2888,60 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      */
     error?: Function;
   }): number[];
+  /**
+   * Gets the getChildTokens, maximum count 20.
+   * Times exceeds will return get token error.
+   * Cannot be used for child node applications.
+   * @RateLimit 1s
+   */
+  function getChildTokens(args: {
+    count: number;
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): number[];
+  /**
+   * Set active speaker.
+   * Only the parent node can set active speakers.
+   * The parent node needs to have joined audio and unmute, the child node needs leave audio.
+   * @RateLimit 1s
+   */
+  function setActiveSpeaker(args: {
+    /**
+     * userId A valid user ID in the current meeting.
+     */
+    userId: number;
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  });
+  /**
+   * Mirrors current video.
+   * Requires SAB to be enabled.
+   * Preview and Waiting room not support.
+   */
+  function mirrorVideo(args: {
+    /**
+     * Mirrors current video.
+     */
+    mirrored: boolean;
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  });
 }
