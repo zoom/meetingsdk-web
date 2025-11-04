@@ -1,0 +1,326 @@
+{
+  "annoter.min.js": {
+    "hash": "f28b9a0a38b3f7375b99103c3fe6888e13bdf7a9deb6fba4ffbfcec9afbb41bb",
+    "size": 324500,
+    "path": "annoter.min.js",
+    "type": "application/javascript"
+  },
+  "audio_light_simd.min.js": {
+    "hash": "dbe56ecccdf517b4e96219fd04bfebcb019ee6bd8ef3aa2d28adf7fc8d8245ea",
+    "size": 205986,
+    "path": "audio_light_simd.min.js",
+    "type": "application/javascript"
+  },
+  "audio_simd.min.js": {
+    "hash": "4737f53e14bc5130b5c46128e57fac65b4fa6c749791633489696db88d0ed1d2",
+    "size": 206009,
+    "path": "audio_simd.min.js",
+    "type": "application/javascript"
+  },
+  "audio.encode.wasm": {
+    "hash": "2292b75e0c23d37d74c6ac12d4f7e5adc786995c68560cfe1b7fc716c7b914b9",
+    "size": 3097754,
+    "path": "audio.encode.wasm",
+    "type": "application/wasm"
+  },
+  "audio.light.simd.wasm": {
+    "hash": "633bbb4cc5ddc5d76f9fc4d6b75da285e01e8c87cdafc5e2aaca3329557b6fa3",
+    "size": 3229787,
+    "path": "audio.light.simd.wasm",
+    "type": "application/wasm"
+  },
+  "audio.simd.wasm": {
+    "hash": "0ebeb04599d4b6cb5f6dcba20864cf254d2ccb22ccb64d598bfa3721566446f3",
+    "size": 4681635,
+    "path": "audio.simd.wasm",
+    "type": "application/wasm"
+  },
+  "graphics.min.js": {
+    "hash": "522b24a531e52e8f3438df339f3d919fb9ef4450575b720d0359a816d81c71eb",
+    "size": 69448,
+    "path": "graphics.min.js",
+    "type": "application/javascript"
+  },
+  "js_audio_level_worklet_process_light.min.js": {
+    "hash": "7c7cb90f53f70e9a93a5c45218c3de20e382363388537556de81f82d3a7c8c6e",
+    "size": 98958,
+    "path": "js_audio_level_worklet_process_light.min.js",
+    "type": "application/javascript"
+  },
+  "js_audio_level_worklet_process.min.js": {
+    "hash": "7c209c8487ea3816f9d68c83a5053bebdf0491e3cdd69c1269c97191d7d15862",
+    "size": 98981,
+    "path": "js_audio_level_worklet_process.min.js",
+    "type": "application/javascript"
+  },
+  "js_audio_process.min.js": {
+    "hash": "562524251df75bcc181f13b3982e1604fbdef650d065500642218594f413e734",
+    "size": 205850,
+    "path": "js_audio_process.min.js",
+    "type": "application/javascript"
+  },
+  "js_audio_processor_worklet.min.js": {
+    "hash": "b38702f856e6f718256e599da482f0bd159595cbe68fd839962a5bb6ac67717f",
+    "size": 11310,
+    "path": "js_audio_processor_worklet.min.js",
+    "type": "application/javascript"
+  },
+  "js_audio_worklet_light_simd.min.js": {
+    "hash": "20c4346be98db7247b53f46806a8a879fafcfb5eefa69c0869f292eb6cf7fbb8",
+    "size": 113558,
+    "path": "js_audio_worklet_light_simd.min.js",
+    "type": "application/javascript"
+  },
+  "js_audio_worklet_process.min.js": {
+    "hash": "e4c13f8c502db344e4b2df89f6fa58280e423c09dd74928482b7eee54f111675",
+    "size": 113460,
+    "path": "js_audio_worklet_process.min.js",
+    "type": "application/javascript"
+  },
+  "js_audio_worklet_simd.min.js": {
+    "hash": "76b4ca2b067ed2a667f331a91fcec71886b22cda91ed9046fd463260b4f0da6c",
+    "size": 113581,
+    "path": "js_audio_worklet_simd.min.js",
+    "type": "application/javascript"
+  },
+  "js_audio_worklet.min.js": {
+    "hash": "d66cb6dba6ae33b9b65b3aa1fd5faa00ccc4a8566353c71a4e1eb5ec2919deed",
+    "size": 41667,
+    "path": "js_audio_worklet.min.js",
+    "type": "application/javascript"
+  },
+  "js_media.min.js": {
+    "hash": "ae12ae967dd4f99c12b5ead4340a53b821c6935c241457d8937d3e868949eb89",
+    "size": 1181728,
+    "path": "js_media.min.js",
+    "type": "application/javascript"
+  },
+  "js_sharing_audio_worklet.min.js": {
+    "hash": "4a45d6e15f6278652d8d5b2423f368026465a1224adcc1de1d2845b24f695857",
+    "size": 6874,
+    "path": "js_sharing_audio_worklet.min.js",
+    "type": "application/javascript"
+  },
+  "mesh_thread.min.js": {
+    "hash": "3e4ceb62b4f076d02493a2e505e09ac99ae76c3496d40b2145637774beda0b9a",
+    "size": 115057,
+    "path": "mesh_thread.min.js",
+    "type": "application/javascript"
+  },
+  "net_thread.min.js": {
+    "hash": "5476c687ce91f86c366671f5bda0328d8afac4295eccaf8c99e9fc17f885bf55",
+    "size": 137478,
+    "path": "net_thread.min.js",
+    "type": "application/javascript"
+  },
+  "net.wasm": {
+    "hash": "0e015d236be0678aabbdbb546b167a49716031ca9ab93bf3fba8c063be7bcce2",
+    "size": 464592,
+    "path": "net.wasm",
+    "type": "application/wasm"
+  },
+  "pako.min.js": {
+    "hash": "81581a9c17da859e890a14ad2ae59fa8dcac62186497bbe330b3f2c6a82d834e",
+    "size": 46091,
+    "path": "pako.min.js",
+    "type": "application/javascript"
+  },
+  "qrscanner.min.js": {
+    "hash": "ea92d8a28187a582c704aa9e7a0af9f38e0e509f9a67f3468211ba5c5e1493dd",
+    "size": 467212,
+    "path": "qrscanner.min.js",
+    "type": "application/javascript"
+  },
+  "share_processor.min.js": {
+    "hash": "27bc479ac94f972d676688868b69b5e748ce6f150eafe7ab478d6a5a55949a06",
+    "size": 8202,
+    "path": "share_processor.min.js",
+    "type": "application/javascript"
+  },
+  "sharing_m.min.js": {
+    "hash": "40b368b965b65a134fb2891dafafaaf1cd62f6703bda7ed6f7bd6ed94d95f164",
+    "size": 502289,
+    "path": "sharing_m.min.js",
+    "type": "application/javascript"
+  },
+  "sharing_mtsimd.min.js": {
+    "hash": "f7b61d153f83873183831e61112e10e63e58e613d26cc28307de814620279935",
+    "size": 502302,
+    "path": "sharing_mtsimd.min.js",
+    "type": "application/javascript"
+  },
+  "sharing_s.min.js": {
+    "hash": "817ccaef162a4d07b261d6df8066ec7d31830f0216660a02ddf79b2a5dc6aea2",
+    "size": 416532,
+    "path": "sharing_s.min.js",
+    "type": "application/javascript"
+  },
+  "sharing_simd.min.js": {
+    "hash": "4641b5a5beba824b802de63d698b65b12f1427f4aa6055af51c1f18d71c215a1",
+    "size": 416533,
+    "path": "sharing_simd.min.js",
+    "type": "application/javascript"
+  },
+  "tp.min.js": {
+    "hash": "f50fe44f5fb9be4b36e64a3b896b64a0f35f34cd4c3e2b9bc237c64f47de3359",
+    "size": 140929,
+    "path": "tp.min.js",
+    "type": "application/javascript"
+  },
+  "tp.wasm": {
+    "hash": "1599255d4a8f7618d5bcfe5ed05779a5ea8ea63beb8ede7346412ba4900b156f",
+    "size": 624381,
+    "path": "tp.wasm",
+    "type": "application/wasm"
+  },
+  "vb_worker.min.js": {
+    "hash": "23bce46cf2b76ac562422abe32dbe31ec0011d949cc1f6f58992bd47114d7d6a",
+    "size": 148413,
+    "path": "vb_worker.min.js",
+    "type": "application/javascript"
+  },
+  "vb-resource/dualModel.bin": {
+    "hash": "bd64cc4db74b824c974dc02466ad48422da3b0720951391fc274ffbfc95da786",
+    "size": 1527754,
+    "path": "vb-resource/dualModel.bin",
+    "type": "application/octet-stream"
+  },
+  "vb-resource/tf-backend-wasm.min.js": {
+    "hash": "691bbec0ef8b5a7f17f212e9c5d85832030f90d030b46e99acb4dea1fb16f009",
+    "size": 149861,
+    "path": "vb-resource/tf-backend-wasm.min.js",
+    "type": "application/javascript"
+  },
+  "vb-resource/tf.min.js": {
+    "hash": "300dfae273d20b4046f46a06d735688f03675a807561e9bcb5f664eb2f3d2831",
+    "size": 1469843,
+    "path": "vb-resource/tf.min.js",
+    "type": "application/javascript"
+  },
+  "vb-resource/tfjs-backend-wasm-simd.wasm": {
+    "hash": "77ebb28a6d34f371dbbf2086b7f2de8994acd8ea5a3cf1fa24d2c26c840cac7b",
+    "size": 424594,
+    "path": "vb-resource/tfjs-backend-wasm-simd.wasm",
+    "type": "application/wasm"
+  },
+  "vb-resource/tfjs-backend-wasm-threaded-simd.wasm": {
+    "hash": "c052228d4bef185c27bbe59a9e029570c78bbb9f08b3cb46b597851650373de2",
+    "size": 435643,
+    "path": "vb-resource/tfjs-backend-wasm-threaded-simd.wasm",
+    "type": "application/wasm"
+  },
+  "vb-resource/vbbuffer.bin": {
+    "hash": "fa5c215f40c43c392a950995cb409a5d0bb37abbe14baa13b3023eca7e8d7c79",
+    "size": 584225,
+    "path": "vb-resource/vbbuffer.bin",
+    "type": "application/octet-stream"
+  },
+  "vb-resource/vbPreload.js": {
+    "hash": "a0f456cdf98faff6649bc373407aa18b6567b8682e5d592059ebdb295227df99",
+    "size": 1388,
+    "path": "vb-resource/vbPreload.js",
+    "type": "application/javascript"
+  },
+  "vb-resource/vbPreloadWorker.js": {
+    "hash": "a8f4d2188ddebaed4210af3dea7295bf4dfa16e15d3405f93978b52a653834e2",
+    "size": 874,
+    "path": "vb-resource/vbPreloadWorker.js",
+    "type": "application/javascript"
+  },
+  "vb.min.js": {
+    "hash": "1f979766b4f553e8e2fc65969b1f8fa297000d265fb50a29bad0153c45b62410",
+    "size": 155452,
+    "path": "vb.min.js",
+    "type": "application/javascript"
+  },
+  "video_m.min.js": {
+    "hash": "c28393a2cd249d6938def7bc8cdcc0a748734c08f38a0b5bf5ec9ffbb9d31c40",
+    "size": 573690,
+    "path": "video_m.min.js",
+    "type": "application/javascript"
+  },
+  "video_mtsimd.min.js": {
+    "hash": "819f2491888a18a5b71e8932e60febe8a63c4be3d96f24614a6c9ca01237627a",
+    "size": 573703,
+    "path": "video_mtsimd.min.js",
+    "type": "application/javascript"
+  },
+  "video_processor.min.js": {
+    "hash": "9a60dc2855685c0ed6813ab49f90b0632e26373a2ec4d5165fe84eea5ba0e6ab",
+    "size": 20519,
+    "path": "video_processor.min.js",
+    "type": "application/javascript"
+  },
+  "video_s.min.js": {
+    "hash": "f5150952fb88e1d7898d8fd841a9213857707d168ee2956edbeeea258a0a0394",
+    "size": 487941,
+    "path": "video_s.min.js",
+    "type": "application/javascript"
+  },
+  "video_share_mtsimd.min.js": {
+    "hash": "924d68f76b170d9186f648e5e26174bfcdf9d048b67683b29578f1c0155db419",
+    "size": 640736,
+    "path": "video_share_mtsimd.min.js",
+    "type": "application/javascript"
+  },
+  "video_simd.min.js": {
+    "hash": "b5435e9719e9f2e9612c84a18c46beb5f4b0e93fffe6d7660a43064d941f2a9a",
+    "size": 487942,
+    "path": "video_simd.min.js",
+    "type": "application/javascript"
+  },
+  "video.decode.wasm": {
+    "hash": "b4ce132f96f055626714a8e7b7d8cf98f76ba4e168b4c16c3627d46837c00525",
+    "size": 4698021,
+    "path": "video.decode.wasm",
+    "type": "application/wasm"
+  },
+  "video.mt.wasm": {
+    "hash": "8a52f83c1c75eaec3a54659320afe8e7ea1542a6d0a921b2ee1409c7cd307c79",
+    "size": 4799428,
+    "path": "video.mt.wasm",
+    "type": "application/wasm"
+  },
+  "video.mtsimd.js": {
+    "hash": "b6dc6008cb51618c6dce3c6d0e5675604f49d19990d95338a2cc59deb1352ea4",
+    "size": 160864,
+    "path": "video.mtsimd.js",
+    "type": "application/javascript"
+  },
+  "video.mtsimd.wasm": {
+    "hash": "ff1b8fc748fc5277fa53b25b6ba24829e4cfccc5ead4a4a7d9c426b44d1e4c28",
+    "size": 4976818,
+    "path": "video.mtsimd.wasm",
+    "type": "application/wasm"
+  },
+  "video.simd.js": {
+    "hash": "01595e61b6fa9abbe9f7031a77ab173cd14dfef5c8a413b2b44516af9874c8ca",
+    "size": 129301,
+    "path": "video.simd.js",
+    "type": "application/javascript"
+  },
+  "video.simd.wasm": {
+    "hash": "c03ed141249c95c0b8b82b1104e9b2014248c9bc8ff8713c02b2d8c02dcb5dca",
+    "size": 4875367,
+    "path": "video.simd.wasm",
+    "type": "application/wasm"
+  },
+  "wasm_ssrc_stream_service_dynmod.min.js": {
+    "hash": "3cebed3051ea89d2069543691d625e59598e28a88303f44cfd96bc0380e9ef7d",
+    "size": 18341,
+    "path": "wasm_ssrc_stream_service_dynmod.min.js",
+    "type": "application/javascript"
+  },
+  "webgpu_renderer_dynmod.min.js": {
+    "hash": "fcc7b12c497305ec897228ef645296786db9a69481e57b6da2356e0ca5eb42a8",
+    "size": 144340,
+    "path": "webgpu_renderer_dynmod.min.js",
+    "type": "application/javascript"
+  },
+  "wmsc.min.js": {
+    "hash": "bcee7586dae4fa0573082d670afdb62a1fa352ccb027c1db3c57bec75330280f",
+    "size": 254646,
+    "path": "wmsc.min.js",
+    "type": "application/javascript"
+  }
+}

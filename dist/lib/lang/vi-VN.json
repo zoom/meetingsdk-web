@@ -423,6 +423,7 @@
   "apac.errorcodes_not_host": "Bạn không phải là chủ nhà cuộc họp.",
   "apac.errorcodes_not_init": "Gặp gỡ không được khởi tạo.",
   "apac.errorcodes_not_start": "Hội nghị đã không bắt đầu",
+  "apac.errorcodes_obf": "Token error: obfToken and zak cannot be used simultaneously",
   "apac.errorcodes_offline": "Dịch vụ tạm thời ẩn.",
   "apac.errorcodes_pac_api_disabled": "Các chiếm API Key là vô hiệu hóa.",
   "apac.errorcodes_pac_api_wrong": "Các chiếm API Key là không hợp lệ.",

@@ -423,6 +423,7 @@
   "apac.errorcodes_not_host": "U bent niet de vergadergastheer.",
   "apac.errorcodes_not_init": "Ontmoeting niet geïnitialiseerd.",
   "apac.errorcodes_not_start": "De ontmoeting is nog niet begonnen",
+  "apac.errorcodes_obf": "Token error: obfToken and zak cannot be used simultaneously",
   "apac.errorcodes_offline": "De service is tijdelijk offline.",
   "apac.errorcodes_pac_api_disabled": "De Accounts API -sleutel is gedeactiveerd.",
   "apac.errorcodes_pac_api_wrong": "De Accounts API -sleutel is niet geldig.",

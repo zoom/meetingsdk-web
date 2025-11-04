@@ -157,7 +157,7 @@
     }
     function addDomainTip(domain) {
       var mention = document.getElementById("mention");
-      mention.innerHTML = "You are accessing <b>" + domain + "</b>. " + mention.innerHTML;
+      mention.textContent = "You are accessing " + domain + ". " + mention.textContent;
     }
 
     var ref = getQueryString("ref");

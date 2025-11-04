@@ -423,6 +423,7 @@
   "apac.errorcodes_not_host": "Anda bukan tuan rumah pertemuan.",
   "apac.errorcodes_not_init": "Rapat tidak diinisialisasi.",
   "apac.errorcodes_not_start": "Pertemuan belum dimulai",
+  "apac.errorcodes_obf": "Token error: obfToken and zak cannot be used simultaneously",
   "apac.errorcodes_offline": "Layanan ini sementara offline.",
   "apac.errorcodes_pac_api_disabled": "Kunci API akun dinonaktifkan.",
   "apac.errorcodes_pac_api_wrong": "Kunci API Akun tidak valid.",

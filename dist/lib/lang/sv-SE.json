@@ -423,6 +423,7 @@
   "apac.errorcodes_not_host": "Du är inte mötesvärden.",
   "apac.errorcodes_not_init": "Mötet är inte initierat.",
   "apac.errorcodes_not_start": "Mötet har inte startat",
+  "apac.errorcodes_obf": "Token error: obfToken and zak cannot be used simultaneously",
   "apac.errorcodes_offline": "Tjänsten är tillfälligt offline.",
   "apac.errorcodes_pac_api_disabled": "Konto-API-nyckeln är inaktiverad.",
   "apac.errorcodes_pac_api_wrong": "Konto-API-nyckeln är ogiltig.",

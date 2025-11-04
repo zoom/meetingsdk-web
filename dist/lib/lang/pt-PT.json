@@ -423,6 +423,7 @@
   "apac.errorcodes_not_host": "Você não é o anfitrião da reunião.",
   "apac.errorcodes_not_init": "Reunião não inicializado.",
   "apac.errorcodes_not_start": "Reunião ainda não começou",
+  "apac.errorcodes_obf": "Token error: obfToken and zak cannot be used simultaneously",
   "apac.errorcodes_offline": "O serviço está temporariamente offline.",
   "apac.errorcodes_pac_api_disabled": "As contas API Key é desativado.",
   "apac.errorcodes_pac_api_wrong": "As contas API Key não é válido.",

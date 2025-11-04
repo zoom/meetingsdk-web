@@ -834,6 +834,10 @@ export namespace ZoomMtg {
      */
     childToken?: string;
     /**
+     * Optional. obfToken.
+     */
+    obfToken?: string;
+    /**
      * Callback function on success.
      */
     success: Function;
@@ -880,6 +884,10 @@ export namespace ZoomMtg {
      * As of v5.0.0, the signature requires the appKey field appKey:sdkKey or appKey:clientId. if not contain appKey, can't join test meeting.
      */
     signature: string;
+    /**
+     * Optional. obfToken.
+     */
+    obfToken?: string;
     /**
      * Callback function on success.
      */

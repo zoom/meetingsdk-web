@@ -377,6 +377,18 @@ export interface Participant {
    * @deprecated in v4.0.0, use `participantUUID`
    */
   userGuid?: string;
+  /**
+   * Whether the participant is a bot user
+   */
+  isBotUser?: boolean;
+  /**
+   * Brand name of the bot, if applicable
+   */
+  botBrandName?: string;
+  /**
+   * Authorizer name of the bot, if applicable
+   */
+  botAuthorizerName?: string;
 }
 /**
  * The meeting information interface.
@@ -765,6 +777,18 @@ export interface ParticipantPropertiesPayload {
    * - 3: ConnectFail,
    */
   audioConnectionStatus?: number;
+  /**
+   * Whether the participant is a bot user
+   */
+  isBotUser?: boolean;
+  /**
+   * Brand name of the bot, if applicable
+   */
+  botBrandName?: string;
+  /**
+   * Authorizer name of the bot, if applicable
+   */
+  botAuthorizerName?: string;
 }
 /**
  * The view types
@@ -821,6 +845,10 @@ export interface JoinOptions {
    * @param zak Optional 'zak' param to start a meeting or webinar with OAuth.
    */
   zak?: string;
+  /**
+   * @param obfToken Optional 'obfToken' param to pass to the backend. Mutually exclusive with zak.
+   */
+  obfToken?: string;
   /**
    * @param recordingToken Optional token to allow local recording. See [Get a meeting's join token for local recording](https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/meetingLocalRecordingJoinToken) for details.
    */

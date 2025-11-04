@@ -423,6 +423,7 @@
   "apac.errorcodes_not_host": "Nie jesteś gospodarzem spotkania.",
   "apac.errorcodes_not_init": "Spotkanie nie zainicjowane.",
   "apac.errorcodes_not_start": "Spotkanie nie rozpoczęło się",
+  "apac.errorcodes_obf": "Token error: obfToken and zak cannot be used simultaneously",
   "apac.errorcodes_offline": "Usługa jest tymczasowo offline.",
   "apac.errorcodes_pac_api_disabled": "Klucz API kont jest dezaktywowany.",
   "apac.errorcodes_pac_api_wrong": "Klucz API kont nie jest ważny.",
