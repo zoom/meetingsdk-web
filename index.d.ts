@@ -335,6 +335,7 @@ export type InMeetingEvent =
   | 'onUserLeave'
   | 'onUserUpdate'
   | 'onUserIsInWaitingRoom'
+  | 'bot-relation-update'
   | 'onMeetingStatus'
   | 'onPreviewPannel|  receiveSharingChannelReady'
   | 'onReceiveTranscriptionMsg'
@@ -1047,6 +1048,71 @@ export namespace ZoomMtg {
     error?: Function;
   }): void;
   /**
+   * Checks whether the current user is a bot.
+   * @param args
+   */
+  function isBotUser(args: {
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+  /**
+   * Gets the name of the app for the bot (current user must be a bot).
+   * @param args
+   */
+  function getBotAppName(args: {
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+  /**
+   * Gets the authorized user info based on the bot userId.
+   * @param args
+   */
+  function getBotAuthorizedUserInfoByUserId(args: {
+    /**
+     * The bot user's ID.
+     */
+    userId: number;
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+  /**
+   * Gets the authorized bot user list based on the given userId.
+   * If userId is not provided, returns bots authorized by the current user.
+   * @param args
+   */
+  function getAuthorizedBotListByUserId(args: {
+    /**
+     * Optional. The user ID. If not provided, uses the current user's ID.
+     */
+    userId?: number;
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+  /**
    * Sets the log level.
    * @param level
    */
@@ -1665,6 +1731,27 @@ export namespace ZoomMtg {
    */
   function inMeetingServiceListener(
     event: 'onUserJoin' | 'onUserLeave' | 'onUserUpdate',
+    callback: Function,
+  ): void;
+  /**
+   * Listens for bot authorizer relationship changes.
+   * @param event
+   * @param callback
+   * Only supported in meetings.
+   * Example:
+  ```js
+  ZoomMtg.inMeetingServiceListener('bot-relation-update', function (data) {
+    console.log('bot-relation-update', data);
+    // data is an array of relation objects:
+    // [{ parentUserID: number, childUserID: number }, ...]
+    // parentUserID: The user who authorized the bot
+    // childUserID: The bot user ID
+  });
+  ```
+  @category Listener
+   */
+  function inMeetingServiceListener(
+    event: 'bot-relation-update',
     callback: Function,
   ): void;
   /**
