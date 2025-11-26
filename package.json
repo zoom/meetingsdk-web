@@ -1,6 +1,6 @@
 {
   "name": "@zoom/meetingsdk",
-  "version": "4.1.0",
+  "version": "5.0.0",
   "description": "Zoom MeetingSDK-Web Client",
   "main": "index.js",
   "types": "index.d.ts",
@@ -48,6 +48,8 @@
     "CHANGELOG.md",
     "LICENSE.pdf",
     "README.md",
-    "oss_attribution.txt"
+    "oss_attribution.txt",
+    "helper.html",
+    "externalLinkPage.html"
   ]
 }

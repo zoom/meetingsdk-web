@@ -1414,6 +1414,14 @@ export declare function event_room_state_change(payload: { status: BreakoutRoomS
 export declare function event_chat_on_message(payload: ChatRecord | ChatMessage): void;
 
 /**
+ * Occurs when the bot relation is updated
+ * @param payload the event detail
+ *
+ * @event
+ */
+export declare function event_bot_relation_update(payload: any): void;
+
+/**
  * Occurs when far end camera request is received
  * @param payload the event detail
  *
@@ -1738,6 +1746,28 @@ export declare namespace EmbeddedClient {
    */
   function revokeCoHost(userId: number): ExecutedResult;
   /**
+   * Checks whether the current user is a bot user.
+   * @returns boolean | null
+   */
+  function isBotUser(): boolean | null;
+  /**
+   * Gets the bot app name.
+   * @returns string | null
+   */
+  function getBotAppName(): string | null;
+  /**
+   * Gets the bot authorized user info by user id.
+   * @param userId The user ID
+   * @returns Participant | null
+   */
+  function getBotAuthorizedUserInfoByUserId(userId: number): Participant | null;
+  /**
+   * Gets the authorized bot list by user id.
+   * @param userId The user ID
+   * @returns An array of Participant objects (may include null for bots that left), or null if not in meeting or no bots found
+   */
+  function getAuthorizedBotListByUserId(userId: number): (Participant | null)[] | null;
+  /**
    * Pins the corresponding user.
    * @param userId A valid user ID in the current meeting.
    */
@@ -1999,6 +2029,7 @@ export declare namespace EmbeddedClient {
   function on(event: 'far-end-camera-response-control', listener: typeof event_far_end_camera_response): void;
   function on(event: 'far-end-camera-in-control-change', listener: typeof event_far_end_camera_in_control_change): void;
   function on(event: 'far-end-camera-capability-change', listener: typeof event_far_end_camera_capability_change): void;
+  function on(event: 'bot-relation-update', listener: typeof event_bot_relation_update): void;
   /**
    * Removes the event handler. Must be used with on() in pairs.
    * @param event event name. Same as 'on' event name list.
