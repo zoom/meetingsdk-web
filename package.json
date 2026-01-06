@@ -1,11 +1,12 @@
 {
   "name": "@zoom/meetingsdk",
-  "version": "5.0.2",
+  "version": "5.0.4",
   "description": "Zoom MeetingSDK-Web Client",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "node postinstall.js"
   },
   "repository": {
     "type": "git",
@@ -42,6 +43,7 @@
   "files": [
     "dist/*",
     "types/*",
+    "index.js",
     "embedded.js",
     "embedded.d.ts",
     "index.d.ts",
@@ -50,6 +52,7 @@
     "README.md",
     "oss_attribution.txt",
     "helper.html",
-    "externalLinkPage.html"
+    "externalLinkPage.html",
+    "postinstall.js"
   ]
 }
