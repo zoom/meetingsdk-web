@@ -570,7 +570,7 @@ export declare namespace ZoomMtgLang {
    *
    * Be sure to call it before calling `init`.
    *
-   * jp-JP/ko-KO deprecated in v4.0.0, please use new ja-JP/ko-KO, will not accept jp-JP/ko-KO in 6.0.0
+   * jp-JP/ko-KO deprecated in v4.0.0, please use new ja-JP/ko-KO, will not accept jp-JP/ko-KO in 7.0.0
    * @param lang
    *
    */
@@ -2072,7 +2072,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
    * @param callback
    * Example:
    * ```js
-  ZoomMtg.inMeetingServiceListener('onMeetingStatus', function (data) {
+  ZoomMtg.inMeetingServiceListener('onMeetingStatus', function (data: any) {
     // {status: 1(connecting), 2(connected), 3(disconnected), 4(reconnecting)}
     console.log(data);
   });

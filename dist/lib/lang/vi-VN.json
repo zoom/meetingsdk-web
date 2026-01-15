@@ -420,6 +420,7 @@
   "apac.errorcodes_meeting_websdk_version_need_update": "Phiên bản sdk hiện tại không còn được hỗ trợ, vui lòng nâng cấp lên phiên bản mới nhất.",
   "apac.errorcodes_need_use_zoom_desktop_or_mobile": "Không thể tham gia từ trình duyệt, hãy tham gia bằng cách sử dụng client desktop Phóng to hoặc ứng dụng di động.",
   "apac.errorcodes_no_response_from_web": "No response from web, try again later.",
+  "apac.errorcodes_not_allow_anonymous_join": "Luồng tham gia này không được hỗ trợ. Vui lòng tham gia cuộc họp bằng ứng dụng Zoom hoặc liên hệ với chủ trì cuộc họp hoặc nhà cung cấp của bạn.",
   "apac.errorcodes_not_allow_cross_join": "To join a meeting hosted by an external Zoom account, your SDK app has to be published on Zoom Marketplace. You can refer to Section 6.1 of Zoom's API License Terms of Use",
   "apac.errorcodes_not_exist": "Hội nghị không tồn tại.",
   "apac.errorcodes_not_host": "Bạn không phải là chủ nhà cuộc họp.",

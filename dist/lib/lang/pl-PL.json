@@ -420,6 +420,7 @@
   "apac.errorcodes_meeting_websdk_version_need_update": "Bieżąca wersja sdk nie jest już obsługiwana; uaktualnij do najnowszej wersji.",
   "apac.errorcodes_need_use_zoom_desktop_or_mobile": "Nie można dołączyć z przeglądarki, dołącz do Klienta Klient Desktop lub Mobile App.",
   "apac.errorcodes_no_response_from_web": "No response from web, try again later.",
+  "apac.errorcodes_not_allow_anonymous_join": "Ten sposób dołączania nie jest obsługiwany. Dołącz do spotkania za pomocą klienta Zoom lub skontaktuj się z prowadzącym spotkanie albo dostawcą.",
   "apac.errorcodes_not_allow_cross_join": "To join a meeting hosted by an external Zoom account, your SDK app has to be published on Zoom Marketplace. You can refer to Section 6.1 of Zoom's API License Terms of Use",
   "apac.errorcodes_not_exist": "Spotkanie nie istnieje.",
   "apac.errorcodes_not_host": "Nie jesteś gospodarzem spotkania.",

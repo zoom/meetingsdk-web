@@ -420,6 +420,7 @@
   "apac.errorcodes_meeting_websdk_version_need_update": "現在の SDK バージョンはサポートされていません。最新バージョンにアップグレードしてください。",
   "apac.errorcodes_need_use_zoom_desktop_or_mobile": "できませんが、ブラウザから参加し、ズームデスクトップクライアントやモバイルアプリを使用して参加してください。",
   "apac.errorcodes_no_response_from_web": "No response from web, try again later.",
+  "apac.errorcodes_not_allow_anonymous_join": "この参加フローはサポートされていません。Zoom クライアントからミーティングに参加するか、ミーティングのホストまたはベンダーにお問い合わせください。",
   "apac.errorcodes_not_allow_cross_join": "To join a meeting hosted by an external Zoom account, your SDK app has to be published on Zoom Marketplace. You can refer to Section 6.1 of Zoom's API License Terms of Use",
   "apac.errorcodes_not_exist": "会議は存在しません。",
   "apac.errorcodes_not_host": "あなたは会議のホストではありません。",

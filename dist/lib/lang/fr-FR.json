@@ -420,6 +420,7 @@
   "apac.errorcodes_meeting_websdk_version_need_update": "La version actuelle du SDK n’est plus prise en charge, veuillez passer à la dernière version.",
   "apac.errorcodes_need_use_zoom_desktop_or_mobile": "Impossible de rejoindre le navigateur, s'il vous plaît rejoindre en utilisant le client de bureau Zoom ou une application mobile.",
   "apac.errorcodes_no_response_from_web": "No response from web, try again later.",
+  "apac.errorcodes_not_allow_anonymous_join": "Ce mode de participation n’est pas pris en charge. Veuillez rejoindre la réunion avec un client Zoom ou contacter l’hôte de la réunion ou le fournisseur.",
   "apac.errorcodes_not_allow_cross_join": "To join a meeting hosted by an external Zoom account, your SDK app has to be published on Zoom Marketplace. You can refer to Section 6.1 of Zoom's API License Terms of Use",
   "apac.errorcodes_not_exist": "Réunion n'existe pas.",
   "apac.errorcodes_not_host": "Vous n'êtes pas l'hôte de la réunion.",

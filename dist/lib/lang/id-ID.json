@@ -420,6 +420,7 @@
   "apac.errorcodes_meeting_websdk_version_need_update": "Versi sdk saat ini tidak lagi didukung. Tingkatkan ke versi terbaru.",
   "apac.errorcodes_need_use_zoom_desktop_or_mobile": "Tidak dapat bergabung dari browser, silakan bergabung menggunakan klien zoom desktop atau aplikasi seluler.",
   "apac.errorcodes_no_response_from_web": "Tidak ada tanggapan dari web, coba lagi nanti.",
+  "apac.errorcodes_not_allow_anonymous_join": "Alur bergabung ini tidak didukung. Silakan bergabung ke rapat dengan Klien Zoom atau hubungi host rapat atau vendor Anda.",
   "apac.errorcodes_not_allow_cross_join": "Pengecualian Status Tinjauan Aplikasi",
   "apac.errorcodes_not_exist": "Pertemuan tidak ada.",
   "apac.errorcodes_not_host": "Anda bukan tuan rumah pertemuan.",

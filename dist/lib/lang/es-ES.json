@@ -420,6 +420,7 @@
   "apac.errorcodes_meeting_websdk_version_need_update": "La versión actual de sdk ya no es compatible actualice a la versión más reciente.",
   "apac.errorcodes_need_use_zoom_desktop_or_mobile": "No puede unirse desde el navegador, por favor unirse usando el cliente de escritorio Zoom o aplicación móvil.",
   "apac.errorcodes_no_response_from_web": "No response from web, try again later.",
+  "apac.errorcodes_not_allow_anonymous_join": "Este flujo de unión no es compatible; únete a la reunión con un cliente de Zoom o ponte en contacto con el anfitrión de la reunión o el proveedor.",
   "apac.errorcodes_not_allow_cross_join": "To join a meeting hosted by an external Zoom account, your SDK app has to be published on Zoom Marketplace. You can refer to Section 6.1 of Zoom's API License Terms of Use",
   "apac.errorcodes_not_exist": "Reunión no existe.",
   "apac.errorcodes_not_host": "No eres el anfitrión de la reunión.",
