@@ -4,6 +4,8 @@ Use of this SDK is subject to our [Terms of Use](https://zoom.us/docs/en-us/zoom
 
 The [Zoom Meeting SDK](https://developers.zoom.us/docs/meeting-sdk/web/) embeds the Zoom Meeting and Webinar experience in a website through a highly optimized WebAssembly module.
 
+The Meeting SDK is reserved for human use cases and does not support bots or AI notetakers. To build an AI notetaker application or access realtime media, use Zoom RTMS (Real-time media streams $npm install @zoom/rtms).
+
 ## 🚀 Quick Start
 
 ### Installation
