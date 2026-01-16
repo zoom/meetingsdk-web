@@ -36,7 +36,7 @@ jobs:
           node check.js 2>&1 | tee check-output.txt
           exit_code=$?
           echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
-          echo "output<<'CHECK_JS_OUTPUT_EOF'" >> "$GITHUB_OUTPUT"
+          echo "output<<CHECK_JS_OUTPUT_EOF" >> "$GITHUB_OUTPUT"
           cat check-output.txt >> "$GITHUB_OUTPUT"
           echo "CHECK_JS_OUTPUT_EOF" >> "$GITHUB_OUTPUT"
 
