@@ -420,6 +420,7 @@
   "apac.errorcodes_meeting_websdk_version_need_update": "De huidige SDK-versie wordt niet langer ondersteund. Voer een upgrade uit naar de nieuwste versie.",
   "apac.errorcodes_need_use_zoom_desktop_or_mobile": "Niet in staat om mee te doen vanuit de browser, doe mee met behulp van de Zoom Desktop -client of mobiele app.",
   "apac.errorcodes_no_response_from_web": "Geen reactie van web, probeer het later opnieuw.",
+  "apac.errorcodes_not_allow_anonymous_join": "Deze manier van deelnemen wordt niet ondersteund. Neem deel aan de vergadering via een Zoom-client of neem contact op met de host van de vergadering of uw leverancier.",
   "apac.errorcodes_not_allow_cross_join": "AppKey Review Status Uitzondering",
   "apac.errorcodes_not_exist": "Meeting bestaat niet.",
   "apac.errorcodes_not_host": "U bent niet de vergadergastheer.",

@@ -954,15 +954,15 @@ export interface InitOptions {
    */
   webEndpoint?: string;
   /**
-   * @param language Default 'en-US'. jp-JP/ko-KO deprecated in v4.0.0, please use new ja-JP/ko-KR, will not accept jp-JP/ko-KO in 6.0.0
+   * @param language Default 'en-US'. jp-JP/ko-KO deprecated in v4.0.0, please use new ja-JP/ko-KR, will not accept jp-JP/ko-KO in 7.0.0
    * @property de-DE - German Deutsch
    * @property es-ES - Spanish Español
    * @property fr-FR - French Français
    * @property id-ID - Indonesian Bahasa Indonesia
    * @property it-IT - Italian Italia
-   * @property jp-JP - deprecated in v4.0.0, use ja-JP instead since 4.0.0, will not accept jp-JP in 6.0.0. Japanese 日本語
+   * @property jp-JP - deprecated in v4.0.0, use ja-JP instead since 4.0.0, will not accept jp-JP in 7.0.0. Japanese 日本語
    * @property ja-JP - Japanese 日本語
-   * @property ko-KO - deprecated in v4.0.0, use ko-KR instead since 4.0.0, will not accept ko-KO in 6.0.0. Korean 한국
+   * @property ko-KO - deprecated in v4.0.0, use ko-KR instead since 4.0.0, will not accept ko-KO in 7.0.0. Korean 한국
    * @property ko-KR - Korean 한국
    * @property nl-NL - Dutch Nederlands
    * @property pl-PL - Polish Polska

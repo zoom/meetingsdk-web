@@ -1,6 +1,6 @@
 {
   "name": "@zoom/meetingsdk",
-  "version": "5.0.4",
+  "version": "5.1.0",
   "description": "Zoom MeetingSDK-Web Client",
   "main": "index.js",
   "types": "index.d.ts",

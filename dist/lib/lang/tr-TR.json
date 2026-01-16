@@ -420,6 +420,7 @@
   "apac.errorcodes_meeting_websdk_version_need_update": "Mevcut sdk sürümü artık desteklenmiyor, lütfen en son sürüme yükseltin.",
   "apac.errorcodes_need_use_zoom_desktop_or_mobile": "Tarayıcıdan katılamıyorsanız, lütfen Zoom Masaüstü İstemcisi veya Mobil Uygulamayı kullanarak katılın.",
   "apac.errorcodes_no_response_from_web": "No response from web, try again later.",
+  "apac.errorcodes_not_allow_anonymous_join": "Bu katılma akışı desteklenmiyor. Lütfen toplantıya bir Zoom İstemcisi ile katılın veya toplantı sahibiniz ya da sağlayıcınızla iletişime geçin.",
   "apac.errorcodes_not_allow_cross_join": "To join a meeting hosted by an external Zoom account, your SDK app has to be published on Zoom Marketplace. You can refer to Section 6.1 of Zoom's API License Terms of Use",
   "apac.errorcodes_not_exist": "Toplantı yok.",
   "apac.errorcodes_not_host": "Toplantı ev sahibi değilsin.",

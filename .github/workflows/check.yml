@@ -1,0 +1,68 @@
+name: Check SDK
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run check.js
+        id: run_check
+        continue-on-error: true
+        run: |
+          set +e
+          set -o pipefail
+          node check.js 2>&1 | tee check-output.txt
+          exit_code=$?
+          echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
+          echo "output<<CHECK_JS_OUTPUT_EOF" >> "$GITHUB_OUTPUT"
+          cat check-output.txt >> "$GITHUB_OUTPUT"
+          echo "CHECK_JS_OUTPUT_EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Find existing check.js comment
+        if: github.event_name == 'pull_request'
+        id: find_comment
+        uses: peter-evans/find-comment@v3
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: '<!-- check-js-output -->'
+
+      - name: Create or update check.js comment
+        if: github.event_name == 'pull_request'
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-id: ${{ steps.find_comment.outputs.comment-id }}
+          edit-mode: replace
+          body: |
+            <!-- check-js-output -->
+            **check.js output**
+            ```
+            ${{ steps.run_check.outputs.output }}
+            ```
+
+      - name: Fail if check.js failed
+        if: steps.run_check.outputs.exit_code != '0'
+        run: exit 1

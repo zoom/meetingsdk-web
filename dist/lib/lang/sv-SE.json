@@ -420,6 +420,7 @@
   "apac.errorcodes_meeting_websdk_version_need_update": "Den nuvarande sdk-versionen stöds inte längre, vänligen uppgradera till den senaste versionen.",
   "apac.errorcodes_need_use_zoom_desktop_or_mobile": "Kan inte ansluta från webbläsare, vänligen använd Zoom desktop-klienten eller mobilappen.",
   "apac.errorcodes_no_response_from_web": "Inget svar från webben, försök igen senare.",
+  "apac.errorcodes_not_allow_anonymous_join": "Det här anslutningsflödet stöds inte. Gå med i mötet med en Zoom-klient eller kontakta mötesvärden eller din leverantör.",
   "apac.errorcodes_not_allow_cross_join": "För att delta i ett möte som arrangeras av ett externt Zoom-konto måste din SDK-app publiceras på Zoom Marketplace. Du kan hänvisa till avsnitt 6.1 i Zooms API-licensvillkor",
   "apac.errorcodes_not_exist": "Mötet finns inte.",
   "apac.errorcodes_not_host": "Du är inte mötesvärden.",

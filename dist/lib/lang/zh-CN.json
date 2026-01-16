@@ -420,6 +420,7 @@
   "apac.errorcodes_meeting_websdk_version_need_update": "当前SDK版本不再受到支持，请升级到最新版本。",
   "apac.errorcodes_need_use_zoom_desktop_or_mobile": "从浏览器无法加入，请加入使用缩放桌面客户端或移动应用程序。",
   "apac.errorcodes_no_response_from_web": "No response from web, try again later.",
+  "apac.errorcodes_not_allow_anonymous_join": "不支持此加入流程，请使用 Zoom 客户端加入会议，或联系您的会议主持人或供应商。",
   "apac.errorcodes_not_allow_cross_join": "To join a meeting hosted by an external Zoom account, your SDK app has to be published on Zoom Marketplace. You can refer to Section 6.1 of Zoom's API License Terms of Use",
   "apac.errorcodes_not_exist": "会议不存在。",
   "apac.errorcodes_not_host": "你是不是会议主持人。",
