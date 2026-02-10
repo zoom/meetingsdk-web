@@ -427,6 +427,8 @@
   "apac.errorcodes_not_init": "会议未初始化。",
   "apac.errorcodes_not_start": "会议还没有开始",
   "apac.errorcodes_obf": "Token error: obfToken and zak cannot be used simultaneously",
+  "apac.errorcodes_obf_invalid": "The OBF token is invalid. Please check the OBF token and try again.",
+  "apac.errorcodes_obf_meeting_number_mismatch": "The meeting number associated with the provided OBF token does not match the current meeting.",
   "apac.errorcodes_offline": "该服务暂时处于离线状态。",
   "apac.errorcodes_pac_api_disabled": "该账户的API密钥时处于关闭状态。",
   "apac.errorcodes_pac_api_wrong": "该账户API密钥无效。",

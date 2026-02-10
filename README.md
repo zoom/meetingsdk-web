@@ -16,6 +16,10 @@ In your frontend project, install the Meeting SDK:
 npm install @zoom/meetingsdk --save
 ```
 
+### Use UTF-8 Encoding
+
+Add `<meta charset="UTF-8" />` to your web app's entry point(`index.html`) to ensure the browser uses UTF-8. If not set, the browser might choose a different encoding, causing text or data issues.
+
 ### Integration Options
 
 There are two views to choose from, [Client View](#-usage---client-view) and [Component View](#-usage---component-view).
@@ -27,7 +31,7 @@ There are two views to choose from, [Client View](#-usage---client-view) and [Co
 
 ![Zoom Meeting SDK Client View](https://zoom.github.io/meetingsdk-web-sample/images/6.0/ClientView/meetingsdk-web-client-view.gif)
 
-> **What is Client View?**  
+> **What is Client View?**
 > The Client View provides a full-page meeting experience identical to the [Zoom Web Client](https://support.zoom.us/hc/en-us/articles/214629443-Zoom-Web-Client), seamlessly integrated into your web page.
 
 ### Step 1: Import and Initialize
@@ -73,7 +77,7 @@ ZoomMtg.init({
   patchJsMedia: true,
   success: (success) => {
     console.log('SDK initialized successfully')
-    
+
     ZoomMtg.join({
       signature: signature,
       meetingNumber: meetingNumber,
@@ -100,7 +104,7 @@ For the full list of features and event listeners, as well as additional guides,
 
 ![Zoom Meeting SDK Component View](https://zoom.github.io/meetingsdk-web-sample/images/6.0/ComponentView/meetingsdk-web-component-view.gif)
 
-> **What is Component View?**  
+> **What is Component View?**
 > The Component View provides flexible, embeddable meeting components that can be styled and positioned within your existing UI design.
 
 ### Step 1: Import and Setup
@@ -150,7 +154,7 @@ client.init({
   patchJsMedia: true
 }).then(() => {
   console.log('SDK initialized successfully')
-  
+
   client.join({
     signature: signature,
     meetingNumber: meetingNumber,
@@ -213,7 +217,7 @@ client.init({
 ### Framework-Specific Examples
 - **[Web Sample](https://github.com/zoom/meetingsdk-web-sample)** - CDN and React examples for both Client and Component views
 - **[React Sample](https://github.com/zoom/meetingsdk-react-sample)** - React integration examples
-- **[Angular Sample](https://github.com/zoom/meetingsdk-angular-sample)** - Angular integration examples  
+- **[Angular Sample](https://github.com/zoom/meetingsdk-angular-sample)** - Angular integration examples
 - **[Vue.js Sample](https://github.com/zoom/meetingsdk-vuejs-sample)** - Vue.js integration examples
 - **[JavaScript Sample](https://github.com/zoom/meetingsdk-javascript-sample)** - Pure JavaScript examples
 
@@ -225,7 +229,7 @@ client.init({
 
 ### Get Help
 - **[Developer Support](https://developers.zoom.us/support/)** - Technical support
-- **[Developer Forum](https://devforum.zoom.us)** - Community discussions  
+- **[Developer Forum](https://devforum.zoom.us)** - Community discussions
 - **[Premier Developer Support](https://www.zoom.com/en/support-plans/developer/)** - Priority support plans
 
 ### Resources

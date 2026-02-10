@@ -427,6 +427,8 @@
   "apac.errorcodes_not_init": "Встреча не инициализирован.",
   "apac.errorcodes_not_start": "Встреча не началась",
   "apac.errorcodes_obf": "Token error: obfToken and zak cannot be used simultaneously",
+  "apac.errorcodes_obf_invalid": "The OBF token is invalid. Please check the OBF token and try again.",
+  "apac.errorcodes_obf_meeting_number_mismatch": "The meeting number associated with the provided OBF token does not match the current meeting.",
   "apac.errorcodes_offline": "Сервис временно отсутствует.",
   "apac.errorcodes_pac_api_disabled": "Счета API Key деактивируется.",
   "apac.errorcodes_pac_api_wrong": "Счета API ключ не действителен.",

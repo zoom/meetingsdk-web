@@ -427,6 +427,8 @@
   "apac.errorcodes_not_init": "会議の初期化されていません。",
   "apac.errorcodes_not_start": "会議は開始されていません",
   "apac.errorcodes_obf": "Token error: obfToken and zak cannot be used simultaneously",
+  "apac.errorcodes_obf_invalid": "The OBF token is invalid. Please check the OBF token and try again.",
+  "apac.errorcodes_obf_meeting_number_mismatch": "The meeting number associated with the provided OBF token does not match the current meeting.",
   "apac.errorcodes_offline": "サービスが一時的にオフラインになっています。",
   "apac.errorcodes_pac_api_disabled": "APIキーが無効になっているアカウント。",
   "apac.errorcodes_pac_api_wrong": "APIキーが有効でないアカウント。",
