@@ -427,6 +427,8 @@
   "apac.errorcodes_not_init": "La non-satisfaction initialisé.",
   "apac.errorcodes_not_start": "Réunion n'a pas commencé",
   "apac.errorcodes_obf": "Token error: obfToken and zak cannot be used simultaneously",
+  "apac.errorcodes_obf_invalid": "The OBF token is invalid. Please check the OBF token and try again.",
+  "apac.errorcodes_obf_meeting_number_mismatch": "The meeting number associated with the provided OBF token does not match the current meeting.",
   "apac.errorcodes_offline": "Le service est temporairement hors ligne.",
   "apac.errorcodes_pac_api_disabled": "L'API Key Accounts est désactivée.",
   "apac.errorcodes_pac_api_wrong": "L'API Key Accounts est pas valide.",

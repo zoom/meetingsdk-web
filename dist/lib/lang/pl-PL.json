@@ -427,6 +427,8 @@
   "apac.errorcodes_not_init": "Spotkanie nie zainicjowane.",
   "apac.errorcodes_not_start": "Spotkanie nie rozpoczęło się",
   "apac.errorcodes_obf": "Token error: obfToken and zak cannot be used simultaneously",
+  "apac.errorcodes_obf_invalid": "The OBF token is invalid. Please check the OBF token and try again.",
+  "apac.errorcodes_obf_meeting_number_mismatch": "The meeting number associated with the provided OBF token does not match the current meeting.",
   "apac.errorcodes_offline": "Usługa jest tymczasowo offline.",
   "apac.errorcodes_pac_api_disabled": "Klucz API kont jest dezaktywowany.",
   "apac.errorcodes_pac_api_wrong": "Klucz API kont nie jest ważny.",

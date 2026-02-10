@@ -427,6 +427,8 @@
   "apac.errorcodes_not_init": "Rapat tidak diinisialisasi.",
   "apac.errorcodes_not_start": "Pertemuan belum dimulai",
   "apac.errorcodes_obf": "Token error: obfToken and zak cannot be used simultaneously",
+  "apac.errorcodes_obf_invalid": "The OBF token is invalid. Please check the OBF token and try again.",
+  "apac.errorcodes_obf_meeting_number_mismatch": "The meeting number associated with the provided OBF token does not match the current meeting.",
   "apac.errorcodes_offline": "Layanan ini sementara offline.",
   "apac.errorcodes_pac_api_disabled": "Kunci API akun dinonaktifkan.",
   "apac.errorcodes_pac_api_wrong": "Kunci API Akun tidak valid.",

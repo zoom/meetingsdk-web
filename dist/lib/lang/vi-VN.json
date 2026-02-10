@@ -427,6 +427,8 @@
   "apac.errorcodes_not_init": "Gặp gỡ không được khởi tạo.",
   "apac.errorcodes_not_start": "Hội nghị đã không bắt đầu",
   "apac.errorcodes_obf": "Token error: obfToken and zak cannot be used simultaneously",
+  "apac.errorcodes_obf_invalid": "The OBF token is invalid. Please check the OBF token and try again.",
+  "apac.errorcodes_obf_meeting_number_mismatch": "The meeting number associated with the provided OBF token does not match the current meeting.",
   "apac.errorcodes_offline": "Dịch vụ tạm thời ẩn.",
   "apac.errorcodes_pac_api_disabled": "Các chiếm API Key là vô hiệu hóa.",
   "apac.errorcodes_pac_api_wrong": "Các chiếm API Key là không hợp lệ.",

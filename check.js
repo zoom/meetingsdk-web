@@ -44,22 +44,22 @@ function getJsMediaVersion() {
         flag: 'r',
       },
     );
-    
+
     // Regex to extract all three parts from pattern like: o="15.0.13713",a="Web-Media-EP-6.6.10-WSDK-5.0.2-Patch",n="6.6.10."
     const match = content.match(/o="(\d+\.\d+\.\d+)",a="([\w\d.-]+)",n="([\d.]+)"/);
-    
+
     if (match) {
       const jsmediaVersion = match[1]; // "15.0.13713"
       const description = match[2];    // "Web-Media-EP-6.6.10-WSDK-5.0.2-Patch"
       const finalVersion = match[3].replace(/.$/g, '');   // "6.6.10"
-      
+
       return {
         jsmediaVersion,
         description,
         finalVersion
       };
     }
-    
+
     return null;
   } catch (e) {
     console.error('Error reading jsmedia version:', e);
@@ -73,16 +73,21 @@ function checkSourceUrl() {
       encoding: 'utf-8',
       flag: 'r',
     });
-    
+
     const hasZoomGov = content.includes('source.zoomgov.com');
+    const hasZoomMil = content.includes("source.zoomgov.mil");
 
     if (hasZoomGov) {
       console.log('source.zoomgov.com');
     }
-    
+    if (hasZoomMil) {
+      console.log('source.zoomgov.mil');
+    }
+
     return {
-      hasZoomUs: !hasZoomGov,
+      hasZoomUs: !hasZoomGov && !hasZoomMil,
       hasZoomGov,
+      hasZoomMil,
     };
   } catch (e) {
     console.error('Error checking source URL:', e);

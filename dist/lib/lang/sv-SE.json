@@ -427,6 +427,8 @@
   "apac.errorcodes_not_init": "Mötet är inte initierat.",
   "apac.errorcodes_not_start": "Mötet har inte startat",
   "apac.errorcodes_obf": "Token error: obfToken and zak cannot be used simultaneously",
+  "apac.errorcodes_obf_invalid": "The OBF token is invalid. Please check the OBF token and try again.",
+  "apac.errorcodes_obf_meeting_number_mismatch": "The meeting number associated with the provided OBF token does not match the current meeting.",
   "apac.errorcodes_offline": "Tjänsten är tillfälligt offline.",
   "apac.errorcodes_pac_api_disabled": "Konto-API-nyckeln är inaktiverad.",
   "apac.errorcodes_pac_api_wrong": "Konto-API-nyckeln är ogiltig.",
