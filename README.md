@@ -1,5 +1,8 @@
 # Zoom Meeting SDK for Web
 
+> **⚠️ Action Required:**  
+> We recommend that you upgrade to 5.1.4 or above if you use WebRTC video to prevent issues with future Chrome versions.
+
 Use of this SDK is subject to our [Terms of Use](https://zoom.us/docs/en-us/zoom_api_license_and_tou.html)
 
 The [Zoom Meeting SDK](https://developers.zoom.us/docs/meeting-sdk/web/) embeds the Zoom Meeting and Webinar experience in a website through a highly optimized WebAssembly module.
