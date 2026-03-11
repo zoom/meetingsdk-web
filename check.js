@@ -6,6 +6,10 @@ const JS_MEDIA_FILE_NAME = 'js_media.min.js';
 const WEBCLIENT_SDK_NAME = './dist/lib/av';
 const INDEX_JS_PATH = './dist/zoomus-websdk.umd.min.js';
 
+function stripTrailingDots(value) {
+  return typeof value === 'string' ? value.replace(/\.+$/g, '') : value;
+}
+
 function getWasmVersion() {
   try {
     const WasmVersionList = [
@@ -45,22 +49,52 @@ function getJsMediaVersion() {
       },
     );
 
-    // Regex to extract all three parts from pattern like: o="15.0.13713",a="Web-Media-EP-6.6.10-WSDK-5.0.2-Patch",n="6.6.10."
-    const match = content.match(/o="(\d+\.\d+\.\d+)",a="([\w\d.-]+)",n="([\d.]+)"/);
+    const anchor = 'Web-Media-';
+    const anchorIdx = content.indexOf(anchor);
+    const snippet =
+      anchorIdx >= 0
+        ? content.slice(Math.max(0, anchorIdx - 100), Math.min(content.length, anchorIdx + 100))
+        : content;
 
-    if (match) {
-      const jsmediaVersion = match[1]; // "15.0.13713"
-      const description = match[2];    // "Web-Media-EP-6.6.10-WSDK-5.0.2-Patch"
-      const finalVersion = match[3].replace(/.$/g, '');   // "6.6.10"
+    const groups = [];
+    const reQuoted = /"([^"\\]*(?:\\.[^"\\]*)*)"/g;
+    let match;
 
-      return {
-        jsmediaVersion,
-        description,
-        finalVersion
-      };
+    while ((match = reQuoted.exec(snippet))) {
+      groups.push(match[1]);
     }
 
-    return null;
+    const anchorGroupIdx = groups.findIndex(
+      (value) => typeof value === 'string' && value.includes(anchor),
+    );
+
+    if (anchorGroupIdx < 0) {
+      return { jsmediaVersion: '0', description: '0', finalVersion: '0' };
+    }
+
+    const description = groups[anchorGroupIdx] ?? '0';
+    const before = groups[anchorGroupIdx - 1] ?? '0';
+    const after = groups[anchorGroupIdx + 1] ?? '0';
+
+    let buildBeforeAnchor = null;
+    for (let i = anchorGroupIdx - 1; i >= 0; i -= 1) {
+      const value = groups[i];
+      if (typeof value === 'string' && /^\d{3,}$/.test(value)) {
+        buildBeforeAnchor = value;
+        break;
+      }
+    }
+
+    const finalVersionRaw =
+      typeof after === 'string' && after.endsWith('.') && buildBeforeAnchor
+        ? `${after}${buildBeforeAnchor}`
+        : after;
+
+    return {
+      jsmediaVersion: stripTrailingDots(before),
+      description,
+      finalVersion: stripTrailingDots(finalVersionRaw),
+    };
   } catch (e) {
     console.error('Error reading jsmedia version:', e);
     return null;
