@@ -119,7 +119,7 @@ export enum FarEndCameraControlDeclinedReason {
 /**
  * Local camera control command
  */
-type LocalCameraControlCmd = Exclude<CameraControlCmd, CameraControlCmd.SwitchCamera>;
+export type LocalCameraControlCmd = Exclude<CameraControlCmd, CameraControlCmd.SwitchCamera>;
 /**
  * Interface of local camera control option
  */
@@ -377,6 +377,18 @@ export interface Participant {
    * @deprecated in v4.0.0, use `participantUUID`
    */
   userGuid?: string;
+  /**
+   * Whether the participant is a bot user
+   */
+  isBotUser?: boolean;
+  /**
+   * Brand name of the bot, if applicable
+   */
+  botBrandName?: string;
+  /**
+   * Authorizer name of the bot, if applicable
+   */
+  botAuthorizerName?: string;
 }
 /**
  * The meeting information interface.
@@ -395,45 +407,9 @@ export interface MeetingInfo {
    */
   telPwd: string;
   /**
-   * The user's name.
-   */
-  userName: string;
-  /**
-   * The user's ID.
-   */
-  userId: number;
-  /**
-   * The user's email address.
-   */
-  userEmail: string;
-  /**
-   * The meeting invite email key.
-   */
-  inviteEmail: string;
-  /**
-   * The user's customer key.
-   */
-  customerKey: string;
-  /**
    * The topic of the meeting.
    */
   meetingTopic: string;
-  /**
-   * The encryption type of the meeting.
-   */
-  encryptionType: 'None' | 'AES ECB' | 'AES GCM';
-  /**
-   * The server region.
-   */
-  region: string;
-  /**
-   * The server network.
-   */
-  network: string;
-  /**
-   * Whether the user is in the meeting.
-   */
-  isInMeeting: boolean;
   /**
    * The language for the SDK.
    */
@@ -447,11 +423,57 @@ export interface MeetingInfo {
    */
   webEndpoint: string;
   /**
+   * The user's name.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  userName: string;
+  /**
+   * The user's ID.
+   * @deprecated in 6.0.0. Returns 0 always. Will be removed in 7.0.0.
+   */
+  userId: number;
+  /**
+   * The user's email address.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  userEmail: string;
+  /**
+   * The meeting invite email key.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  inviteEmail: string;
+  /**
+   * The user's customer key.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  customerKey: string;
+  /**
+   * The encryption type of the meeting.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  encryptionType: 'None' | 'AES ECB' | 'AES GCM';
+  /**
+   * The server region.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  region: string;
+  /**
+   * The server network.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  network: string;
+  /**
+   * Whether the user is in the meeting.
+   */
+  isInMeeting: boolean;
+  /**
    * The participant ID.
+   * @deprecated in 6.0.0. Returns 0 always. Will be removed in 7.0.0.
    */
   participantId: number;
   /**
    * Recording information.
+   * @deprecated in 6.0.0. Returns undefined always. Will be removed in 7.0.0.
    */
   recordingInfo: RecordingInfo;
 }
@@ -765,6 +787,18 @@ export interface ParticipantPropertiesPayload {
    * - 3: ConnectFail,
    */
   audioConnectionStatus?: number;
+  /**
+   * Whether the participant is a bot user
+   */
+  isBotUser?: boolean;
+  /**
+   * Brand name of the bot, if applicable
+   */
+  botBrandName?: string;
+  /**
+   * Authorizer name of the bot, if applicable
+   */
+  botAuthorizerName?: string;
 }
 /**
  * The view types
@@ -782,10 +816,13 @@ export type SuspensionViewValue = 'minimized' | 'speaker' | 'ribbon' | 'gallery'
  */
 export interface JoinOptions {
   /**
+   * The sdkKey is deprecated for the joinOptions() after v4.0.0. You can just use signature.
    * @param sdkKey The Meeting SDK SDK key or client ID.
+   * @deprecated
    */
   sdkKey?: string;
   /**
+   * After v5.0.0, the signature is required to have the appKey field appKey:sdkKey or appKey:clientId. if the appKey is not included, you cannot join the meeting.
    * @param signature The generated signature to create or join the meeting.
    * See [Generate the SDK JWT](https://developers.zoom.us/docs/meeting-sdk/auth/) for details.
    */
@@ -818,6 +855,10 @@ export interface JoinOptions {
    * @param zak Optional 'zak' param to start a meeting or webinar with OAuth.
    */
   zak?: string;
+  /**
+   * @param obfToken Optional 'obfToken' param to pass to the backend. Mutually exclusive with zak.
+   */
+  obfToken?: string;
   /**
    * @param recordingToken Optional token to allow local recording. See [Get a meeting's join token for local recording](https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/meetingLocalRecordingJoinToken) for details.
    */
@@ -915,7 +956,7 @@ export interface InitOptions {
    */
   zoomAppRoot: HTMLElement | undefined;
   /**
-   * @param assetPath Default 'https://source.zoomgov.com/{version}/lib/av'.
+   * @param assetPath Default 'https://source.zoom.us/{version}/lib/av'.
    */
   assetPath?: string;
   /**
@@ -923,14 +964,16 @@ export interface InitOptions {
    */
   webEndpoint?: string;
   /**
-   * @param language Default 'en-US'.
+   * @param language Default 'en-US'. jp-JP/ko-KO deprecated in v4.0.0, please use new ja-JP/ko-KR, will not accept jp-JP/ko-KO in 7.0.0
    * @property de-DE - German Deutsch
    * @property es-ES - Spanish Español
    * @property fr-FR - French Français
    * @property id-ID - Indonesian Bahasa Indonesia
    * @property it-IT - Italian Italia
-   * @property jp-JP - Japanese 日本語
-   * @property ko-KO - Korean 한국
+   * @property jp-JP - deprecated in v4.0.0, use ja-JP instead since 4.0.0, will not accept jp-JP in 7.0.0. Japanese 日本語
+   * @property ja-JP - Japanese 日本語
+   * @property ko-KO - deprecated in v4.0.0, use ko-KR instead since 4.0.0, will not accept ko-KO in 7.0.0. Korean 한국
+   * @property ko-KR - Korean 한국
    * @property nl-NL - Dutch Nederlands
    * @property pl-PL - Polish Polska
    * @property pt-PT - Portuguese Português
@@ -943,23 +986,25 @@ export interface InitOptions {
    * @property en-US - English Default
    */
   language?:
-    | 'en-US'
-    | 'de-DE'
-    | 'es-ES'
-    | 'fr-FR'
-    | 'jp-JP'
-    | 'pt-PT'
-    | 'ru-RU'
-    | 'zh-CN'
-    | 'zh-TW'
-    | 'ko-KO'
-    | 'vi-VN'
-    | 'it-IT'
-    | 'pl-PL'
-    | 'tr-TR'
-    | 'id-ID'
-    | 'nl-NL'
-    | 'sv-SE';
+  | 'en-US'
+  | 'de-DE'
+  | 'es-ES'
+  | 'fr-FR'
+  | 'jp-JP'
+  | 'ja-JP'
+  | 'pt-PT'
+  | 'ru-RU'
+  | 'zh-CN'
+  | 'zh-TW'
+  | 'ko-KO'
+  | 'ko-KR'
+  | 'vi-VN'
+  | 'it-IT'
+  | 'pl-PL'
+  | 'tr-TR'
+  | 'id-ID'
+  | 'nl-NL'
+  | 'sv-SE';
   /**
    * @param customize Optional customization options for the embedded client.
    */
@@ -997,6 +1042,13 @@ export interface InitOptions {
      * @param popper Options for the underlying popper element.
      */
     invite?: {
+      popper?: PopperStyle;
+    };
+    /**
+     * Customization options for the call-me panel.
+     * @param popper Options for the underlying popper element.
+     */
+    callMe?: {
       popper?: PopperStyle;
     };
     /**
@@ -1045,6 +1097,12 @@ export interface InitOptions {
    * Maximum participants displayed per screen in gallery view, up to 25.
    */
   maximumVideosInGalleryView?: number;
+  /**
+   * Enforce virtual background on Chromium-like browser without SharedArrayBuffer.
+   * Note
+   *  - that this may result in high CPU and memory usage.
+   */
+  enforceVirtualBackground?: boolean;
   /**
    * patchJsMedia: Optional. Default: false.
    * Set to true to automatically apply the latest media dependency fix for the current Meeting SDK for web version.
@@ -1288,6 +1346,68 @@ export declare function event_caption_message(payload: {
   done?: boolean;
 }): void;
 
+/**
+ * Interface for file information in chat messages.
+ */
+export interface FileInfo {
+  /**
+   * Name of the file.
+   */
+  name: string;
+  /**
+   * Type of the file.
+   */
+  type: string;
+}
+
+/**
+ * Interface for chat message records.
+ */
+export interface ChatRecord {
+  /**
+   * Message content, can be a single string or array of strings.
+   */
+  message?: string | string[];
+  /**
+   * Unique identifier for the message.
+   */
+  id?: string;
+  /**
+   * File information if the message contains a file.
+   */
+  file?: FileInfo;
+  /**
+   * Information about the message sender.
+   */
+  sender: {
+    /**
+     * Sender's display name.
+     */
+    name: string;
+    /**
+     * Sender's user ID.
+     */
+    userId: number;
+  };
+  /**
+   * Information about the message receiver.
+   */
+  receiver: {
+    /**
+     * Receiver's display name.
+     */
+    name: string;
+    /**
+     * Receiver's user ID.
+     */
+    userId: number;
+  };
+  /**
+   * Timestamp when the message was sent.
+   */
+  timestamp: number;
+}
+
 export declare function event_recording_change(payload: RecordingStatus | RecordingStatusValue): void;
 
 export declare function event_local_recording_change(payload: { userId: number; bLocalRecord: boolean }): void;
@@ -1301,6 +1421,15 @@ export declare function event_user_updated(payload: ParticipantPropertiesPayload
 export declare function event_peer_share_state_change(payload: { userId: number; action: string }): void;
 export declare function event_audio_active_speaker(payload: Array<ActiveSpeaker>): void;
 export declare function event_room_state_change(payload: { status: BreakoutRoomStatus }): void;
+export declare function event_chat_on_message(payload: ChatRecord | ChatMessage): void;
+
+/**
+ * Occurs when the bot relation is updated
+ * @param payload the event detail
+ *
+ * @event
+ */
+export declare function event_bot_relation_update(payload: any): void;
 
 /**
  * Occurs when far end camera request is received
@@ -1556,6 +1685,10 @@ export declare namespace EmbeddedClient {
    */
   function getVirtualBackgroundStatus(): { id: string; isVbOn: boolean; isLock: boolean; vbList: VbImageInfoType[] };
   /**
+   * Sets the view type.
+   */
+  function setViewType(viewType: SuspensionViewValue): ExecutedResult;
+  /**
    * Checks if the device supports the virtual background feature.
    * @category VirtualBackground
    */
@@ -1581,7 +1714,7 @@ export declare namespace EmbeddedClient {
    * You cannot remove the VB if a VB image has been selected by a user using the UI or if it has been already set by this API.
    * You cannot set a new VB image if the VB image is locked.
    * The image with vbImageId must exist in the current VB image list.
-   * @param vbImageId: the ID of the in the image list for the target VB image, '' for no VB and 'blur' for the blur VB.
+   * @param vbImageId the ID of the in the image list for the target VB image, '' for no VB and 'blur' for the blur VB.
    * @category VirtualBackground
    */
   function setVirtualBackground(vbImageId: string): ExecutedResult;
@@ -1622,6 +1755,28 @@ export declare namespace EmbeddedClient {
    * @param userId A valid user ID of a co-host in the current meeting.
    */
   function revokeCoHost(userId: number): ExecutedResult;
+  /**
+   * Checks whether the current user is a bot user.
+   * @returns boolean | null
+   */
+  function isBotUser(): boolean | null;
+  /**
+   * Gets the bot app name.
+   * @returns string | null
+   */
+  function getBotAppName(): string | null;
+  /**
+   * Gets the bot authorized user info by user id.
+   * @param userId The user ID
+   * @returns Participant | null
+   */
+  function getBotAuthorizedUserInfoByUserId(userId: number): Participant | null;
+  /**
+   * Gets the authorized bot list by user id.
+   * @param userId The user ID
+   * @returns An array of Participant objects (may include null for bots that left), or null if not in meeting or no bots found
+   */
+  function getAuthorizedBotListByUserId(userId: number): (Participant | null)[] | null;
   /**
    * Pins the corresponding user.
    * @param userId A valid user ID in the current meeting.
@@ -1846,7 +2001,7 @@ export declare namespace EmbeddedClient {
    * For example:
    * ```javascript
    * on("connection-change", (payload) => {
-   *  if (payload.state === 'Closed) {
+   *  if (payload.state === 'Closed') {
    *    console.log("Meeting ended")
    *  }
    * })
@@ -1874,6 +2029,7 @@ export declare namespace EmbeddedClient {
     event: 'media-capture-status-change',
     callback: (payload: { userId: number; bLocalRecord: boolean }) => void
   ): void;
+  function on(event: 'chat-on-message', callback: typeof event_chat_on_message): void;
   function on(
     event: 'media-capture-permission-change',
     callback: (payload: { type: string; value: string; canRecord?: boolean }) => void
@@ -1883,6 +2039,7 @@ export declare namespace EmbeddedClient {
   function on(event: 'far-end-camera-response-control', listener: typeof event_far_end_camera_response): void;
   function on(event: 'far-end-camera-in-control-change', listener: typeof event_far_end_camera_in_control_change): void;
   function on(event: 'far-end-camera-capability-change', listener: typeof event_far_end_camera_capability_change): void;
+  function on(event: 'bot-relation-update', listener: typeof event_bot_relation_update): void;
   /**
    * Removes the event handler. Must be used with on() in pairs.
    * @param event event name. Same as 'on' event name list.

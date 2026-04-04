@@ -335,6 +335,7 @@ export type InMeetingEvent =
   | 'onUserLeave'
   | 'onUserUpdate'
   | 'onUserIsInWaitingRoom'
+  | 'bot-relation-update'
   | 'onMeetingStatus'
   | 'onPreviewPannel|  receiveSharingChannelReady'
   | 'onReceiveTranscriptionMsg'
@@ -354,7 +355,9 @@ export type InMeetingEvent =
   | 'onVideoOrder'
   | 'onReceiveChatMsg'
   | 'onVbStatusChange'
-  | 'onFeedBackData';
+  | 'onFeedBackData'
+  | 'onRecordingChange'
+  | 'onShareContentChange';
 
 /**
  *  For the APIs that take images, the value of the image type returned by the getVideoSourcesCallBack method, passed in the shareSource API.
@@ -537,29 +540,37 @@ export interface SupportFeatures {
  * 
  * Examples:
  * 
- * en-US https://source.zoomgov.com/{VERSION_NUMBER}/lib/lang/en-US.json
+ * en-US https://source.zoom.us/{VERSION_NUMBER}/lib/lang/en-US.json
  * 
- * zh-CN https://source.zoomgov.com/{VERSION_NUMBER}/lib/lang/zh-CN.json
+ * zh-CN https://source.zoom.us/{VERSION_NUMBER}/lib/lang/zh-CN.json
  * ```js
- * ZoomMtg.i18n.load('en-US');
-  var userLangTemplate = ZoomMtg.i18n.getAll("en-US");
-  var userLangDict = Object.assign({}, userLangTemplate, {
-    'apac.toolbar_leave': 'Leave',
-    'apac.wc_leave_meeting': 'Do you want leave',
-    'apac.wc_joining_meeting': 'I want to join...',
-    'apac.wc_video.start_video': 'Turn on video',
-    'apac.wc_video.stop_video': 'Turn off video'
-  });
-  ZoomMtg.i18n.load(userLangDict, "myLang");
-  ZoomMtg.i18n.reload('myLang');
+ * ZoomMtg.i18n.load('zh-CN').then(() => {
+    // load zh-CN resource success
+    var userLangTemplate = ZoomMtg.i18n.getAll("zh-CN");
+    var userLangDict = Object.assign({}, userLangTemplate, {
+      'apac.toolbar_leave': 'Leave',
+      'apac.wc_leave_meeting': 'Do you want leave',
+      'apac.wc_joining_meeting': 'I want to join...',
+      'apac.wc_video.start_video': 'Turn on video',
+      'apac.wc_video.stop_video': 'Turn off video'
+    });
+    ZoomMtg.i18n.load(userLangDict, "myLang").then(() => {
+      // load your lang resource success
+    });
+  }
  * ```
  */
 export declare namespace ZoomMtgLang {
   /**
    * Loads translations.
+   *
    * See for abbreviation descriptions: https://developers.zoom.us/docs/meeting-sdk/web/client-view/multi-language/
-   * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'jp-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KO', 'vi-VN', 'it-IT', 'id-ID', 'nl-NL', 'sv-SE', 'pl-PL', 'tr-TR'
+   *
+   * 'de-DE', 'es-ES', 'en-US', 'fr-FR', 'ja-JP', 'pt-PT', 'ru-RU', 'zh-CN', 'zh-TW', 'ko-KR', 'vi-VN', 'it-IT', 'id-ID', 'nl-NL', 'sv-SE', 'pl-PL', 'tr-TR'
+   *
    * Be sure to call it before calling `init`.
+   *
+   * jp-JP/ko-KO deprecated in v4.0.0, please use new ja-JP/ko-KO, will not accept jp-JP/ko-KO in 7.0.0
    * @param lang
    *
    */
@@ -569,6 +580,7 @@ export declare namespace ZoomMtgLang {
       | 'es-ES'
       | 'en-US'
       | 'fr-FR'
+      | 'ja-JP'
       | 'jp-JP'
       | 'pt-PT'
       | 'pl-PL'
@@ -576,6 +588,7 @@ export declare namespace ZoomMtgLang {
       | 'ru-RU'
       | 'zh-CN'
       | 'zh-TW'
+      | 'ko-KR'
       | 'ko-KO'
       | 'vi-VN'
       | 'it-IT'
@@ -585,14 +598,20 @@ export declare namespace ZoomMtgLang {
   ): Promise<any>;
   /**
    * Loads translation URL. Use the URL provided by Zoom or your own resource object.
-   * For the Zoom-provided JSON language use this syntax: https://source.zoomgov.com/{VERSION_NUMBER}/lib/lang/{LANG_CODE}.json.
-   * For example, to use the English resource from Zoom for v2.7.0 of the SDK, use: https://source.zoomgov.com/2.7.0/lib/lang/en-US.json
+   * For the Zoom-provided JSON language use this syntax: https://source.zoom.us/{VERSION_NUMBER}/lib/lang/{LANG_CODE}.json.
+   * For example, to use the English resource from Zoom for v4.0.0 of the SDK, use: https://source.zoom.us/4.0.0/lib/lang/en-US.json
    * Or create your own JSON resource object.
    * Be sure to call it before calling `init`.
    * @param url JSON Language resource URL or resource object
    * @param lang Your assigned language name for the resource.
    */
   function load(url: string | object, lang: string): Promise<any>;
+
+  /**
+   * callback when load lang success, if load lang 3s timeout, callback will be called
+   * @param callback
+   */
+  function onLoad(callback: (res: 'success' | 'timeout') => void): void;
   /**
    * This is deprecated in versions >= 3.0.0, so you can remove it.
    @deprecated
@@ -732,7 +751,7 @@ export namespace ZoomMtg {
   function generateSDKSignature(): string;
   /**
    * Changes the Zoom default library resource requirements.
-   * Default is ZoomMtg.setZoomJSLib('https://source.zoomgov.com/{VERSION_NUMBER}/lib', '/av')
+   * Default is ZoomMtg.setZoomJSLib('https://source.zoom.us/{VERSION_NUMBER}/lib', '/av')
    * @category Join
    */
   function setZoomJSLib(path?: string, dir?: string): void;
@@ -741,14 +760,12 @@ export namespace ZoomMtg {
    * @category Join
    */
   function preLoadWasm(): void;
-  /*
+  /**
    * Adds a script to download a requirements.js file and a node to the HTML body for the Meeting SDK for Web to use.
    * Note that Chrome origin trials (OT) provide many new features before Chrome releases. See the following links for details:
    * https://developer.chrome.com/origintrials/#/trials/active and https://developer.chrome.com/blog/origin-trials/
    * The Meeting SDK for Web can use:
-   * 1. SharedArrayBuffer (SAB) OT for gallery view (Chrome 92 to 103). See: https://developers.zoom.us/docs/meeting-sdk/web/gallery-view/
-   * 2. WebAssembly SIMD to improve video and sharing performance (Chrome91 release). See: https://chromestatus.com/feature/6533147810332672
-   * 3. WebCodecs to address latency when starting video (Chrome94 release). See: https://chromestatus.com/feature/5669293909868544
+   * 1. PEPC(Page Embedded Permission Control - Cam/Mic/Geolocation). See: https://chromestatus.com/feature/5125006551416832
    * @category Join
    */
   function prepareWebSDK(
@@ -800,11 +817,13 @@ export namespace ZoomMtg {
      */
     zak?: string;
     /**
-     * Required. Only sdkKey is supported for joining meetings on version 2.7.0 and higher.
+     * We remove sdkKey from join params since v4.0.0. You can just use signature.
+     * @deprecated
      */
     sdkKey?: string;
     /**
      * Required. The signature to start or join a meeting. See https://developers.zoom.us/docs/meeting-sdk/auth/ for details.
+     * As of v5.0.0, the signature requires the appKey field appKey:sdkKey or appKey:clientId. if not contain appKey, can't join meeting.
      */
     signature: string;
     /**
@@ -815,6 +834,10 @@ export namespace ZoomMtg {
      * Optional. childToken.
      */
     childToken?: string;
+    /**
+     * Optional. obfToken.
+     */
+    obfToken?: string;
     /**
      * Callback function on success.
      */
@@ -853,13 +876,22 @@ export namespace ZoomMtg {
      */
     customerKey?: string;
     /**
-     * Required. Only sdkKey is supported for joining meetings for versions 2.7.0 and above.
+     * We remove sdkKey from join params since v4.0.0. You can just use signature.
+     * @deprecated
      */
     sdkKey?: string;
     /**
      * Required. The signature to start or join a meeting. See https://developers.zoom.us/docs/meeting-sdk/auth/ for details.
+     * As of v5.0.0, the signature requires the appKey field appKey:sdkKey or appKey:clientId. if not contain appKey, can't join test meeting.
      */
     signature: string;
+    /**
+     * Optional. obfToken.
+     */
+    obfToken?: string;
+    /**
+     * Callback function on success.
+     */
     success: Function;
     /**
      * Callback function in the event of an error.
@@ -1006,6 +1038,71 @@ export namespace ZoomMtg {
    * @param args
    */
   function getCurrentUser(args: {
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+  /**
+   * Checks whether the current user is a bot.
+   * @param args
+   */
+  function isBotUser(args: {
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+  /**
+   * Gets the name of the app for the bot (current user must be a bot).
+   * @param args
+   */
+  function getBotAppName(args: {
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+  /**
+   * Gets the authorized user info based on the bot userId.
+   * @param args
+   */
+  function getBotAuthorizedUserInfoByUserId(args: {
+    /**
+     * The bot user's ID.
+     */
+    userId: number;
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+  /**
+   * Gets the authorized bot user list based on the given userId.
+   * If userId is not provided, returns bots authorized by the current user.
+   * @param args
+   */
+  function getAuthorizedBotListByUserId(args: {
+    /**
+     * Optional. The user ID. If not provided, uses the current user's ID.
+     */
+    userId?: number;
     /**
      * Callback function on success.
      */
@@ -1637,6 +1734,27 @@ export namespace ZoomMtg {
     callback: Function,
   ): void;
   /**
+   * Listens for bot authorizer relationship changes.
+   * @param event
+   * @param callback
+   * Only supported in meetings.
+   * Example:
+  ```js
+  ZoomMtg.inMeetingServiceListener('bot-relation-update', function (data) {
+    console.log('bot-relation-update', data);
+    // data is an array of relation objects:
+    // [{ parentUserID: number, childUserID: number }, ...]
+    // parentUserID: The user who authorized the bot
+    // childUserID: The bot user ID
+  });
+  ```
+  @category Listener
+   */
+  function inMeetingServiceListener(
+    event: 'bot-relation-update',
+    callback: Function,
+  ): void;
+  /**
    * Listens for sharing channel readiness to receive.
    * @param event 
    * @param callback 
@@ -1954,7 +2072,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
    * @param callback
    * Example:
    * ```js
-  ZoomMtg.inMeetingServiceListener('onMeetingStatus', function (data) {
+  ZoomMtg.inMeetingServiceListener('onMeetingStatus', function (data: any) {
     // {status: 1(connecting), 2(connected), 3(disconnected), 4(reconnecting)}
     console.log(data);
   });
@@ -2111,7 +2229,41 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
   ): void;
 
   /**
-   * Listens for chat message.
+   * Listens for recording change.
+   * @param event 
+   * @param callback
+   * Example:
+   * ```js
+  ZoomMtg.inMeetingServiceListener('onRecordingChange', function (data) {
+    console.log(data);
+  });
+  ```
+    @category Listener
+   */
+  function inMeetingServiceListener(
+    event: 'onRecordingChange',
+    callback: Function,
+  ): void;
+
+  /**
+   * Listens for share content change.
+   * @param event 
+   * @param callback
+   * Example:
+   * ```js
+  ZoomMtg.inMeetingServiceListener('onShareContentChange', function (data) {
+    console.log(data);
+  });
+  ```
+    @category Listener
+   */
+  function inMeetingServiceListener(
+    event: 'onShareContentChange',
+    callback: Function,
+  ): void;
+
+  /**
+   * Listens for recording change.
    * @param event 
    * @param callback
    * Example:
