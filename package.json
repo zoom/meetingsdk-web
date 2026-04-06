@@ -1,6 +1,6 @@
 {
   "name": "@zoom/meetingsdk",
-  "version": "5.1.4",
+  "version": "6.0.0",
   "description": "Zoom MeetingSDK-Web Client",
   "main": "index.js",
   "types": "index.d.ts",
@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "react": "18.2.0",
-  "react-dom": "18.2.0",
+    "react-dom": "18.2.0",
     "redux": "4.2.1",
     "react-redux": "8.1.2",
     "lodash": "^4.17.23",
