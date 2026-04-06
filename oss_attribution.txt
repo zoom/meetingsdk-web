@@ -2666,7 +2666,7 @@ Permission is hereby granted, free of charge, to any person
 ---
 
 MIT License
-(Lodash 4.17.21, lodash-es 4.17.21, lodash.debounce 4.0.8, lodash.isempty 4.4.0, lodash.isequal 4.5.0, lodash.throttle 4.1.1, lodash.uniqueid 4.0.1)
+(Lodash 4.17.23, lodash-es 4.17.23, lodash.debounce 4.0.8, lodash.isempty 4.4.0, lodash.isequal 4.5.0, lodash.throttle 4.1.1, lodash.uniqueid 4.0.1)
 
 ====
 
