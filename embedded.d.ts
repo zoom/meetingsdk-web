@@ -407,45 +407,9 @@ export interface MeetingInfo {
    */
   telPwd: string;
   /**
-   * The user's name.
-   */
-  userName: string;
-  /**
-   * The user's ID.
-   */
-  userId: number;
-  /**
-   * The user's email address.
-   */
-  userEmail: string;
-  /**
-   * The meeting invite email key.
-   */
-  inviteEmail: string;
-  /**
-   * The user's customer key.
-   */
-  customerKey: string;
-  /**
    * The topic of the meeting.
    */
   meetingTopic: string;
-  /**
-   * The encryption type of the meeting.
-   */
-  encryptionType: 'None' | 'AES ECB' | 'AES GCM';
-  /**
-   * The server region.
-   */
-  region: string;
-  /**
-   * The server network.
-   */
-  network: string;
-  /**
-   * Whether the user is in the meeting.
-   */
-  isInMeeting: boolean;
   /**
    * The language for the SDK.
    */
@@ -459,11 +423,57 @@ export interface MeetingInfo {
    */
   webEndpoint: string;
   /**
+   * The user's name.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  userName: string;
+  /**
+   * The user's ID.
+   * @deprecated in 6.0.0. Returns 0 always. Will be removed in 7.0.0.
+   */
+  userId: number;
+  /**
+   * The user's email address.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  userEmail: string;
+  /**
+   * The meeting invite email key.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  inviteEmail: string;
+  /**
+   * The user's customer key.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  customerKey: string;
+  /**
+   * The encryption type of the meeting.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  encryptionType: 'None' | 'AES ECB' | 'AES GCM';
+  /**
+   * The server region.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  region: string;
+  /**
+   * The server network.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  network: string;
+  /**
+   * Whether the user is in the meeting.
+   */
+  isInMeeting: boolean;
+  /**
    * The participant ID.
+   * @deprecated in 6.0.0. Returns 0 always. Will be removed in 7.0.0.
    */
   participantId: number;
   /**
    * Recording information.
+   * @deprecated in 6.0.0. Returns undefined always. Will be removed in 7.0.0.
    */
   recordingInfo: RecordingInfo;
 }
@@ -976,25 +986,25 @@ export interface InitOptions {
    * @property en-US - English Default
    */
   language?:
-    | 'en-US'
-    | 'de-DE'
-    | 'es-ES'
-    | 'fr-FR'
-    | 'jp-JP'
-    | 'ja-JP'
-    | 'pt-PT'
-    | 'ru-RU'
-    | 'zh-CN'
-    | 'zh-TW'
-    | 'ko-KO'
-    | 'ko-KR'
-    | 'vi-VN'
-    | 'it-IT'
-    | 'pl-PL'
-    | 'tr-TR'
-    | 'id-ID'
-    | 'nl-NL'
-    | 'sv-SE';
+  | 'en-US'
+  | 'de-DE'
+  | 'es-ES'
+  | 'fr-FR'
+  | 'jp-JP'
+  | 'ja-JP'
+  | 'pt-PT'
+  | 'ru-RU'
+  | 'zh-CN'
+  | 'zh-TW'
+  | 'ko-KO'
+  | 'ko-KR'
+  | 'vi-VN'
+  | 'it-IT'
+  | 'pl-PL'
+  | 'tr-TR'
+  | 'id-ID'
+  | 'nl-NL'
+  | 'sv-SE';
   /**
    * @param customize Optional customization options for the embedded client.
    */
@@ -1991,7 +2001,7 @@ export declare namespace EmbeddedClient {
    * For example:
    * ```javascript
    * on("connection-change", (payload) => {
-   *  if (payload.state === 'Closed) {
+   *  if (payload.state === 'Closed') {
    *    console.log("Meeting ended")
    *  }
    * })

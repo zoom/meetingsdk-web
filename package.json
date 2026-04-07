@@ -1,6 +1,6 @@
 {
   "name": "@zoom/meetingsdk",
-  "version": "5.1.4",
+  "version": "6.0.0",
   "description": "Zoom MeetingSDK-Web Client",
   "main": "index.js",
   "types": "index.d.ts",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zoom/meetingsdk-web"
+    "url": "git+https://github.com/zoom/meetingsdk-web.git"
   },
   "keywords": [
     "zoom",
@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "react": "18.2.0",
-  "react-dom": "18.2.0",
+    "react-dom": "18.2.0",
     "redux": "4.2.1",
     "react-redux": "8.1.2",
     "lodash": "^4.17.23",
@@ -42,13 +42,12 @@
   },
   "files": [
     "dist/*",
-    "types/*",
     "index.js",
     "embedded.js",
     "embedded.d.ts",
     "index.d.ts",
     "CHANGELOG.md",
-    "LICENSE.pdf",
+    "LICENSE.md",
     "README.md",
     "oss_attribution.txt",
     "helper.html",
