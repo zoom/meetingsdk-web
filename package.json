@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zoom/meetingsdk-web"
+    "url": "git+https://github.com/zoom/meetingsdk-web.git"
   },
   "keywords": [
     "zoom",
@@ -42,13 +42,12 @@
   },
   "files": [
     "dist/*",
-    "types/*",
     "index.js",
     "embedded.js",
     "embedded.d.ts",
     "index.d.ts",
     "CHANGELOG.md",
-    "LICENSE.pdf",
+    "LICENSE.md",
     "README.md",
     "oss_attribution.txt",
     "helper.html",
