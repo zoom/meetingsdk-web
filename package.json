@@ -1,16 +1,15 @@
 {
   "name": "@zoom/meetingsdk",
-  "version": "6.0.2",
+  "version": "6.1.0",
   "description": "Zoom MeetingSDK-Web Client",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "node postinstall.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zoom/meetingsdk-web.git"
+    "url": "git+https://github.com/zoom/meetingsdk-web"
   },
   "keywords": [
     "zoom",
@@ -24,26 +23,33 @@
   "bugs": {
     "url": "https://github.com/zoom/meetingsdk-web/issues"
   },
+  "dependencies": {
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "redux": "4.2.1",
+    "react-redux": "8.1.2",
+    "lodash": "^4.17.23",
+    "redux-thunk": "2.4.2"
+  },
   "peerDependencies": {
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "redux": "4.2.1",
     "react-redux": "8.1.2",
-    "lodash": "^4.18.1",
+    "lodash": "^4.17.23",
     "redux-thunk": "2.4.2"
   },
   "files": [
     "dist/*",
-    "index.js",
+    "types/*",
     "embedded.js",
     "embedded.d.ts",
     "index.d.ts",
     "CHANGELOG.md",
-    "LICENSE.md",
+    "LICENSE.pdf",
     "README.md",
     "oss_attribution.txt",
     "helper.html",
-    "externalLinkPage.html",
-    "postinstall.js"
+    "externalLinkPage.html"
   ]
 }

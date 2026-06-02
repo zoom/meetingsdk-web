@@ -488,7 +488,7 @@ export declare interface CustomButton {
   /**
    * Callback when the button is clicked.
    */
-  onClick: Function;
+  onClick: (...args: any[]) => any;
   /**
    * The button's class name.
    */
@@ -866,11 +866,11 @@ export interface JoinOptions {
   /**
    * @param success Join success callback.
    */
-  success?: Function;
+  success?: (...args: any[]) => any;
   /**
    * @param error Join error callback.
    */
-  error?: Function;
+  error?: (...args: any[]) => any;
 }
 /**
  * Interface of active speaker in meeting.
@@ -885,7 +885,16 @@ export interface ActiveSpeaker {
    */
   displayName?: string;
 }
-export type MeetingInfoType = 'topic' | 'host' | 'mn' | 'pwd' | 'telPwd' | 'invite' | 'participant' | 'dc' | 'enctype';
+export type MeetingInfoType =
+  | 'topic'
+  | 'host'
+  | 'mn'
+  | 'pwd'
+  | 'telPwd'
+  | 'invite'
+  | 'participant'
+  | 'dc'
+  | 'enctype';
 export type PopperPlacementType =
   | 'bottom-end'
   | 'bottom-start'
@@ -913,7 +922,10 @@ export interface PopperStyle {
   modifiers?: object;
   placement?: PopperPlacementType;
 }
-export type VideoPopperStyle = Omit<PopperStyle, 'anchorElement' | 'modifiers' | 'placement' | 'anchorReference'>;
+export type VideoPopperStyle = Omit<
+  PopperStyle,
+  'anchorElement' | 'modifiers' | 'placement' | 'anchorReference'
+>;
 export type LanguageOptionType =
   | 'en-US'
   | 'de-DE'
@@ -986,25 +998,25 @@ export interface InitOptions {
    * @property en-US - English Default
    */
   language?:
-  | 'en-US'
-  | 'de-DE'
-  | 'es-ES'
-  | 'fr-FR'
-  | 'jp-JP'
-  | 'ja-JP'
-  | 'pt-PT'
-  | 'ru-RU'
-  | 'zh-CN'
-  | 'zh-TW'
-  | 'ko-KO'
-  | 'ko-KR'
-  | 'vi-VN'
-  | 'it-IT'
-  | 'pl-PL'
-  | 'tr-TR'
-  | 'id-ID'
-  | 'nl-NL'
-  | 'sv-SE';
+    | 'en-US'
+    | 'de-DE'
+    | 'es-ES'
+    | 'fr-FR'
+    | 'jp-JP'
+    | 'ja-JP'
+    | 'pt-PT'
+    | 'ru-RU'
+    | 'zh-CN'
+    | 'zh-TW'
+    | 'ko-KO'
+    | 'ko-KR'
+    | 'vi-VN'
+    | 'it-IT'
+    | 'pl-PL'
+    | 'tr-TR'
+    | 'id-ID'
+    | 'nl-NL'
+    | 'sv-SE';
   /**
    * @param customize Optional customization options for the embedded client.
    */
@@ -1408,9 +1420,14 @@ export interface ChatRecord {
   timestamp: number;
 }
 
-export declare function event_recording_change(payload: RecordingStatus | RecordingStatusValue): void;
+export declare function event_recording_change(
+  payload: RecordingStatus | RecordingStatusValue
+): void;
 
-export declare function event_local_recording_change(payload: { userId: number; bLocalRecord: boolean }): void;
+export declare function event_local_recording_change(payload: {
+  userId: number;
+  bLocalRecord: boolean;
+}): void;
 
 export declare function event_user_added(payload: ParticipantPropertiesPayload): void;
 
@@ -1418,7 +1435,10 @@ export declare function event_user_removed(payload: ParticipantPropertiesPayload
 
 export declare function event_user_updated(payload: ParticipantPropertiesPayload): void;
 
-export declare function event_peer_share_state_change(payload: { userId: number; action: string }): void;
+export declare function event_peer_share_state_change(payload: {
+  userId: number;
+  action: string;
+}): void;
 export declare function event_audio_active_speaker(payload: Array<ActiveSpeaker>): void;
 export declare function event_room_state_change(payload: { status: BreakoutRoomStatus }): void;
 export declare function event_chat_on_message(payload: ChatRecord | ChatMessage): void;
@@ -1584,7 +1604,7 @@ export declare namespace EmbeddedClient {
    * @param mute True to mute, false to unmute.
    * @param userId User to toggle mute for.
    */
-  function mute(mute: boolean, userId?: Number): ExecutedResult;
+  function mute(mute: boolean, userId?: number): ExecutedResult;
   /**
    * Mutes all participants.
    * @param muteAll True to mute, false to unmute.
@@ -1665,14 +1685,22 @@ export declare namespace EmbeddedClient {
    * @param args.video If true, subscribe to the video QoS.
    * @param args.share If true, subscribe to the share QoS.
    */
-  function subscribeStatisticData(args?: { audio: boolean; video: boolean; share: boolean }): ExecutedResult;
+  function subscribeStatisticData(args?: {
+    audio: boolean;
+    video: boolean;
+    share: boolean;
+  }): ExecutedResult;
   /**
    * Unsubscribes to the statistic quality of service (QoS) data.
    * @param args.audio If true, unsubscribe to the audio QoS.
    * @param args.video If true, unsubscribe to the video QoS.
    * @param args.share If true, unsubscribe to the share QoS.
    */
-  function unSubscribeStatisticData(args?: { audio: boolean; video: boolean; share: boolean }): ExecutedResult;
+  function unSubscribeStatisticData(args?: {
+    audio: boolean;
+    video: boolean;
+    share: boolean;
+  }): ExecutedResult;
   /**
    * Sends private chat message to meeting participants. This API does not support sending chat messages in a webinar.
    * @param chatMessage the chat message to be sent, it cannot be undefined, null, or empty.
@@ -1683,7 +1711,12 @@ export declare namespace EmbeddedClient {
    * Gets the current status of the virtual background setting.
    * @category VirtualBackground
    */
-  function getVirtualBackgroundStatus(): { id: string; isVbOn: boolean; isLock: boolean; vbList: VbImageInfoType[] };
+  function getVirtualBackgroundStatus(): {
+    id: string;
+    isVbOn: boolean;
+    isLock: boolean;
+    vbList: VbImageInfoType[];
+  };
   /**
    * Sets the view type.
    */
@@ -1692,7 +1725,7 @@ export declare namespace EmbeddedClient {
    * Checks if the device supports the virtual background feature.
    * @category VirtualBackground
    */
-  function isSupportVirtualBackground(): Boolean;
+  function isSupportVirtualBackground(): boolean;
   /**
    * Locks the current virtual background image.
    * @param isLock true to lock the current virtual background image, false to unlock.
@@ -1807,7 +1840,10 @@ export declare namespace EmbeddedClient {
    * @param lng The target language.
    * @param userLangDict The new translation mapping.
    */
-  function updateLanguageTranslation(lng: LanguageOptionType, userLangDict: Object): ExecutedResult;
+  function updateLanguageTranslation(
+    lng: LanguageOptionType,
+    userLangDict: Record<string, any>
+  ): ExecutedResult;
   /**
    * Updates video attributes and induces a re-render with the respective updates.
    * @param videoOptions Options to customize video
@@ -1831,7 +1867,7 @@ export declare namespace EmbeddedClient {
   /**
    * Gets the current room.
    */
-  function getCurrentBreakoutRoom(): {};
+  function getCurrentBreakoutRoom(): Record<string, any>;
   /**
    * If you are the host, gets all the rooms.
    * If you are the participant, gets the assigned room.
@@ -2010,19 +2046,34 @@ export declare namespace EmbeddedClient {
    * @param callback Event handler (for meeting end event, the payload of the callback is payload.state === 'Closed').
    */
   function on(event: 'connection-change', callback: (payload: any) => void): void;
-  function on(event: 'audio-statistic-data-change', callback: typeof event_audio_statistic_data_change): void;
-  function on(event: 'video-statistic-data-change', callback: typeof event_video_statistic_data_change): void;
-  function on(event: 'share-statistic-data-change', callback: typeof event_share_statistic_data_change): void;
+  function on(
+    event: 'audio-statistic-data-change',
+    callback: typeof event_audio_statistic_data_change
+  ): void;
+  function on(
+    event: 'video-statistic-data-change',
+    callback: typeof event_video_statistic_data_change
+  ): void;
+  function on(
+    event: 'share-statistic-data-change',
+    callback: typeof event_share_statistic_data_change
+  ): void;
   function on(event: 'caption-message', callback: typeof event_caption_message): void;
   function on(event: 'recording-change', callback: typeof event_recording_change): void;
   function on(event: 'local-recording-change', callback: typeof event_local_recording_change): void;
   function on(event: 'user-added', callback: typeof event_user_added): void;
   function on(event: 'user-removed', callback: typeof event_user_removed): void;
   function on(event: 'user-updated', callback: typeof event_user_updated): void;
-  function on(event: 'peer-share-state-change', callback: typeof event_peer_share_state_change): void;
+  function on(
+    event: 'peer-share-state-change',
+    callback: typeof event_peer_share_state_change
+  ): void;
   function on(event: 'active-speaker', callback: typeof event_audio_active_speaker): void;
   function on(event: 'room-state-change', callback: typeof event_room_state_change): void;
-  function on(event: 'main-session-user-updated', callback: (payload: {}) => void): void;
+  function on(
+    event: 'main-session-user-updated',
+    callback: (payload: Record<string, any>) => void
+  ): void;
   function on(event: 'broadcast-message', callback: (payload: { message: string }) => void): void;
   function on(event: 'network-quality-change', callback: typeof event_network_quality_change): void;
   function on(
@@ -2035,10 +2086,22 @@ export declare namespace EmbeddedClient {
     callback: (payload: { type: string; value: string; canRecord?: boolean }) => void
   ): void;
   function on(event: 'join-speed', callback: typeof event_join_speed): void;
-  function on(event: 'far-end-camera-request-control', listener: typeof event_far_end_camera_request): void;
-  function on(event: 'far-end-camera-response-control', listener: typeof event_far_end_camera_response): void;
-  function on(event: 'far-end-camera-in-control-change', listener: typeof event_far_end_camera_in_control_change): void;
-  function on(event: 'far-end-camera-capability-change', listener: typeof event_far_end_camera_capability_change): void;
+  function on(
+    event: 'far-end-camera-request-control',
+    listener: typeof event_far_end_camera_request
+  ): void;
+  function on(
+    event: 'far-end-camera-response-control',
+    listener: typeof event_far_end_camera_response
+  ): void;
+  function on(
+    event: 'far-end-camera-in-control-change',
+    listener: typeof event_far_end_camera_in_control_change
+  ): void;
+  function on(
+    event: 'far-end-camera-capability-change',
+    listener: typeof event_far_end_camera_capability_change
+  ): void;
   function on(event: 'bot-relation-update', listener: typeof event_bot_relation_update): void;
   /**
    * Removes the event handler. Must be used with on() in pairs.
