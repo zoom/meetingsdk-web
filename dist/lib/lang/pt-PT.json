@@ -167,6 +167,7 @@
   "apac.common.audio_capture_failed_unknown_reason_text": "Seu microfone não está funcionando. Verifique sua conexão ou use um microfone diferente.",
   "apac.common.can_not_change_setttings_tip": "Não é possível alterar esta configuração devido às configurações do administrador.",
   "apac.common.cancel": "Cancelar",
+  "apac.common.certification": "Certification",
   "apac.common.close": "Fechar",
   "apac.common.connecting": "Ligar",
   "apac.common.copy": "Copiar",
