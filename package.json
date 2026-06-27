@@ -1,6 +1,6 @@
 {
   "name": "@zoom/meetingsdk",
-  "version": "3.13.1-zfg",
+  "version": "6.0.2-zfg",
   "description": "Zoom MeetingSDK-Web Client",
   "main": "index.js",
   "types": "index.d.ts",
@@ -28,7 +28,7 @@
     "react-dom": "18.2.0",
     "redux": "4.2.1",
     "react-redux": "8.1.2",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "redux-thunk": "2.4.2"
   },
   "peerDependencies": {
@@ -36,7 +36,7 @@
     "react-dom": "18.2.0",
     "redux": "4.2.1",
     "react-redux": "8.1.2",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "redux-thunk": "2.4.2"
   },
   "files": [
@@ -48,6 +48,8 @@
     "CHANGELOG.md",
     "LICENSE.pdf",
     "README.md",
-    "oss_attribution.txt"
+    "oss_attribution.txt",
+    "helper.html",
+    "externalLinkPage.html"
   ]
 }
