@@ -377,6 +377,18 @@ export interface Participant {
    * @deprecated in v4.0.0, use `participantUUID`
    */
   userGuid?: string;
+  /**
+   * Whether the participant is a bot user
+   */
+  isBotUser?: boolean;
+  /**
+   * Brand name of the bot, if applicable
+   */
+  botBrandName?: string;
+  /**
+   * Authorizer name of the bot, if applicable
+   */
+  botAuthorizerName?: string;
 }
 /**
  * The meeting information interface.
@@ -395,45 +407,9 @@ export interface MeetingInfo {
    */
   telPwd: string;
   /**
-   * The user's name.
-   */
-  userName: string;
-  /**
-   * The user's ID.
-   */
-  userId: number;
-  /**
-   * The user's email address.
-   */
-  userEmail: string;
-  /**
-   * The meeting invite email key.
-   */
-  inviteEmail: string;
-  /**
-   * The user's customer key.
-   */
-  customerKey: string;
-  /**
    * The topic of the meeting.
    */
   meetingTopic: string;
-  /**
-   * The encryption type of the meeting.
-   */
-  encryptionType: 'None' | 'AES ECB' | 'AES GCM';
-  /**
-   * The server region.
-   */
-  region: string;
-  /**
-   * The server network.
-   */
-  network: string;
-  /**
-   * Whether the user is in the meeting.
-   */
-  isInMeeting: boolean;
   /**
    * The language for the SDK.
    */
@@ -447,11 +423,58 @@ export interface MeetingInfo {
    */
   webEndpoint: string;
   /**
+   * The user's name.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  userName: string;
+  /**
+   * The user's ID.
+   * @deprecated in 6.0.0. Returns 0 always. Will be removed in 7.0.0.
+   */
+  userId: number;
+  /**
+   * The user's email address.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  userEmail: string;
+  /**
+   * The meeting invite email key.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  inviteEmail: string;
+  /**
+   * The user's customer key.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  customerKey: string;
+  /**
+   * The encryption type of the meeting.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  encryptionType: 'None' | 'AES ECB' | 'AES GCM';
+  /**
+   * The server region.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  region: string;
+  /**
+   * The server network.
+   * @deprecated in 6.0.0. Returns "" always. Will be removed in 7.0.0.
+   */
+  network: string;
+  /**
+   * Whether the user is in the meeting.
+   * @deprecated in 6.0.0. Returns false always. Will be removed in 7.0.0.
+   */
+  isInMeeting: boolean;
+  /**
    * The participant ID.
+   * @deprecated in 6.0.0. Returns 0 always. Will be removed in 7.0.0.
    */
   participantId: number;
   /**
    * Recording information.
+   * @deprecated in 6.0.0. Returns undefined always. Will be removed in 7.0.0.
    */
   recordingInfo: RecordingInfo;
 }
@@ -765,6 +788,18 @@ export interface ParticipantPropertiesPayload {
    * - 3: ConnectFail,
    */
   audioConnectionStatus?: number;
+  /**
+   * Whether the participant is a bot user
+   */
+  isBotUser?: boolean;
+  /**
+   * Brand name of the bot, if applicable
+   */
+  botBrandName?: string;
+  /**
+   * Authorizer name of the bot, if applicable
+   */
+  botAuthorizerName?: string;
 }
 /**
  * The view types
@@ -821,6 +856,10 @@ export interface JoinOptions {
    * @param zak Optional 'zak' param to start a meeting or webinar with OAuth.
    */
   zak?: string;
+  /**
+   * @param obfToken Optional 'obfToken' param to pass to the backend. Mutually exclusive with zak.
+   */
+  obfToken?: string;
   /**
    * @param recordingToken Optional token to allow local recording. See [Get a meeting's join token for local recording](https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/meetingLocalRecordingJoinToken) for details.
    */
@@ -926,15 +965,15 @@ export interface InitOptions {
    */
   webEndpoint?: string;
   /**
-   * @param language Default 'en-US'. jp-JP/ko-KO deprecated in v4.0.0, please use new ja-JP/ko-KR, will not accept jp-JP/ko-KO in 6.0.0
+   * @param language Default 'en-US'. jp-JP/ko-KO deprecated in v4.0.0, please use new ja-JP/ko-KR, will not accept jp-JP/ko-KO in 7.0.0
    * @property de-DE - German Deutsch
    * @property es-ES - Spanish Español
    * @property fr-FR - French Français
    * @property id-ID - Indonesian Bahasa Indonesia
    * @property it-IT - Italian Italia
-   * @property jp-JP - deprecated in v4.0.0, use ja-JP instead since 4.0.0, will not accept jp-JP in 6.0.0. Japanese 日本語
+   * @property jp-JP - deprecated in v4.0.0, use ja-JP instead since 4.0.0, will not accept jp-JP in 7.0.0. Japanese 日本語
    * @property ja-JP - Japanese 日本語
-   * @property ko-KO - deprecated in v4.0.0, use ko-KR instead since 4.0.0, will not accept ko-KO in 6.0.0. Korean 한국
+   * @property ko-KO - deprecated in v4.0.0, use ko-KR instead since 4.0.0, will not accept ko-KO in 7.0.0. Korean 한국
    * @property ko-KR - Korean 한국
    * @property nl-NL - Dutch Nederlands
    * @property pl-PL - Polish Polska
@@ -948,25 +987,25 @@ export interface InitOptions {
    * @property en-US - English Default
    */
   language?:
-    | 'en-US'
-    | 'de-DE'
-    | 'es-ES'
-    | 'fr-FR'
-    | 'jp-JP'
-    | 'ja-JP'
-    | 'pt-PT'
-    | 'ru-RU'
-    | 'zh-CN'
-    | 'zh-TW'
-    | 'ko-KO'
-    | 'ko-KR'
-    | 'vi-VN'
-    | 'it-IT'
-    | 'pl-PL'
-    | 'tr-TR'
-    | 'id-ID'
-    | 'nl-NL'
-    | 'sv-SE';
+  | 'en-US'
+  | 'de-DE'
+  | 'es-ES'
+  | 'fr-FR'
+  | 'jp-JP'
+  | 'ja-JP'
+  | 'pt-PT'
+  | 'ru-RU'
+  | 'zh-CN'
+  | 'zh-TW'
+  | 'ko-KO'
+  | 'ko-KR'
+  | 'vi-VN'
+  | 'it-IT'
+  | 'pl-PL'
+  | 'tr-TR'
+  | 'id-ID'
+  | 'nl-NL'
+  | 'sv-SE';
   /**
    * @param customize Optional customization options for the embedded client.
    */
@@ -1386,6 +1425,14 @@ export declare function event_room_state_change(payload: { status: BreakoutRoomS
 export declare function event_chat_on_message(payload: ChatRecord | ChatMessage): void;
 
 /**
+ * Occurs when the bot relation is updated
+ * @param payload the event detail
+ *
+ * @event
+ */
+export declare function event_bot_relation_update(payload: any): void;
+
+/**
  * Occurs when far end camera request is received
  * @param payload the event detail
  *
@@ -1710,6 +1757,28 @@ export declare namespace EmbeddedClient {
    */
   function revokeCoHost(userId: number): ExecutedResult;
   /**
+   * Checks whether the current user is a bot user.
+   * @returns boolean | null
+   */
+  function isBotUser(): boolean | null;
+  /**
+   * Gets the bot app name.
+   * @returns string | null
+   */
+  function getBotAppName(): string | null;
+  /**
+   * Gets the bot authorized user info by user id.
+   * @param userId The user ID
+   * @returns Participant | null
+   */
+  function getBotAuthorizedUserInfoByUserId(userId: number): Participant | null;
+  /**
+   * Gets the authorized bot list by user id.
+   * @param userId The user ID
+   * @returns An array of Participant objects (may include null for bots that left), or null if not in meeting or no bots found
+   */
+  function getAuthorizedBotListByUserId(userId: number): (Participant | null)[] | null;
+  /**
    * Pins the corresponding user.
    * @param userId A valid user ID in the current meeting.
    */
@@ -1933,7 +2002,7 @@ export declare namespace EmbeddedClient {
    * For example:
    * ```javascript
    * on("connection-change", (payload) => {
-   *  if (payload.state === 'Closed) {
+   *  if (payload.state === 'Closed') {
    *    console.log("Meeting ended")
    *  }
    * })
@@ -1971,6 +2040,7 @@ export declare namespace EmbeddedClient {
   function on(event: 'far-end-camera-response-control', listener: typeof event_far_end_camera_response): void;
   function on(event: 'far-end-camera-in-control-change', listener: typeof event_far_end_camera_in_control_change): void;
   function on(event: 'far-end-camera-capability-change', listener: typeof event_far_end_camera_capability_change): void;
+  function on(event: 'bot-relation-update', listener: typeof event_bot_relation_update): void;
   /**
    * Removes the event handler. Must be used with on() in pairs.
    * @param event event name. Same as 'on' event name list.

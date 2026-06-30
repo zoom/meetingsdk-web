@@ -335,6 +335,7 @@ export type InMeetingEvent =
   | 'onUserLeave'
   | 'onUserUpdate'
   | 'onUserIsInWaitingRoom'
+  | 'bot-relation-update'
   | 'onMeetingStatus'
   | 'onPreviewPannel|  receiveSharingChannelReady'
   | 'onReceiveTranscriptionMsg'
@@ -569,7 +570,7 @@ export declare namespace ZoomMtgLang {
    *
    * Be sure to call it before calling `init`.
    *
-   * jp-JP/ko-KO deprecated in v4.0.0, please use new ja-JP/ko-KO, will not accept jp-JP/ko-KO in 6.0.0
+   * jp-JP/ko-KO deprecated in v4.0.0, please use new ja-JP/ko-KO, will not accept jp-JP/ko-KO in 7.0.0
    * @param lang
    *
    */
@@ -834,6 +835,10 @@ export namespace ZoomMtg {
      */
     childToken?: string;
     /**
+     * Optional. obfToken.
+     */
+    obfToken?: string;
+    /**
      * Callback function on success.
      */
     success: Function;
@@ -880,6 +885,10 @@ export namespace ZoomMtg {
      * As of v5.0.0, the signature requires the appKey field appKey:sdkKey or appKey:clientId. if not contain appKey, can't join test meeting.
      */
     signature: string;
+    /**
+     * Optional. obfToken.
+     */
+    obfToken?: string;
     /**
      * Callback function on success.
      */
@@ -1029,6 +1038,71 @@ export namespace ZoomMtg {
    * @param args
    */
   function getCurrentUser(args: {
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+  /**
+   * Checks whether the current user is a bot.
+   * @param args
+   */
+  function isBotUser(args: {
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+  /**
+   * Gets the name of the app for the bot (current user must be a bot).
+   * @param args
+   */
+  function getBotAppName(args: {
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+  /**
+   * Gets the authorized user info based on the bot userId.
+   * @param args
+   */
+  function getBotAuthorizedUserInfoByUserId(args: {
+    /**
+     * The bot user's ID.
+     */
+    userId: number;
+    /**
+     * Callback function on success.
+     */
+    success?: Function;
+    /**
+     * Callback function in the event of an error.
+     */
+    error?: Function;
+  }): void;
+  /**
+   * Gets the authorized bot user list based on the given userId.
+   * If userId is not provided, returns bots authorized by the current user.
+   * @param args
+   */
+  function getAuthorizedBotListByUserId(args: {
+    /**
+     * Optional. The user ID. If not provided, uses the current user's ID.
+     */
+    userId?: number;
     /**
      * Callback function on success.
      */
@@ -1660,6 +1734,27 @@ export namespace ZoomMtg {
     callback: Function,
   ): void;
   /**
+   * Listens for bot authorizer relationship changes.
+   * @param event
+   * @param callback
+   * Only supported in meetings.
+   * Example:
+  ```js
+  ZoomMtg.inMeetingServiceListener('bot-relation-update', function (data) {
+    console.log('bot-relation-update', data);
+    // data is an array of relation objects:
+    // [{ parentUserID: number, childUserID: number }, ...]
+    // parentUserID: The user who authorized the bot
+    // childUserID: The bot user ID
+  });
+  ```
+  @category Listener
+   */
+  function inMeetingServiceListener(
+    event: 'bot-relation-update',
+    callback: Function,
+  ): void;
+  /**
    * Listens for sharing channel readiness to receive.
    * @param event 
    * @param callback 
@@ -1977,7 +2072,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
    * @param callback
    * Example:
    * ```js
-  ZoomMtg.inMeetingServiceListener('onMeetingStatus', function (data) {
+  ZoomMtg.inMeetingServiceListener('onMeetingStatus', function (data: any) {
     // {status: 1(connecting), 2(connected), 3(disconnected), 4(reconnecting)}
     console.log(data);
   });
