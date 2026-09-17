@@ -25,12 +25,12 @@
     "url": "https://github.com/zoom/meetingsdk-web/issues"
   },
   "peerDependencies": {
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "redux": "4.2.1",
-    "react-redux": "8.1.2",
-    "lodash": "^4.18.1",
-    "redux-thunk": "2.4.2"
+    "react-redux": "8.1.3",
+    "redux-thunk": "2.4.2",
+    "lodash": "^4.18.1"
   },
   "files": [
     "dist/*",

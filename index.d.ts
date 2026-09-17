@@ -58,6 +58,7 @@ declare let initArgs: {
    */
   audioPanelAlwaysOpen?: boolean; //optional
   /**
+   * @deprecated will remove in 7.0 because we support side-by-side sharing.
    * showPureSharingContent, default: false, optional. Prevents elements from covering sharing content when show is true.
    */
   showPureSharingContent?: boolean; //optional
@@ -250,6 +251,24 @@ declare let initArgs: {
    */
   leaveOnPageUnload?: boolean;
   /**
+   * Sets UI theme mode. Optional.
+   * Supported values: 'default' | 'light' | 'dark'.
+   * - 'default': follows system preference
+   * - 'light': force light theme
+   * - 'dark': force dark theme
+   *
+   * Version behavior:
+   * - In 6.5.0+, if not set, defaults to `default` (follows browser/system preference).
+   *   Note: Prior to this change, 6.5.0 defaulted to `light`. Integrators relying on
+   *   the light default should pass `theme: 'light'` explicitly.
+   *
+   * Notes:
+   * - Mobile supports theme switching only before entering a meeting.
+   * - Mobile In-meeting is always dark mode on mobile.
+   * - Desktop: Chat/Participants/Settings do not support theme switching and remain dark mode.
+   */
+  theme?: 'default' | 'light' | 'dark';
+  /**
    * success: optional, callback function on success.
    */
   success?: Function;
@@ -400,6 +419,13 @@ export type DesktopCapturerSource = {
    * (Optional）The app icon's image source URL, used to display app icon. If you pass this parameter, the SDK uses in as the app icon.
    */
   appIconSrc?: string;
+};
+
+type ZoomApiSuccess<T = any> = (res: T) => void;
+type ZoomApiError = (err: any) => void;
+type ZoomApiCallbacks<T = any> = {
+  success?: ZoomApiSuccess<T>;
+  error?: ZoomApiError;
 };
 
 /**
@@ -612,12 +638,6 @@ export declare namespace ZoomMtgLang {
    * @param callback
    */
   function onLoad(callback: (res: 'success' | 'timeout') => void): void;
-  /**
-   * This is deprecated in versions >= 3.0.0, so you can remove it.
-   @deprecated
-   *
-   */
-  function reload(lang: string): void;
 
   /**
    * Gets all language resource results.
@@ -643,11 +663,6 @@ export declare namespace ZoomMtgLang {
    *
    */
   function getSupportLanguage(): Array<string>;
-  /**
-   * This is deprecated in versions >= 3.0.0, so you can remove it.
-   * @deprecated
-   */
-  function setSupportLanguage(langArray: Array<string>): void;
 }
 
 /**
@@ -735,21 +750,6 @@ export namespace ZoomMtg {
    */
   const i18n: typeof ZoomMtgLang;
   /**
-   * This api been removed in versions >= 3.12.0, please use other way generate signature.
-   *
-   * Generate each time you join a meeting or webinar through a server-side function where you can securely store SDK credentials.
-   *
-   * See Generate the SDK JWT key for details:
-   *
-   * https://developers.zoom.us/docs/meeting-sdk/auth/
-   *
-   * See the Sample Signature app for an example:
-   *
-   * https://github.com/zoom/meetingsdk-sample-signature-node.js
-   * @deprecated
-   */
-  function generateSDKSignature(): string;
-  /**
    * Changes the Zoom default library resource requirements.
    * Default is ZoomMtg.setZoomJSLib('https://source.zoom.us/{VERSION_NUMBER}/lib', '/av')
    * @category Join
@@ -765,7 +765,7 @@ export namespace ZoomMtg {
    * Note that Chrome origin trials (OT) provide many new features before Chrome releases. See the following links for details:
    * https://developer.chrome.com/origintrials/#/trials/active and https://developer.chrome.com/blog/origin-trials/
    * The Meeting SDK for Web can use:
-   * 1. PEPC(Page Embedded Permission Control - Cam/Mic/Geolocation). See: https://chromestatus.com/feature/5125006551416832
+   * 1. UserMediaElement. See: https://developer.chrome.com/origintrials/#/register_trial/3736298840857247745
    * @category Join
    */
   function prepareWebSDK(
@@ -779,7 +779,8 @@ export namespace ZoomMtg {
    * @param args
    * @category Join
    */
-  function init(args: typeof initArgs): void;
+  function init(args: typeof initArgs): Promise<any>;
+  function init(args: typeof initArgs & Required<ZoomApiCallbacks>): void;
   /**
    * Joins a meeting.
    * @param args
@@ -817,11 +818,6 @@ export namespace ZoomMtg {
      */
     zak?: string;
     /**
-     * We remove sdkKey from join params since v4.0.0. You can just use signature.
-     * @deprecated
-     */
-    sdkKey?: string;
-    /**
      * Required. The signature to start or join a meeting. See https://developers.zoom.us/docs/meeting-sdk/auth/ for details.
      * As of v5.0.0, the signature requires the appKey field appKey:sdkKey or appKey:clientId. if not contain appKey, can't join meeting.
      */
@@ -846,7 +842,55 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error: Function;
-  }): void;
+  }): void | Promise<any>;
+  function join(args: {
+    /**
+     * Required, the Zoom meeting or webinar number.
+     */
+    meetingNumber: string | number;
+    /**
+     * Required. The name of the user starting or joining the meeting or webinar.
+     */
+    userName: string;
+    /**
+     * Required for webinar. Required for meeting if registration is required; optional if not.
+     * The email of the user starting or joining the meeting or webinar.
+     */
+    userEmail?: string;
+    /**
+     * Required. The meeting’s password. Leave as an empty string if the meeting or webinar only requires the waiting room.
+     */
+    passWord?: string;
+    /**
+     * Optional. An identifier for the user that you can get back from the Meeting API. Max length 36 char.
+     */
+    customerKey?: string;
+    /**
+     * Required if registration is required; optional if not. The registrant’s token.
+     */
+    tk?: string;
+    /**
+     * Required for hosts starting a meeting or webinar; optional otherwise. The host’s Zoom Access Key (ZAK) token.
+     */
+    zak?: string;
+    /**
+     * Required. The signature to start or join a meeting. See https://developers.zoom.us/docs/meeting-sdk/auth/ for details.
+     * As of v5.0.0, the signature requires the appKey field appKey:sdkKey or appKey:clientId. if not contain appKey, can't join meeting.
+     */
+    signature: string;
+    /**
+     * Optional. Token to allow local recording. See [Get a meeting's join token for local recording](https://developers.zoom.us/docs/api/rest/reference/zoom-api/methods/#operation/meetingLocalRecordingJoinToken) for details.
+     */
+    recordingToken?: string;
+    /**
+     * Optional. childToken.
+     */
+    childToken?: string;
+    /**
+     * Optional. obfToken.
+     */
+    obfToken?: string;
+  }): Promise<any>;
   /**
    * Join a test meeting. JWT SDK signature only supports role=0.
    * @param args
@@ -876,11 +920,6 @@ export namespace ZoomMtg {
      */
     customerKey?: string;
     /**
-     * We remove sdkKey from join params since v4.0.0. You can just use signature.
-     * @deprecated
-     */
-    sdkKey?: string;
-    /**
      * Required. The signature to start or join a meeting. See https://developers.zoom.us/docs/meeting-sdk/auth/ for details.
      * As of v5.0.0, the signature requires the appKey field appKey:sdkKey or appKey:clientId. if not contain appKey, can't join test meeting.
      */
@@ -897,7 +936,39 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error: Function;
-  }): void;
+  }): void | Promise<any>;
+  function joinTest(args: {
+    /**
+     * Required, the Zoom meeting or webinar number.
+     */
+    meetingNumber: string | number;
+    /**
+     * Required. The name of the user starting or joining the meeting or webinar.
+     */
+    userName: string;
+    /**
+     * Required for webinar. Required for meeting if registration is required; optional if not.
+     * The email of the user starting or joining the meeting or webinar.
+     */
+    userEmail?: string;
+    /**
+     * Required. The meeting’s password. Leave as an empty string if the meeting or webinar only requires the waiting room.
+     */
+    passWord?: string;
+    /**
+     * Optional. An identifier for the user that you can get back from the Meeting API. Max length 36 char.
+     */
+    customerKey?: string;
+    /**
+     * Required. The signature to start or join a meeting. See https://developers.zoom.us/docs/meeting-sdk/auth/ for details.
+     * As of v5.0.0, the signature requires the appKey field appKey:sdkKey or appKey:clientId. if not contain appKey, can't join test meeting.
+     */
+    signature: string;
+    /**
+     * Optional. obfToken.
+     */
+    obfToken?: string;
+  }): Promise<any>;
   /**
    * Shows or hides the invite button.
    * @param args
@@ -971,7 +1042,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Set customized waiting room title and description.
    * @param args
@@ -994,8 +1065,9 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
+   * @deprecated will remove in 7.0 because we support side-by-side sharing.
    * Shows or hides border around shared content.
    * @param args
    */
@@ -1018,7 +1090,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Gets the list of breakout rooms and attendees.
    * @param args
@@ -1032,7 +1104,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Gets the current user information.
    * @param args
@@ -1046,7 +1118,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Checks whether the current user is a bot.
    * @param args
@@ -1060,7 +1132,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Gets the name of the app for the bot (current user must be a bot).
    * @param args
@@ -1074,7 +1146,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Gets the authorized user info based on the bot userId.
    * @param args
@@ -1092,7 +1164,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Gets the authorized bot user list based on the given userId.
    * If userId is not provided, returns bots authorized by the current user.
@@ -1111,7 +1183,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Sets the log level.
    * @param level
@@ -1130,7 +1202,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Invites yourself to join by phone.
    * @param args
@@ -1157,7 +1229,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Invites a participant to join by phone.
    * @param args
@@ -1184,7 +1256,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Invites Zoom Cloud Room Connector (CRC) device.
    * @param args
@@ -1207,7 +1279,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Cancels Zoom Cloud Room Connector (CRC) device invitation.
    * @param args
@@ -1222,7 +1294,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Mutes or unmutes a participant.
    * @param args
@@ -1245,7 +1317,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Mutes or unmutes all attendees. Host or co-host only.
    * @param args
@@ -1264,7 +1336,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Renames the participant. Host or co-host only. The userId and oldName must be correct for this operation to succeed.
    * @param args
@@ -1291,7 +1363,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Ejects a participant from the meeting. Host or co-host only.
    * @param args
@@ -1310,7 +1382,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Stops or starts cloud recording. Host only.
    * @param args
@@ -1329,7 +1401,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
 
   /**
    * Get focus mode status.
@@ -1344,7 +1416,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
 
   /**
    * Stops or starts focus mode. Host/co-host only.
@@ -1364,7 +1436,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Locks or unlocks the meeting. Host or co-host only. If the meeting is locked, others can't join the meeting unless it is unlocked.
    * @param args
@@ -1383,7 +1455,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Leaves the meeting. If the host leaves, the meeting will end.
    * @param args
@@ -1405,7 +1477,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Ends the meeting. Host only.
    * @param args
@@ -1419,7 +1491,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Makes this user the host.
    * @param args
@@ -1438,7 +1510,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
 
   /**
    * Makes the user a co-host.
@@ -1458,7 +1530,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
 
   /**
    * Removes co-host status.
@@ -1478,7 +1550,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
 
   /**
    * Reclaims the host status if the user is the original host or a co-host.
@@ -1494,7 +1566,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
 
   /**
    * Claims host with host key.
@@ -1516,7 +1588,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
 
   /**
    * Puts the participant in the waiting room or lets the participant join the meeting.
@@ -1540,7 +1612,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
 
   /**
    * Raise the current user's hand.
@@ -1556,7 +1628,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
 
   /**
    * Lower the user's hand.
@@ -1576,7 +1648,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
 
   /**
    * Enables the host to lower all user's hands.
@@ -1592,7 +1664,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Lets all participants in the waiting room join the meeting.
    * @param args
@@ -1607,7 +1679,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Start screen share.
    * - Check the share privilege before starting screen share.
@@ -1672,7 +1744,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
 
   /**
    * Change leaveUrl after participants join the meeting.
@@ -1692,7 +1764,7 @@ export namespace ZoomMtg {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
 
   /**
    * Listens for user join or leave events and handles them.
@@ -2407,20 +2479,6 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
   ): void;
 
   /**
-   * This is deprecated in versions >= 3.0.0, so you can remove it.
-   * @deprecated
-   */
-  function reRender(args: {
-    /**
-     * Callback function on success.
-     */
-    success?: Function;
-    /**
-     * Callback function in the event of an error.
-     */
-    error?: Function;
-  }): void;
-  /**
    * Gets the Meeting SDK for Web version.
    * @param args
    */
@@ -2433,7 +2491,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Subscribes to audio or video quality of service (QoS) data.
    * @param args.audio
@@ -2460,7 +2518,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Unsubscribes to audio or video quality of service (QoS) data.
    * @param args
@@ -2488,7 +2546,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Checks if the browser supports virtual background. Must enable "virtual background" to use this function.
    * @category VirtualBackground
@@ -2502,7 +2560,8 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
+  function isSupportVirtualBackground(args?: {}): Promise<any>;
   /**
    * Get virtual background status.
    * @category VirtualBackground
@@ -2516,7 +2575,8 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
+  function getVirtualBackgroundStatus(args?: {}): Promise<any>;
   /**
    * Update virtual background image list.
    * @param args
@@ -2536,7 +2596,13 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
+  function updateVirtualBackgroundList(args: {
+    /**
+     * Virtual background (VB) list. To disable VB, use vbList=[].
+     */
+    vbList?: Array<VbImageInfoType>;
+  }): Promise<any>;
   /**
    * Change virtual background (VB) to the specified string from the VB list if the names match.
    * If id='blur', blur background instead.
@@ -2558,7 +2624,13 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
+  function setVirtualBackground(args: {
+    /**
+     * virtual background ID
+     */
+    id?: string;
+  }): Promise<any>;
   /**
    *
    * Lock virtual background to a specific image.
@@ -2579,7 +2651,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
 
   /**
    * When you use the Meeting SDK for web in an Electron application, if this method is registered, it calls `getVideoSourcesCallBack` when a user clicks "screen share" to obtain the application information returned by Electron that can share the desktop. Provide the callback function return `desktopCapturer` to share sources in the Electron app.
@@ -2611,7 +2683,13 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
+  function shareSource(args: {
+    /**
+     * Callback function needed to return the source of the Electron share:
+     */
+    getVideoSourcesCallBack: typeof getShareSourcesFunc | Function;
+  }): Promise<any>;
 
   /**
    * Get the supported or unsupported features on the current browser/platform.
@@ -2639,7 +2717,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
 
   /**
    * Media capture permission
@@ -2659,7 +2737,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
 
   /**
    * Start, pause, or stop media capture.
@@ -2678,7 +2756,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Ask the host to join the breakout room to help. The host can decline or postpone the request for help.
    * - Only a non-host or non-co-host can call this method.
@@ -2694,7 +2772,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Postpone the request for help.
    * - Only the host can call this method.
@@ -2713,7 +2791,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Host and co-host create breakout rooms.
    * @category BreakoutRoom
@@ -2747,7 +2825,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    *
    * Open the created rooms (host or co-host only).
@@ -2773,7 +2851,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    *
    * Close the room (host and co-host only).
@@ -2788,7 +2866,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Host and cohost can broadcast content in the main session and all rooms.
    * @category BreakoutRoom
@@ -2806,7 +2884,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Assign an unassigned participant to a room (host and co-host only).
    * @category BreakoutRoom
@@ -2828,7 +2906,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
 
   /**
    * Move a participant in room to the specified room (host and co-host only).
@@ -2851,7 +2929,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Join a breakout room
    *  - Join only after the room is open.
@@ -2870,7 +2948,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
 
   /**
    * Leave the room
@@ -2886,7 +2964,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Get the current breakout room.
    * @category BreakoutRoom
@@ -2962,7 +3040,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Pins the corresponding user.
    */
@@ -2983,7 +3061,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Gets the pinned userId list.
    */
@@ -3005,7 +3083,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * userId A valid user ID in the current meeting.
      */
     userId: number;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Operates Spotlight user (host and cohost only).
    */
@@ -3026,7 +3104,7 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
      * Callback function in the event of an error.
      */
     error?: Function;
-  }): void;
+  }): void | Promise<any>;
   /**
    * Gets the Spotlight userId list.
    */
