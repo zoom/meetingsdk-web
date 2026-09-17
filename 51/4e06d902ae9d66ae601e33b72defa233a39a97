@@ -1,0 +1,14 @@
+package.json
+  h_caeb496b5dd51a 28-29,31-33
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.16",
+  "base_commit_sha": "514e06d902ae9d66ae601e33b72defa233a39a97",
+  "prompts": {},
+  "humans": {
+    "h_caeb496b5dd51a": {
+      "author": "Jack Yang <jack.yang@zoom.us>"
+    }
+  }
+}
