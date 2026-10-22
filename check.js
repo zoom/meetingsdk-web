@@ -4,7 +4,10 @@ const VIDEO_WORKER_FILE_NAME = 'video_m.min.js';
 const AUDIO_WORKER_FILE_NAME = 'js_audio_process.min.js';
 const JS_MEDIA_FILE_NAME = 'js_media.min.js';
 const WEBCLIENT_SDK_NAME = './dist/lib/av';
-const INDEX_JS_PATH = './dist/zoomus-websdk.umd.min.js';
+const SOURCE_URL_CHECK_PATHS = [
+  './dist/client-view.umd.min.js',
+  './dist/component-view.umd.min.js',
+];
 
 function stripTrailingDots(value) {
   return typeof value === 'string' ? value.replace(/\.+$/g, '') : value;
@@ -103,10 +106,9 @@ function getJsMediaVersion() {
 
 function checkSourceUrl() {
   try {
-    const content = fs.readFileSync(INDEX_JS_PATH, {
-      encoding: 'utf-8',
-      flag: 'r',
-    });
+    const content = SOURCE_URL_CHECK_PATHS.map((filePath) =>
+      fs.readFileSync(filePath, { encoding: 'utf-8', flag: 'r' }),
+    ).join('\n');
 
     const hasZoomGov = content.includes('source.zoomgov.com');
     const hasZoomMil = content.includes("source.zoomgov.mil");
@@ -139,6 +141,6 @@ console.log("checkSourceUrl", sourceUrlResult);
 
 // Exit with error if source.zoom.us is not found
 if (!sourceUrlResult || !sourceUrlResult.hasZoomUs) {
-  console.error('ERROR: source.zoom.us not found in dist/index.js');
+  console.error('ERROR: source.zoom.us not found in dist bundles');
   process.exit(1);
 }
