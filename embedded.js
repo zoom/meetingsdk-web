@@ -1,3 +1,3 @@
 
 
-module.exports = require('./dist/zoomus-websdk-embedded.umd.min');
+module.exports = require('./dist/component-view.umd.min');

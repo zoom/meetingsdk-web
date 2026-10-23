@@ -95,9 +95,18 @@ declare let initArgs: {
    */
   videoDrag?: boolean; //optional
   /**
-   * sharingMode: default: 'both', optional. Shares screen. 'fit' - disables sharing "origin size".
+   * sharingMode: default: 'both', optional. Shares screen. 'fit' - disables sharing "origin size". 'original' - shares the original size.
    */
   sharingMode?: string; //optional
+  /**
+   * sharingType: default: '', optional. Sets the browser's preferred/default selection in the
+   * native screen-sharing picker; it does not guarantee the final selection. 'monitor' prefers the
+   * entire screen, 'window' prefers a window, and 'browser' prefers a browser tab. An empty value
+   * uses the browser's default selection behavior. The browser controls the native picker, so the
+   * user may select another supported surface. The actual selected type is reported through
+   * onShareContentChange when sharing starts; browser support may vary.
+   */
+  sharingType?: '' | 'monitor' | 'window' | 'browser'; //optional
   /**
    * videoHeader: default: true, optional. Shows or hides the video tile header.
    */
@@ -151,6 +160,10 @@ declare let initArgs: {
    * disablePreview: default: false, optional. Enables or disables the audio and video preview features.
    */
   disablePreview?: boolean; // optional
+  /**
+   * enableVDIStatus: default: false, optional. Shows a Zoom VDI Plugin connection status dot next to the meeting title. Green means optimized via the Zoom VDI Plugin or WebRTC redirection, yellow means connecting to the Zoom VDI Plugin or WebRTC redirection, grey means not optimized with no connection to the Zoom VDI Plugin or WebRTC redirection. Enable it when the meeting runs inside a Zoom VDI webview.
+   */
+  enableVDIStatus?: boolean; // optional
   /**
    * enableWaitingRoomPreview: default: true, optional. Enables or disables the audio and video preview in the waiting room or when the participant is waiting for the host to start the meeting.
    */
@@ -377,6 +390,8 @@ export type InMeetingEvent =
   | 'onFeedBackData'
   | 'onRecordingChange'
   | 'onShareContentChange';
+
+export type SharingType = 'monitor' | 'window' | 'browser' | 'unknown';
 
 /**
  *  For the APIs that take images, the value of the image type returned by the getVideoSourcesCallBack method, passed in the shareSource API.
@@ -2319,6 +2334,11 @@ ZoomMtg.inMeetingServiceListener('onJoinSpeed', function (data) {
 
   /**
    * Listens for share content change.
+   * When `data.sharingStatus` is `sharing`, `data.sharingType` identifies the
+   * selected monitor, window, browser tab, or `unknown` when the browser or
+   * media SDK cannot report the selected surface.
+   * When `data.sharingStatus` is not `sharing`, `unknown` usually means other
+   * users are sharing content.
    * @param event 
    * @param callback
    * Example:

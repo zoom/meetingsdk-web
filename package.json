@@ -1,9 +1,11 @@
 {
   "name": "@zoom/meetingsdk",
-  "version": "6.5.0",
+  "version": "6.10.0",
   "description": "Zoom MeetingSDK-Web Client",
   "main": "index.js",
   "types": "index.d.ts",
+  "unpkg": "./dist/client-view.umd.min.js",
+  "jsdelivr": "./dist/client-view.umd.min.js",
   "scripts": {
     "postinstall": "node postinstall.js"
   },
@@ -44,5 +46,23 @@
     "helper.html",
     "externalLinkPage.html",
     "postinstall.js"
-  ]
+  ],
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./dist/esm/client-view.es.min.js",
+      "require": "./dist/client-view.umd.min.js",
+      "default": "./dist/client-view.umd.min.js"
+    },
+    "./embedded": {
+      "types": "./embedded.d.ts",
+      "import": "./dist/esm/component-view.es.min.js",
+      "require": "./dist/component-view.umd.min.js",
+      "default": "./dist/component-view.umd.min.js"
+    },
+    "./*": "./*"
+  },
+  "engines": {
+    "node": ">=18"
+  }
 }

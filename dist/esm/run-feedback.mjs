@@ -1,0 +1,45 @@
+/* 6.10.0_20261021_ioizec */
+import{Gm as e,Hp as a,Ic as t,Td as s,W as c,pp as n,tg as d,zc as i}from"./av-config.mjs";import{r as o}from"./emoji-reactions.mjs";import{Go as r,Ig as l,d_ as u,ef as m,jg as _,og as f,ro as h,to as p,vp as b}from"./main-client.mjs";import{_n as x,dn as k,hn as v,ln as y,pn as j,xn as N,yn as w}from"./svg-assets.mjs";import{r as g}from"./zoommtgMain.mjs";var C=/* @__PURE__ */d(e()),O=o();_();var R=/* @__PURE__ */d(l());function I({status:e}){const{Default:a,Hover:t,Active:s}=e;/* @__PURE__ */ /* @__PURE__ */
+return(0,O.jsxs)("div",{className:"feedback-thumb",children:[
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsx)(a,{className:"feedback-thumb__default"}),
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsx)(t,{className:"feedback-thumb__hover"}),
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsx)(s,{className:"feedback-thumb__active"})]})}I.propTypes={status:R.default.object.isRequired};var q=m.create({headers:{"ZOOM-USER-AGENT":"zoom.webclient","Content-Type":"application/x-www-form-urlencoded"}});q.interceptors.request.use(e=>{const t=i({},e),s=`[Meeting Number:${e.url.slice(e.url.lastIndexOf("=")+1)}]\n\r[Device Info:${navigator.userAgent}]`;return e.data.email||t.data.set("email",a.userEmail),e.data.addComments?t.data.set("content",`${e.data.addComments}\n\r${s}`):(t.data.delete("addComments"),t.data.set("content",s)),t});var T=({quality:e,email:a,addComments:t,recaptcha:s})=>(c,n)=>{const{meeting:{baseUrl:d,meetingNumber:i}}=n(),o=`${d}/wc/feedback?meetingNumber=${i}`;q.post(o,new URLSearchParams({quality:e,email:a,addComments:t,recaptcha:s})).finally(()=>{c(S)})},S=(e,a)=>{const{meeting:{baseUrl:t,meetingNumber:s},feedback:{isLeave:c}}=a();e(u(c)),setTimeout(()=>{window.location.href=`${t}/wc/leave?meetingNumber=${s}&feedback=true`},0)},D=[{text:s("I could not hear others","apac.wc_feedback_hadissues_9"),id:9},{text:s("I could not see others","apac.wc_feedback_hadissues_11"),id:11},{text:s("Others could not hear me","apac.wc_feedback_hadissues_8"),id:8},{text:s("Others could not see me","apac.wc_feedback_hadissues_10"),id:10},{text:s("Poor audio quality","apac.wc_feedback_hadissues_2"),id:2},{text:s("Poor video quality","apac.wc_feedback_hadissues_1"),id:1}],$=s("The account owner can see who you are, your contact information (if you\u2019re logged in or provided it) and your feedback \u2014 and can share them with apps and others.","apac.wc_feedback_feedback_tip"),A=s("How was your experience?","apac.wc_feedback_everyone_title"),E=s("Great","apac.wc_feedback_great"),G=s("Had Issues","apac.wc_feedback_had_issues"),H=s("What went wrong?","apac.wc_feedback_had_issues_title"),P=s("Submit","apac.wc_feedback_submit"),M=s("How was your experience?","apac.wc_feedback_randomly_title"),U=s("It\u2019s OK to contact me about this feedback","apac.wc_feedback_contact_me"),z=s("Enter your email address","apac.wc_feedback_enter_email_address"),F=s("Please enter your email","apac.wc_feedback_please_enter_email"),K=s("Please enter a valid email","apac.wc_feedback_please_enter_valid_email"),V=s("Who can see your feedback?","apac.wc_feedback_who_can_see_tip");function W(){const[e,a]=(0,C.useState)(!1);/* @__PURE__ */ /* @__PURE__ */
+return(0,O.jsx)(p,{position:"bottom-middle",trigger:"controlled",paperClassName:"feedback-attention",contentNode:/* @__PURE__ */ /* @__PURE__ */(0,O.jsx)("p",{tabIndex:0,className:"feedback-attention__hover",children:$}),isOpen:e,children:/* @__PURE__ */ /* @__PURE__ */(0,O.jsxs)("button",{type:"button",tabIndex:0,className:"see-feedback-tip",onClick:()=>a(!e),children:[/* @__PURE__ */ /* @__PURE__ */(0,O.jsx)(y,{className:"see-feedback-tip__svg"}),/* @__PURE__ */ /* @__PURE__ */(0,O.jsx)("div",{className:"see-feedback-tip__text",children:V})]})})}var L=D.map(e=>({id:e.id,checked:!1}));function Z({ctx:e}){const s=(0,C.useRef)(),[c,n]=(0,C.useState)(""),[d,i]=(0,C.useState)(L),o=(0,C.useRef)(),{dispatch:l}=e(),{enableFeedbackTextField:u,feedbackCustMessage:m}=a.meetingOptions,_=(0,C.useMemo)(()=>!d.find(e=>e.checked)&&!c,[c,d]);function p(){return(p=t(function*(){var e;const a=d.filter(e=>e.checked).map(e=>e.id).map(e=>""+e).join(","),t=a.length?`NOT GOOD|${a}`:"NOT GOOD|0",s=yield null===(e=o.current)||void 0===e?void 0:e.getCaptchaValidateResult();l(T({quality:t,addComments:c,recaptcha:s}))})).apply(this,arguments)}/* @__PURE__ */ /* @__PURE__ */
+return(0,O.jsxs)("div",{className:"feedback-hadissues",children:[
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsx)("div",{style:{display:"none"},children:/* @__PURE__ */ /* @__PURE__ */(0,O.jsx)(g,{ref:o})}),
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsxs)("div",{className:"feedback-hadissues__title",children:[" ",H," "]}),
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsxs)("div",{className:"feedback-hadissues__content",children:[
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsx)("div",{className:"feedback-hadissues__content__items",ref:s,children:D.map(e=>/* @__PURE__ */ /* @__PURE__ */(0,O.jsx)(r,{className:"feedback-hadissues__content__items_item",onChange:a=>{!function(e,a){const t=f(d,t=>{t[d.findIndex(e=>e.id===a)].checked=e});i(t)}(a,e.id)},children:e.text},e.id))}),u&&/* @__PURE__ */ /* @__PURE__ */(0,O.jsx)("textarea",{onChange:e=>{n(e.target.value)},value:c,placeholder:"Additional comments",className:"feedback-hadissues__content__textinput"}),
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsx)(h,{type:"primary",className:"feedback-hadissues__content__button",onClick:function(){return p.apply(this,arguments)},disabled:_,children:P}),m&&/* @__PURE__ */ /* @__PURE__ */(0,O.jsx)("div",{className:"feedback-hadissues__content__customtext",tabIndex:0,children:m})]}),
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsx)(W,{})]})}Z.propTypes={ctx:R.default.func.isRequired};var B={Default:v,Hover:j,Active:k},J={Default:N,Hover:w,Active:x};function Q({ctx:e}){const{dispatch:a}=e(),[s,n]=(0,C.useState)(!1),d=(0,C.useRef)();function i(){return o.apply(this,arguments)}function o(){return(o=t(function*(){var e;const t=yield null===(e=d.current)||void 0===e?void 0:e.getCaptchaValidateResult();a(T({quality:"GOOD",recaptcha:t}))})).apply(this,arguments)}function r(e,a){e!==c.SPACE&&e!==c.ENTER||a()}/* @__PURE__ */ /* @__PURE__ */
+return(0,O.jsx)(O.Fragment,{children:s?/* @__PURE__ */ /* @__PURE__ */(0,O.jsx)(Z,{ctx:e}):/* @__PURE__ */ /* @__PURE__ */(0,O.jsxs)("div",{className:"feedback-everyone",children:[
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsx)("div",{style:{display:"none"},children:/* @__PURE__ */ /* @__PURE__ */(0,O.jsx)(g,{ref:d})}),
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsx)("div",{className:"feedback-everyone__title",children:A}),
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsxs)("div",{className:"feedback-everyone__thumbs",children:[/* @__PURE__ */ /* @__PURE__ */(0,O.jsxs)("div",{tabIndex:0,onKeyDown:e=>{r(e.keyCode,i)},onClick:()=>{i()},children:[/* @__PURE__ */ /* @__PURE__ */(0,O.jsx)(I,{status:B}),/* @__PURE__ */ /* @__PURE__ */(0,O.jsx)("div",{className:"feedback-everyone__thumbs__text",children:E})]}),/* @__PURE__ */ /* @__PURE__ */(0,O.jsxs)("div",{tabIndex:0,onKeyDown:e=>{r(e.keyCode,()=>{n(!0)})},onClick:()=>{n(!0)},children:[/* @__PURE__ */ /* @__PURE__ */(0,O.jsx)(I,{status:J}),/* @__PURE__ */ /* @__PURE__ */(0,O.jsx)("div",{className:"feedback-everyone__thumbs__text",children:G})]})]}),
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsx)(W,{})]})})}function X({ctx:e}){const s=a.userEmail,[c,d]=(0,C.useState)(""),[i,o]=(0,C.useState)(!1),[l,u]=(0,C.useState)(s),[m,_]=(0,C.useState)(!1),f=(0,C.useRef)(),{dispatch:p}=e();function b(){return(b=t(function*(){const e=n(l);if(!i||i&&e){var a;const t=e?l:s,n=yield null===(a=f.current)||void 0===a?void 0:a.getCaptchaValidateResult();p(T({quality:c,email:t,recaptcha:n}))}_(!e)})).apply(this,arguments)}/* @__PURE__ */ /* @__PURE__ */
+return(0,O.jsxs)("div",{className:"feedback-randomly",children:[
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsx)("div",{style:{display:"none"},children:/* @__PURE__ */ /* @__PURE__ */(0,O.jsx)(g,{ref:f})}),
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsxs)("div",{className:"feedback-randomly__title",children:[" ",M," "]}),
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsxs)("div",{className:"feedback-randomly__content",children:[
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsx)("textarea",{value:c,onChange:e=>d(e.target.value),"aria-label":"Additional comments",className:"feedback-randomly__content__textinput"}),
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsx)(r,{checked:i,onChange:e=>{u(l||s),o(e),_(!1)},className:"feedback-randomly__content__checkbox",children:U}),i&&/* @__PURE__ */ /* @__PURE__ */(0,O.jsx)("textarea",{value:l,placeholder:z,onChange:e=>{_(!1),u(e.target.value)},className:"feedback-randomly__content__email"}),i&&/* @__PURE__ */ /* @__PURE__ */(0,O.jsxs)("div",{className:"feedback-randomly__content__notification",children:[!l&&F,m&&K]})]}),
+/* @__PURE__ */
+/* @__PURE__ */(0,O.jsx)(h,{type:"primary",className:"feedback-randomly__button",disabled:!c||i&&!l,onClick:()=>function(){return b.apply(this,arguments)}(),children:P})]})}function Y(e){}Q.propTypes={ctx:R.default.func.isRequired},X.propTypes={ctx:R.default.func.isRequired},R.default.func.isRequired;export{Y as runFeedback};
