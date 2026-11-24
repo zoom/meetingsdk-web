@@ -45,6 +45,42 @@ export interface MediaCompatiblity {
  */
 export type ExecutedResult = Promise<string | ExecutedFailure>;
 
+/** An RTMS instance in the current meeting, not an installed-app catalog entry. */
+export interface RTMSApp {
+  appId: string;
+  /** -2: no subscription; -1: failed; 0: none; 1: sharing; 2: paused; 3: stopped; 4: disabled; 5: initialized. */
+  status: -2 | -1 | 0 | 1 | 2 | 3 | 4 | 5;
+  /** 0: none; 1: pending; 2: approved; 3: denied. */
+  approvalStatus: 0 | 1 | 2 | 3;
+  ownerIndex?: number;
+  ownerName?: string;
+  instanceId?: number;
+  dataOption?: number;
+  /** Marketplace display name. Filled asynchronously by core; omitted until then. */
+  appName?: string;
+  /** Marketplace icon URL. Filled asynchronously by core; omitted until then. */
+  icon?: string;
+}
+
+/** Per-app controls. Operations resolve after server confirmation and reject on failure. */
+export interface RTMSClient {
+  isSupportRealTimeMediaStreams(): boolean;
+  isEnableRTMSAppControl(): boolean;
+  getRTMSAppList(): RTMSApp[];
+  getRealTimeMediaStreamsStatus(appId: string): RTMSApp['status'];
+  /** Available to the host, co-host, or app owner in the main meeting. */
+  canStartRealTimeMediaStreams(appId: string): boolean;
+  /** Pause and resume require the app owner. */
+  canPauseRealTimeMediaStreams(appId: string): boolean;
+  canApproveStartRTMSRequest(appId: string): boolean;
+  startRealTimeMediaStreams(appId: string): ExecutedResult;
+  stopRealTimeMediaStreams(appId: string): ExecutedResult;
+  pauseRealTimeMediaStreams(appId: string): ExecutedResult;
+  resumeRealTimeMediaStreams(appId: string): ExecutedResult;
+  /** Pass 1 to approve or 2 to deny, matching RTMSApprovalOption. */
+  resolveRTMSRequest(appId: string, approvalOption: 1 | 2): ExecutedResult;
+}
+
 /**
  * Enumeration of camera control cmd
  * @enum
@@ -246,6 +282,10 @@ export interface Participant {
    * User's unique ID.
    */
   userId: number;
+  /**
+   * User's unique index.
+   */
+  uniqueIndex?: number;
   /**
    * User's display name.
    */
@@ -1429,11 +1469,57 @@ export declare function event_local_recording_change(payload: {
   bLocalRecord: boolean;
 }): void;
 
-export declare function event_user_added(payload: ParticipantPropertiesPayload): void;
+/**
+ * Occurs when a user joins. For webinar attendees, only the local user's join is delivered.
+ * @event
+ */
+export declare function event_user_added(payload: Array<ParticipantPropertiesPayload>): void;
 
-export declare function event_user_removed(payload: ParticipantPropertiesPayload): void;
+/**
+ * Occurs when a user leaves. For webinar attendees, only the local user's leave is delivered.
+ * @event
+ */
+export declare function event_user_removed(payload: Array<ParticipantPropertiesPayload>): void;
 
-export declare function event_user_updated(payload: ParticipantPropertiesPayload): void;
+/**
+ * Occurs when a user's properties are updated. For webinar attendees, only the local user's updates are delivered.
+ * @event
+ */
+export declare function event_user_updated(payload: Array<ParticipantPropertiesPayload>): void;
+
+/**
+ * Webinar attendee properties delivered by `attendee-updated`.
+ */
+export interface AttendeePropertiesPayload {
+  /**
+   * The attendee's user ID.
+   */
+  userId: number;
+  /**
+   * Display name.
+   */
+  displayName: string;
+  /**
+   * Role of the attendee.
+   * - `10`: Host
+   * - `20`: Panelist
+   * - `30`: Attendee
+   */
+  userRole: number;
+  /**
+   * Whether the attendee has raised their hand.
+   */
+  bRaiseHand: boolean;
+}
+
+/**
+ * Occurs when webinar attendee attributes are updated, including raise-hand state.
+ * For webinar attendees, the payload only includes the local user's updates.
+ * @param payload the updated attendee properties
+ *
+ * @event
+ */
+export declare function event_attendee_updated(payload: Array<AttendeePropertiesPayload>): void;
 
 export declare function event_peer_share_state_change(payload: {
   userId: number;
@@ -1581,6 +1667,8 @@ export declare namespace EmbeddedClient {
   function join(args: JoinOptions): ExecutedResult;
   /**
    * Gets the current user's information.
+   *
+   * For webinar attendees, `bRaiseHand` reflects the local user's own raise-hand state.
    */
   function getCurrentUser(): Participant | null;
   /**
@@ -1589,6 +1677,7 @@ export declare namespace EmbeddedClient {
   function getCurrentMeetingInfo(): MeetingInfo;
   /**
    * Gets the list of participants.
+   * Webinar attendees cannot call this method; use `getCurrentUser()` instead.
    */
   function getAttendeeslist(): Participant[];
   /**
@@ -2045,6 +2134,47 @@ export declare namespace EmbeddedClient {
    * @param event Event name (for meeting end event, set the event to "connection-change").
    * @param callback Event handler (for meeting end event, the payload of the callback is payload.state === 'Closed').
    */
+  /** Returns RTMS controls after initialization. Account settings determine availability. */
+  function getRTMSClient(): RTMSClient | undefined;
+  /** Emitted after the app list has been updated with the server's state. */
+  function on(
+    event: 'real-time-media-streams-app-status-change',
+    callback: (payload: RTMSApp) => void
+  ): void;
+  /** Pending RTMS start request (wire cmdType 17). Meeting SDK host/co-host. */
+  function on(
+    event: 'rtms-approval-request-received',
+    callback: (payload: {
+      cmdType?: number;
+      status?: number;
+      appId?: string;
+      rtmsAppId?: string;
+      ownerIndex?: number;
+      ownerIdx?: number;
+      ownerName?: string;
+      userId?: number;
+      webDataOption?: number;
+      rtmsDataOption?: number;
+      appName?: string;
+      icon?: string;
+    }) => void
+  ): void;
+  /** Pending RTMS request removed (wire cmdType 19). */
+  function on(
+    event: 'rtms-approval-request-deleted',
+    callback: (payload: {
+      cmdType?: number;
+      status?: number;
+      appId?: string;
+      rtmsAppId?: string;
+      ownerIndex?: number;
+      ownerIdx?: number;
+      ownerName?: string;
+      userId?: number;
+      appName?: string;
+      icon?: string;
+    }) => void
+  ): void;
   function on(event: 'connection-change', callback: (payload: any) => void): void;
   function on(
     event: 'audio-statistic-data-change',
@@ -2064,6 +2194,7 @@ export declare namespace EmbeddedClient {
   function on(event: 'user-added', callback: typeof event_user_added): void;
   function on(event: 'user-removed', callback: typeof event_user_removed): void;
   function on(event: 'user-updated', callback: typeof event_user_updated): void;
+  function on(event: 'attendee-updated', callback: typeof event_attendee_updated): void;
   function on(
     event: 'peer-share-state-change',
     callback: typeof event_peer_share_state_change

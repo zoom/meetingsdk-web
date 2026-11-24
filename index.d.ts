@@ -289,6 +289,7 @@ declare let initArgs: {
    * error: optional, callback function on error.
    */
   error?: Function;
+  isWebRTCRedirectionEnabled?: boolean;
 };
 
 /**
